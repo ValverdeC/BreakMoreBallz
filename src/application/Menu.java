@@ -11,7 +11,8 @@ public class Menu extends Parent {
 		
 		this.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		
-		fond_menu.setId("menu");
+
+		fond_menu.setStyle("-fx-background-color: red;");
 		
         fond_menu.setWidth(600);
         fond_menu.setHeight(300);
