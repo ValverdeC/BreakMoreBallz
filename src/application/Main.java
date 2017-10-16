@@ -14,7 +14,9 @@ public class Main extends Application {
 		try {
 			BorderPane root = new BorderPane();
 			Scene scene = new Scene(root,800,600, Color.DARKGRAY);
+			
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			
 			primaryStage.setTitle("BreakMoreBallz");
 			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("favicon.jpg")));
 			
