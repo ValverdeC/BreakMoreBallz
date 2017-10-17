@@ -16,8 +16,8 @@ public class Menu extends Parent {
 				
 		fond_menu.getStyleClass().add("menu");
 		
-        fond_menu.setWidth(410);
-        fond_menu.setHeight(710);
+        fond_menu.setWidth(400);
+        fond_menu.setHeight(700);
         
         Button button = new Button("Jouer");
         
@@ -33,6 +33,7 @@ public class Menu extends Parent {
 	          public void handle(MouseEvent e) {
 	        	  /*BorderPane root = new BorderPane();
 	        	  Scene scene = new Scene(root, 400, 700);
+	        	  scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	        	  Menu2 menu2 = new Menu2();
 	        	  root.getChildren().add(menu2);
 	        	  
