@@ -44,5 +44,15 @@ public class ProfileManagerGUI extends Parent {
 	        	  stage.setScene(scene);
 	          }
         });
+        
+        btn.addEventHandler(MouseEvent.MOUSE_CLICKED,
+	        new EventHandler<MouseEvent>() {
+	          @Override
+	          public void handle(MouseEvent e) {
+	        	for (int i = 0; i < 10; i++) {
+					btn.setLayoutX(btn.getLayoutX() + 1);
+				}
+	          }
+        });
 	}
 }
