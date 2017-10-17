@@ -22,8 +22,8 @@ public class Main extends Application {
 			Menu menu = new Menu(primaryStage);
 			root.getChildren().add(menu);
 			
+			primaryStage.setResizable(false);
 			primaryStage.setScene(scene);
-		    primaryStage.setResizable(false);
 			primaryStage.show();
 			
 		} catch(Exception e) {
