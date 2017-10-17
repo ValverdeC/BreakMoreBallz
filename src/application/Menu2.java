@@ -2,24 +2,22 @@ package application;
 
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class Menu extends Parent {
+public class Menu2 extends Parent {
 	
-	public Menu(Stage stage) {
+	public Menu2() {
 		Rectangle fond_menu = new Rectangle();
 				
-		fond_menu.getStyleClass().add("menu");
+		fond_menu.getStyleClass().add("menuu");
 		
         fond_menu.setWidth(410);
         fond_menu.setHeight(710);
         
-        Button button = new Button("Click Me");
+        Button button = new Button("Close");
         
         this.getChildren().add(fond_menu);
         this.getChildren().add(button);
@@ -28,13 +26,10 @@ public class Menu extends Parent {
 	        new EventHandler<MouseEvent>() {
 	          @Override
 	          public void handle(MouseEvent e) {
-	        	  BorderPane root = new BorderPane();
-	        	  Scene scene = new Scene(root, 400, 700);
-	        	  Menu2 menu2 = new Menu2();
-	        	  root.getChildren().add(menu2);
-	        	  
-	        	  stage.setScene(scene);
+	        	  Stage stage = (Stage) button.getScene().getWindow();
+	        	  stage.close();
 	          }
-        });        
-	}
+        });
+        
+	}		
 }
