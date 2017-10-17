@@ -18,7 +18,7 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			primaryStage.setTitle("BreakMoreBallz");
-			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("favicon.jpg")));
+			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.jpg")));
 			
 			Menu menu = new Menu();
 			root.getChildren().add(menu);
