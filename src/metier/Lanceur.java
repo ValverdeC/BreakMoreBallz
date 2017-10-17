@@ -1,6 +1,8 @@
 package metier;
 
-public class Lanceur {
+import util.Coordonnees;
+
+public class Lanceur extends Elements{
 
 	private String apparence = "default";
 
@@ -12,9 +14,18 @@ public class Lanceur {
 		this.apparence = apparence;
 	}
 
+	public Lanceur(String apparence, Coordonnees coord) {
+		super(coord);
+		this.apparence = apparence;
+	}
+	
+	public Lanceur(Coordonnees coord) {
+		super(coord);
+	}
+
 	@Override
 	public String toString() {
-		return "Lanceur [apparence=" + apparence + "]";
+		return "Lanceur [apparence=" + apparence + " x = "+ this.getX() + " y = "+ this.getY() +"]";
 	}
 	
 	

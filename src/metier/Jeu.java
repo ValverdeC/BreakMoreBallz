@@ -1,10 +1,22 @@
 package metier;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Jeu {
 
 	private Profil profil;
 	private Lanceur lanceur;
-	private Bille bille;
+	private List<Bille> bille;
+	private List<Ballz> ballz;
+	
+	public Jeu(Profil profil) {
+		super();
+		this.profil = profil;
+		this.bille = new ArrayList<Bille>();
+		this.ballz = new ArrayList<Ballz>();
+
+	}
 
 	public Profil getProfil() {
 		return profil;
@@ -22,22 +34,21 @@ public class Jeu {
 		this.lanceur = lanceur;
 	}
 
-	public Bille getBille() {
+	
+	public List<Bille> getBille() {
 		return bille;
 	}
 
-	public void setBille(Bille bille) {
+	public void setBille(List<Bille> bille) {
 		this.bille = bille;
 	}
-	
-	@Override
-	public String toString() {
-		return "Jeu [profil=" + profil.getPseudo() + ", lanceur=" + lanceur.getApparence() + ", bille=" + bille.getApparence() + "]";
+
+	public List<Ballz> getBallz() {
+		return ballz;
 	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public void setBallz(List<Ballz> ballz) {
+		this.ballz = ballz;
 	}
 	
 }
