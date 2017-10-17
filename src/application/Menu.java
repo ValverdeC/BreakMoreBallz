@@ -19,7 +19,10 @@ public class Menu extends Parent {
         fond_menu.setWidth(410);
         fond_menu.setHeight(710);
         
-        Button button = new Button("Click Me");
+        Button button = new Button("Jouer");
+        
+        button.setTranslateX(180);
+        button.setTranslateY(330);
         
         this.getChildren().add(fond_menu);
         this.getChildren().add(button);
@@ -28,12 +31,12 @@ public class Menu extends Parent {
 	        new EventHandler<MouseEvent>() {
 	          @Override
 	          public void handle(MouseEvent e) {
-	        	  BorderPane root = new BorderPane();
+	        	  /*BorderPane root = new BorderPane();
 	        	  Scene scene = new Scene(root, 400, 700);
 	        	  Menu2 menu2 = new Menu2();
 	        	  root.getChildren().add(menu2);
 	        	  
-	        	  stage.setScene(scene);
+	        	  stage.setScene(scene);*/
 	          }
         });        
 	}
