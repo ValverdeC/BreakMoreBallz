@@ -5,14 +5,16 @@ import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.ecs.Entity;
 import com.almasb.fxgl.entity.Entities;
-import com.almasb.fxgl.entity.EntityView;
-import com.almasb.fxgl.entity.RenderLayer;
 import com.almasb.fxgl.entity.component.ViewComponent;
 import com.almasb.fxgl.settings.GameSettings;
 
 import javafx.scene.Node;
 
 public class Main extends GameApplication {
+	
+	Menu menu = new Menu();
+	ProfileManagerGUI profile = new ProfileManagerGUI();
+	PlateauGUI plateau = new PlateauGUI();
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -37,13 +39,15 @@ public class Main extends GameApplication {
     }
 	
 	protected void setMenuView() {
-		Menu menu = new Menu();
 		setView(menu);
 	}
 	
 	protected void setProfileView() {
-		ProfileManagerGUI profileGUI = new ProfileManagerGUI();
-		setView(profileGUI);
+		setView(profile);
+	}
+	
+	protected void setPlateauView() {
+		setView(plateau);
 	}
 	
 	protected void setView(Node view) {		
