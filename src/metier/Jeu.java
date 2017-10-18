@@ -9,24 +9,33 @@ import util.Coordonnees;
 import util.ElementsList;
 import util.Services;
 
+import util.Coordonnees;
+
 public class Jeu {
 
 	private Profil profil;
 	private Lanceur lanceur;
-	private List<Bille> bille;
+	private List<Bille> billes;
 	private TreeMap<Coordonnees, Elements> elements;
 	private Services service = new Services();
 	private int turn;
+	private double dimensionX;
+	private double dimensionY;
+	private int nbBallzDetruits;
 	
-	public Jeu(Profil profil) {
-		super();
+	// Constructeur
+	
+	public Jeu(Profil profil, double dimX, double dimY) {
 		this.profil = profil;
-		this.bille = new ArrayList<Bille>();
+		this.billes = new ArrayList<Bille>();
 		this.elements = new TreeMap<>();
 		this.initJeu(this.elements);
 		this.turn = 1;
+		this.dimensionX = dimX-100;
+		this.dimensionY = dimY/2;
+		Bille premiereBille = new Bille(new Coordonnees(dimX/2,dimY));
+		this.billes.add(premiereBille);
 	}
-	
 	/**
 	 * @return Si le jeu est fini ou pas
 	 */
@@ -54,6 +63,8 @@ public class Jeu {
 		return end;
 	}
 	
+	
+	// Accesseurs
 	public Profil getProfil() {
 		return profil;
 	}
@@ -101,12 +112,12 @@ public class Jeu {
 	}
 
 	
-	public List<Bille> getBille() {
-		return bille;
+	public List<Bille> getBilles() {
+		return billes;
 	}
 
-	public void setBille(List<Bille> bille) {
-		this.bille = bille;
+	public void setBilles(List<Bille> bille) {
+		this.billes = bille;
 	}
 
 	public int getTurn() {
@@ -126,6 +137,40 @@ public class Jeu {
 		}
 		
 		return res;
+	}
+
+	public double getDimensionX() {
+		return dimensionX;
+	}
+
+	public void setDimensionX(double dimensionX) {
+		this.dimensionX = dimensionX;
+	}
+
+	public double getDimensionY() {
+		return dimensionY;
+	}
+
+	public void setDimensionY(double dimensionY) {
+		this.dimensionY = dimensionY;
+	}
+
+
+	public int getNbBallzDetruits() {
+		return nbBallzDetruits;
+	}
+
+
+	public void setNbBallzDetruits(int nbBallzDetruits) {
+		this.nbBallzDetruits = nbBallzDetruits;
+	}
+	
+	private void jouer() {
+		
+	}
+	
+	private void orienterLanceur() {
+		
 	}
 	
 	public boolean thereBallzOnLastLine(TreeMap<Coordonnees, Elements> elements) {
