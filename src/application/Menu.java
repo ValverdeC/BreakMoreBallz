@@ -2,18 +2,15 @@ package application;
 
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 
 public class Menu extends Parent {
 	
-	public Menu(Stage stage) {
+	public Menu() {
 		Rectangle fond_menu = new Rectangle();
 		Image image = new Image(getClass().getResourceAsStream("background.jpg"));
 		 
@@ -44,13 +41,13 @@ public class Menu extends Parent {
 	        new EventHandler<MouseEvent>() {
 	          @Override
 	          public void handle(MouseEvent e) {
-	        	  BorderPane root = new BorderPane();
-	        	  Scene scene = new Scene(root, 400, 700);
-	        	  ProfileManagerGUI profileManager = new ProfileManagerGUI(stage);
-	        	  root.getChildren().add(profileManager);
-	        	  
-	        	  stage.setScene(scene);
+	        	  setProfileView();
 	          }
         });        
+	}
+	
+	protected void setProfileView() {
+		Main main = new Main();
+		main.setProfileView();
 	}
 }
