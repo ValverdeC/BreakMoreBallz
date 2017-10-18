@@ -4,12 +4,19 @@ public class Plateau {
 	
 	private Jeu jeuJ1;
 	private Jeu jeuJ2;
+	private Jeu jeuCourant;
+	private Jeu jeuNonCourant;
+	private ParametresPlateau parametres;
 	
+	// Constructeur
 	public Plateau(Jeu jeuJ1, Jeu jeuJ2) {
 		this.jeuJ1 = jeuJ1;
 		this.jeuJ2 = jeuJ2;
+		this.jeuCourant = jeuJ1;
+		this.setJeuNonCourant(jeuJ2);
 	}
-
+	
+	// Accesseurs
 	public Jeu getJeuJ1() {
 		return jeuJ1;
 	}
@@ -25,6 +32,36 @@ public class Plateau {
 	public void setJeuJ2(Jeu jeuJ2) {
 		this.jeuJ2 = jeuJ2;
 	}
+	
+	public Jeu getJeuCourant() {
+		return jeuCourant;
+	}
+
+	public void setJeuCourant(Jeu jeuCourant) {
+		this.jeuCourant = jeuCourant;
+	}
+	
+	public Jeu getJeuNonCourant() {
+		return jeuNonCourant;
+	}
+
+	public void setJeuNonCourant(Jeu jeuNonCourant) {
+		this.jeuNonCourant = jeuNonCourant;
+	}
+
+	// Méthodes
+    /**
+     * Permet de changer le joueur courant.
+     */
+    public void switchJoueur() {
+        if (jeuCourant == jeuJ1) {
+            jeuCourant = jeuJ2;
+            jeuNonCourant = jeuJ1;
+        } else {
+            jeuCourant = jeuJ1;
+            jeuNonCourant = jeuJ2;
+        }
+    }
 	
 
 }
