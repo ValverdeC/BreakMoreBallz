@@ -5,6 +5,7 @@ import util.Coordonnees;
 public class Lanceur extends Elements{
 
 	private String apparence = "default";
+	private double angle;
 
 	public String getApparence() {
 		return apparence;
@@ -28,5 +29,12 @@ public class Lanceur extends Elements{
 		return "Lanceur [apparence=" + apparence + " x = "+ this.getX() + " y = "+ this.getY() +"]";
 	}
 	
+	public void orienterGauche() {
+		
+	}
+	
+	public void orienterDroite() {
+		
+	}
 	
 }
