@@ -46,7 +46,7 @@ public class Main extends GameApplication {
 		setView(profile);
 	}
 	
-	protected void setPlateauView() {
+	protected void setPlayView() {
 		setView(plateau);
 	}
 	
