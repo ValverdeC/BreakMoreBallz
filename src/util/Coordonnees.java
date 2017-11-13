@@ -1,24 +1,24 @@
 package util;
 
-public class Coordonnees {
+public class Coordonnees implements Comparable<Coordonnees> {
 	// attributs
-	private double x;
-	private double y;
+	private int x;
+	private int y;
 	
 	// Methodes
-	public double getX() {
+	public int getX() {
 		return x;
 	}
-	public void setX(double x) {
+	public void setX(int x) {
 		this.x = x;
 	}
-	public double getY() {
+	public int getY() {
 		return y;
 	}
-	public void setY(double y) {
+	public void setY(int y) {
 		this.y = y;
 	}
-	public Coordonnees(double x, double y) {
+	public Coordonnees(int x, int y) {
 		super();
 		this.x = x;
 		this.y = y;
@@ -50,6 +50,14 @@ public class Coordonnees {
 		if (y != other.y)
 			return false;
 		return true;
+	}
+	
+	@Override
+	public int compareTo(Coordonnees o) {
+	  if (x == o.x) {
+		  return y - o.y;		  
+	  }
+	  return x - o.x;
 	}
 	
 }

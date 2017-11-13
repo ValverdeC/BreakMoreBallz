@@ -5,7 +5,7 @@ import util.Coordonnees;
 public abstract class Elements {
 	private Coordonnees coord;
 	
-	public void setCoordonnees(double x, double y) {
+	public void setCoordonnees(int x, int y) {
 		this.coord = new Coordonnees(x,y);
 	}
 	
@@ -13,11 +13,11 @@ public abstract class Elements {
 		return coord;
 	}
 	
-	public double getY() {
+	public int getY() {
 		return coord.getY();
 	}
 	
-	public double getX() {
+	public int getX() {
 		return coord.getX();
 	}
 
