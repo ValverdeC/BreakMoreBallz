@@ -4,3 +4,12 @@
 	-fx-fill: #421C52;
 	/*-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);*/
 }
+
+.ballz {
+	-fx-fill: #000000;
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.empty-element {
+	-fx-fill: #ffffff;
+}
