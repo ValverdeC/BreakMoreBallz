@@ -1,13 +1,18 @@
 package application;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 public class PlateauGUI extends Parent {
 	
 	JeuUI jeuUn = new JeuUI();
 	JeuUI jeuDeux = new JeuUI();
+
+	Button backBtn = new Button("Retour");
 	
 	public PlateauGUI() {
 		this.setTranslateX(0);
@@ -20,10 +25,21 @@ public class PlateauGUI extends Parent {
 		grid.setPadding(new Insets(0, 0, 0, 0));
 		grid.add(jeuUn, 0, 0);
 		grid.add(jeuDeux, 0, 1);
+		grid.add(backBtn, 1, 0);
+		
+		backBtn.addEventHandler(MouseEvent.MOUSE_CLICKED,
+	        new EventHandler<MouseEvent>() {
+	          @Override
+	          public void handle(MouseEvent e) {
+	        	  nextTurn();
+	          }
+        });
 		
 		this.getChildren().add(grid);
-		
-		this.jeuUn.nextTurn();
 	}
 
+	private void nextTurn() {
+		this.jeuUn.nextTurn();
+		this.jeuDeux.nextTurn();
+	}
 }
