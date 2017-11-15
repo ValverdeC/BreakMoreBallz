@@ -24,8 +24,8 @@ public class Main extends GameApplication {
 	protected void initSettings(GameSettings settings) {
 		settings.setTitle("BreakMoreBallz");
         settings.setVersion("beta-0.1");
-        settings.setWidth(400);
-        settings.setHeight(700);
+        settings.setWidth(700);
+        settings.setHeight(800);
         settings.setIntroEnabled(false);
         settings.setMenuEnabled(false);
         settings.setProfilingEnabled(false);

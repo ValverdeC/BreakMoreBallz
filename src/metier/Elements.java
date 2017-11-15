@@ -35,5 +35,9 @@ public abstract class Elements {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public void setCoordonnees(Coordonnees newCoord) {
+		this.coord = newCoord;		
+	}
 	
 }

@@ -11,7 +11,7 @@ public class TestUtils {
 	
 	public TestUtils() {
 		for (int i = 0; i < 10; i++) {
-			ballzList.add(new Ballz(new Coordonnees(i, i+2)));			
+			ballzList.add(new Ballz(new Coordonnees(i, i+2), 1));			
 		}
 	}
 	

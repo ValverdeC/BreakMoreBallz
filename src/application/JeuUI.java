@@ -16,19 +16,18 @@ import util.Coordonnees;
 
 public class JeuUI extends Parent {
 	private Rectangle background = new Rectangle();
-	//private List<Ballz> ballz = new TestUtils().getBallzList();
 	private GridPane grid = new GridPane();
-	Jeu jeu = new Jeu(new Profil());
+	private Jeu jeu = new Jeu(new Profil(1, "Toto"));
 	
     public JeuUI() {
     	background.setWidth(400);
-    	background.setHeight(350);
+    	background.setHeight(400);
     	background.setStyle("-fx-fill: white;");
     	background.setStroke(Color.BLACK);
     	background.setStrokeWidth(2);
     	background.setStrokeType(StrokeType.INSIDE);
-    	grid.setMinSize(400, 350);
-    	grid.setMaxSize(400, 350);
+    	grid.setMinSize(400, 400);
+    	grid.setMaxSize(400, 400);
     	
     	initJeu(this.jeu.getElements());
     	
@@ -38,9 +37,23 @@ public class JeuUI extends Parent {
     
     public void nextTurn() {
     	this.jeu.nextTurn();
+    	refreshView(this.jeu.getElements());
     }
     
-    private void initJeu(TreeMap<Coordonnees, Elements> elements) {
+    private void refreshView(TreeMap<Coordonnees, Elements> elements) {
+    	grid.getChildren().clear();
+    	for(Map.Entry<Coordonnees, Elements> element : elements.entrySet()) {
+    		Elements elementUI = element.getValue();
+    		System.out.println(element);
+    		if (elementUI instanceof Ballz) {
+    			grid.add(new BallzUI(), elementUI.getX(), elementUI.getY());
+    		} else {
+    			grid.add(new EmptyElementUI(), elementUI.getX(), elementUI.getY());
+    		}
+    	}
+	}
+
+	private void initJeu(TreeMap<Coordonnees, Elements> elements) {
     	System.out.println("----------------------------------");
     	
     	for(Map.Entry<Coordonnees, Elements> element : elements.entrySet()) {
