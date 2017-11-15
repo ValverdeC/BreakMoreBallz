@@ -4,6 +4,7 @@ import util.Coordonnees;
 
 public abstract class Elements {
 	private Coordonnees coord;
+	private String name;
 	
 	public void setCoordonnees(int x, int y) {
 		this.coord = new Coordonnees(x,y);
@@ -24,6 +25,15 @@ public abstract class Elements {
 	public Elements(Coordonnees coord) {
 		super();
 		this.coord = coord;
+		this.name = getClass().getSimpleName();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

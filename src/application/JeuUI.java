@@ -6,7 +6,6 @@ import java.util.TreeMap;
 import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import metier.Ballz;
@@ -19,9 +18,9 @@ public class JeuUI extends Parent {
 	private Rectangle background = new Rectangle();
 	//private List<Ballz> ballz = new TestUtils().getBallzList();
 	private GridPane grid = new GridPane();
+	Jeu jeu = new Jeu(new Profil());
 	
     public JeuUI() {
-    	Jeu jeu = new Jeu(new Profil());
     	background.setWidth(400);
     	background.setHeight(350);
     	background.setStyle("-fx-fill: white;");
@@ -31,10 +30,14 @@ public class JeuUI extends Parent {
     	grid.setMinSize(400, 350);
     	grid.setMaxSize(400, 350);
     	
-    	initJeu(jeu.getElements());
+    	initJeu(this.jeu.getElements());
     	
     	this.getChildren().add(background);
     	this.getChildren().add(grid);
+    }
+    
+    public void nextTurn() {
+    	this.jeu.nextTurn();
     }
     
     private void initJeu(TreeMap<Coordonnees, Elements> elements) {

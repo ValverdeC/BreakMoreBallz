@@ -22,6 +22,8 @@ public class PlateauGUI extends Parent {
 		grid.add(jeuDeux, 0, 1);
 		
 		this.getChildren().add(grid);
+		
+		this.jeuUn.nextTurn();
 	}
 
 }

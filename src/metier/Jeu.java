@@ -2,9 +2,11 @@ package metier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import util.Coordonnees;
+import util.ElementsList;
 import util.Services;
 
 public class Jeu {
@@ -21,6 +23,14 @@ public class Jeu {
 		this.bille = new ArrayList<Bille>();
 		this.elements = new TreeMap<>();
 		this.initJeu();
+	}
+	
+	public void nextTurn() {
+		for (Entry<Coordonnees, Elements> entry : elements.entrySet()) {
+		    if (entry.getValue().getName().equals(ElementsList.Ballz.name())) {
+		    	System.out.println(entry.getValue());
+		    }
+		}
 	}
 	
 	public Profil getProfil() {
