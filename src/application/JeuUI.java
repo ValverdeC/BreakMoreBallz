@@ -1,7 +1,6 @@
 package application;
 
 import java.util.Map;
-import java.util.TreeMap;
 
 import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
@@ -29,20 +28,25 @@ public class JeuUI extends Parent {
     	grid.setMinSize(400, 400);
     	grid.setMaxSize(400, 400);
     	
-    	initJeu(this.jeu.getElements());
+    	initJeu();
     	
     	this.getChildren().add(background);
     	this.getChildren().add(grid);
     }
     
-    public void nextTurn() {
-    	this.jeu.nextTurn();
-    	refreshView(this.jeu.getElements());
+    /**
+     * return resultat du nextTurn
+     */
+    public boolean nextTurn() {
+    	boolean res = this.jeu.nextTurn();
+    	refreshView();
+    	
+    	return res;
     }
     
-    private void refreshView(TreeMap<Coordonnees, Elements> elements) {
+    private void refreshView() {
     	grid.getChildren().clear();
-    	for(Map.Entry<Coordonnees, Elements> element : elements.entrySet()) {
+    	for(Map.Entry<Coordonnees, Elements> element : this.jeu.getElements().entrySet()) {
     		Elements elementUI = element.getValue();
     		System.out.println(element);
     		if (elementUI instanceof Ballz) {
@@ -53,10 +57,10 @@ public class JeuUI extends Parent {
     	}
 	}
 
-	private void initJeu(TreeMap<Coordonnees, Elements> elements) {
+	private void initJeu() {
     	System.out.println("----------------------------------");
     	
-    	for(Map.Entry<Coordonnees, Elements> element : elements.entrySet()) {
+    	for(Map.Entry<Coordonnees, Elements> element : this.jeu.getElements().entrySet()) {
     		Elements elementUI = element.getValue();
     		if (elementUI instanceof Ballz) {
     			grid.add(new BallzUI(), elementUI.getX(), elementUI.getY());
@@ -65,4 +69,8 @@ public class JeuUI extends Parent {
     		}
     	}
     }
+	
+	public void restartJeu() {
+		
+	}
 }
