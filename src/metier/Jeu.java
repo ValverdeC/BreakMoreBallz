@@ -27,10 +27,15 @@ public class Jeu {
 		this.turn = 1;
 	}
 	
-	public void nextTurn() {
+	/**
+	 * @return Si le jeu est fini ou pas
+	 */
+	public boolean nextTurn() {
+		boolean end = false;
 		TreeMap<Coordonnees, Elements> newElements = new TreeMap<>();
 		initJeu(newElements);
 		this.turn++;
+		
 		for (Entry<Coordonnees, Elements> entry : elements.entrySet()) {
 			Elements ballz = entry.getValue();
 			
@@ -42,22 +47,27 @@ public class Jeu {
 		}
 		this.elements = newElements;
 		
+		if (this.thereBallzOnLastLine(elements)) {
+			end = true;
+		}
+		
+		return end;
 	}
 	
 	public Profil getProfil() {
 		return profil;
 	}
 
-	public void initJeu(TreeMap<Coordonnees, Elements> jeu) {
-		this.initElementList(jeu);
+	public void initJeu(TreeMap<Coordonnees, Elements> elements) {
+		this.initElementList(elements);
 		int nbOfBallz = this.service.randomGenerator(1, 10);
 		System.out.println(nbOfBallz);
 		for(int i = 0; i < nbOfBallz; i++) {
 			int x = this.service.randomGenerator(0, 9);
-			while(this.thereSomethingHere(jeu, new Coordonnees(x, 1))) {
+			while(this.thereSomethingHere(elements, new Coordonnees(x, 1))) {
 				x = this.service.randomGenerator(0, 9);
 			}
-			jeu.put(new Coordonnees(x, 1), new Ballz(new Coordonnees(x, 1), this.turn));				
+			elements.put(new Coordonnees(x, 1), new Ballz(new Coordonnees(x, 1), this.turn));				
 		}
 	}
 	
@@ -118,12 +128,12 @@ public class Jeu {
 		return res;
 	}
 	
-	public boolean thereBallzOnLastLine(Jeu jeu) {
+	public boolean thereBallzOnLastLine(TreeMap<Coordonnees, Elements> elements) {
 		boolean res = false;
 		
 		for (int i = 0; i < 10; i++) {
 			Coordonnees coord = new Coordonnees(i, 9);
-			if(jeu.getElements().get(coord).getName().equals(ElementsList.Ballz.name())) {
+			if(elements.get(coord).getName().equals(ElementsList.Ballz.name())) {
 				res = true;
 			}
 		}
