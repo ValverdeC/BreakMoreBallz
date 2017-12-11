@@ -16,7 +16,7 @@ import util.Coordonnees;
 public class JeuUI extends Parent {
 	private Rectangle background = new Rectangle();
 	private GridPane grid = new GridPane();
-	private Jeu jeu = new Jeu(new Profil(1, "Toto"));
+	private Jeu jeu = new Jeu(new Profil(1, "Toto"), 500, 800);
 	
     public JeuUI() {
     	background.setWidth(400);
