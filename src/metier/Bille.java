@@ -1,11 +1,62 @@
 package metier;
 
-import util.Coordonnees;
+import static java.lang.Math.sqrt;
 
-public class Bille extends Elements{
+import java.util.concurrent.Callable;
+
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.shape.Circle;
+
+public class Bille  {
 
 	private String apparence = "default";
-	private int dimension = 15;
+    private final DoubleProperty vitesseX ; // pixels par seconde
+    private final DoubleProperty vitesseY ; 
+    private final ReadOnlyDoubleWrapper vitesse ;
+    private final double rayon; // rayon en pixels
+    private boolean lance = false;
+
+    private final Circle vue;
+
+    public Bille(double centerX, double centerY, double rayon,
+            double vitesseX, double vitesseY) {
+
+        this.vue = new Circle(centerX, centerY, rayon);
+        this.vitesseX = new SimpleDoubleProperty(this, "vitesseX", vitesseX);
+        this.vitesseY = new SimpleDoubleProperty(this, "vitesseY", vitesseY);
+        this.vitesse = new ReadOnlyDoubleWrapper(this, "vitesse");
+        vitesse.bind(Bindings.createDoubleBinding(new Callable<Double>() {
+            
+            @Override
+            public Double call() throws Exception {
+                final double vitX = getVitesseX();
+                final double vitY = getVitesseY();
+                return sqrt(vitX * vitX + vitY * vitY);
+            }
+        }, this.vitesseX, this.vitesseY));
+        this.rayon = rayon;
+        vue.setRadius(rayon);
+
+    }
+    
+    public final double getVitesseX() {
+        return vitesseX.get();
+    }
+
+    public final void setVitesseX(double vitesseX) {
+        this.vitesseX.set(vitesseX);
+    }
+
+    public final double getVitesseY() {
+        return vitesseY.get();
+    }
+
+    public final void setVitesseY(double vitesseY) {
+        this.vitesseY.set(vitesseY);
+    }
 
 	public String getApparence() {
 		return apparence;
@@ -14,27 +65,48 @@ public class Bille extends Elements{
 	public void setApparence(String apparence) {
 		this.apparence = apparence;
 	}
-	
-	public int getDimension() {
-		return dimension;
+
+	public ReadOnlyDoubleWrapper getVitesse() {
+		return vitesse;
 	}
 
-	public void setDimension(int dimension) {
-		this.dimension = dimension;
-	}
-	
-	public Bille(Coordonnees coord, String apparence) {
-		super(coord);
-		this.apparence = apparence;
-	}
-	
-	public Bille(Coordonnees coord) {
-		super(coord);
+	public double getRayon() {
+		return rayon;
 	}
 
-	@Override
-	public String toString() {
-		return "Bille [apparence=" + apparence + " Coord = "+ this.getCoordonnees().toString() +"]";
+	public Circle getVue() {
+		return vue;
+	}
+    
+    public final double getX() {
+        return vue.getCenterX();
+    }
+
+    public final void setX(double centerX) {
+        vue.setCenterX(centerX);
+    }
+
+    public final DoubleProperty xProperty() {
+        return vue.centerXProperty();
+    }
+    
+    public final double getY() {
+        return vue.getCenterY();
+    }
+
+    public final void setY(double centerY) {
+        vue.setCenterY(centerY);
+    }
+
+    public final DoubleProperty yProperty() {
+        return vue.centerYProperty();
+    }
+
+	public boolean isLance() {
+		return lance;
 	}
 
+	public void setLance(boolean lance) {
+		this.lance = lance;
+	}
 }
