@@ -8,14 +8,14 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import metier.Lanceur;
-import util.Coordonnees;
+import util.CoordonneesDouble;
 import metier.Bille;
 
 public class LanceurFX extends Group{
 
 	private final Line line;
 	private Line predicteur;
-	private Lanceur lanceur = new Lanceur(new Coordonnees(0,0));
+	private Lanceur lanceur = new Lanceur(new CoordonneesDouble(0,0));
 	private Double ex;
 	private Double ey;
 	private Double sx;
