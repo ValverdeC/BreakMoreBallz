@@ -36,11 +36,18 @@ public class ProfilManager {
 	
 	
 	//METHODS
-	public void createProfil(String pseudo) {
+	public Profil createProfil(String pseudo) {
 		int id = this.profiles.get(this.profiles.size()-1).getId()+1;
 		Profil tempProfil = new Profil(id, pseudo);
 		this.profiles.add(this.profiles.size(), tempProfil);
 		
+		saveToCsv();
+		
+		return tempProfil;
+	}
+	
+	public void saveAllProfiles(LinkedList<Profil> profiles2) {
+		this.profiles = profiles2;
 		saveToCsv();
 	}
 	
