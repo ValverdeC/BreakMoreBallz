@@ -33,8 +33,8 @@ public class Jeu {
 		this.turn = 1;
 		this.dimensionX = dimX-100;
 		this.dimensionY = dimY/2;
-		Bille premiereBille = new Bille(new Coordonnees(dimX/2,dimY));
-		this.billes.add(premiereBille);
+		//Bille premiereBille = new Bille(new Coordonnees(dimX/2,dimY));
+		//this.billes.add(premiereBille);
 	}
 	/**
 	 * @return Si le jeu est fini ou pas
