@@ -8,19 +8,19 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import metier.Bille;
-import util.Coordonnees;
+import util.CoordonneesDouble;
 
 public class Lanceur{
 
 	private String apparence = "default";
 	private List<Bille> billes; 
 	private double angle = Math.toRadians(90);
-	private Coordonnees coord;
+	private CoordonneesDouble coord;
 	private static final double VITESSE = -600 ;
 	private static final double RAYON = 15 ;
 	
 	
-    public Lanceur(Coordonnees pCoord) {
+    public Lanceur(CoordonneesDouble pCoord) {
     	this.billes = new ArrayList<Bille>();
 		this.coord = pCoord;
 	}
@@ -67,11 +67,11 @@ public class Lanceur{
 		this.angle = Math.toRadians(angle);
 	}
 
-	public Coordonnees getCoord() {
+	public CoordonneesDouble getCoord() {
 		return coord;
 	}
 
-	public void setCoord(Coordonnees coord) {
+	public void setCoord(CoordonneesDouble coord) {
 		this.coord = coord;
 	}
 
