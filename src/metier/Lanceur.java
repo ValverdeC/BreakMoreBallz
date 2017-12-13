@@ -16,8 +16,9 @@ public class Lanceur{
 	private List<Bille> billes; 
 	private double angle = Math.toRadians(90);
 	private CoordonneesDouble coord;
-	private static final double VITESSE = -600 ;
-	private static final double RAYON = 15 ;
+	private static final double VITESSE = -400 ;
+	private static final double RAYON = 5 ;
+	private int nbJoueur;
 	
 	
     public Lanceur(CoordonneesDouble pCoord) {
@@ -33,7 +34,7 @@ public class Lanceur{
 	public void createBalls(int numBalls){
     	
         for (int i = 0; i < numBalls; i++) {
-            Bille ball = new Bille(coord.getX(), coord.getY(), RAYON, VITESSE*cos(angle), VITESSE*sin(angle));
+            Bille ball = new Bille(coord.getX()+20, coord.getY()*nbJoueur, RAYON, VITESSE*cos(angle), VITESSE*sin(angle));
             billes.add(ball);
             
         }
@@ -46,7 +47,9 @@ public class Lanceur{
 		for(Bille b : billes) {
 			if(!b.isLance()) {
 				b.setVitesseX(VITESSE*cos(angle));
-				b.setVitesseX(VITESSE*sin(angle));
+				b.setVitesseY(VITESSE*sin(angle));
+				b.setX(sx);
+				b.setY(sy);
 			}
 		}
 	}
@@ -83,4 +86,11 @@ public class Lanceur{
 		this.billes = billes;
 	}
 	
+	public void setNbJoueur(int nb) {
+		this.nbJoueur = nb;
+	}
+	
+	public int getNbJoueur() {
+		return this.nbJoueur;
+	}
 }
