@@ -14,7 +14,7 @@ public class Main extends GameApplication {
 	
 	Menu menu = new Menu();
 	ProfileManagerGUI profile = new ProfileManagerGUI();
-	PlateauGUI plateau = new PlateauGUI();
+	PlateauGUI plateau = new PlateauGUI(this);
 	
 	public static void main(String[] args) {
 		launch(args);
