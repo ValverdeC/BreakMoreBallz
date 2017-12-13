@@ -71,6 +71,8 @@ public class JeuUI extends Parent {
     }
 	
 	public void restartJeu() {
-		
+		this.jeu = new Jeu(new Profil(1, "Toto"), 500, 800);
+		this.refreshView();
+		this.initJeu();
 	}
 }
