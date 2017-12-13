@@ -26,15 +26,15 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.TableColumn.CellEditEvent;
 
 public class ProfileManagerGUI extends Parent {
-	Rectangle fond_profile_manager = new Rectangle();
 	Button add_button = new Button();
 	Button back_button = new Button("Retour");
 	ProfilManager manager = new ProfilManager();
-	Image background = new Image(getClass().getResourceAsStream("background_profiles.jpg"));
+	Image background = new Image(getClass().getResourceAsStream("profiles_background.jpg"));
 	TextField add_input = new TextField ();
 	private TableView table = new TableView();
 	private ObservableList<Profil> data;
 	ImageView iv1 = new ImageView();
+	final VBox vbox = new VBox();
 
 	@SuppressWarnings({ "unchecked", "unchecked", "unchecked", "unchecked" })
 	public ProfileManagerGUI() {
@@ -101,7 +101,6 @@ public class ProfileManagerGUI extends Parent {
         table.getColumns().addAll(pseudo);
         table.setItems(data);
         
-        final VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.getChildren().addAll(table);
         vbox.setLayoutX(20);
@@ -117,8 +116,10 @@ public class ProfileManagerGUI extends Parent {
 	}
 	
 	private void resetView() {
-		this.getChildren().remove(fond_profile_manager);
+		this.getChildren().remove(iv1);
 		this.getChildren().remove(add_button);
 		this.getChildren().remove(back_button);
+		this.getChildren().remove(add_input);
+		this.getChildren().remove(vbox);
 	}
 }

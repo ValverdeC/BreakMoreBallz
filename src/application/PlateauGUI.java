@@ -17,6 +17,7 @@ public class PlateauGUI extends Parent {
 
 	Button jeu1Btn = new Button("Jeu 1");
 	Button jeu2Btn = new Button("Jeu 2");
+	GridPane grid = new GridPane();
 	
 	Main app;
 	
@@ -24,7 +25,6 @@ public class PlateauGUI extends Parent {
 		this.setTranslateX(0);
 		this.setTranslateY(0);
 		this.getStyleClass().add("plateau");
-		GridPane grid = new GridPane();
 		grid.getStyleClass().add("jeu");
 		grid.setTranslateX(0);
 		grid.setTranslateY(0);
@@ -66,6 +66,7 @@ public class PlateauGUI extends Parent {
     		   this.jeuUn.restartJeu();
     		   this.jeuDeux.restartJeu();
     		} else {
+    			resetView();
     			this.app.setMenuView();
     		}
     	}
@@ -82,8 +83,13 @@ public class PlateauGUI extends Parent {
     		   this.jeuUn.restartJeu();
     		   this.jeuDeux.restartJeu();
     		} else {
+    			resetView();
     			this.app.setMenuView();
     		}
     	}
+	}
+	
+	private void resetView() {
+		this.getChildren().remove(this.grid);
 	}
 }

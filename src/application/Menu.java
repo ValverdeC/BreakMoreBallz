@@ -20,7 +20,7 @@ public class Menu extends Parent {
 				
 		fond_menu.getStyleClass().add("menu");
 		
-        fond_menu.setWidth(400);
+        fond_menu.setWidth(450);
         fond_menu.setHeight(800);
         
         

@@ -16,7 +16,7 @@ import util.Coordonnees;
 public class JeuUI extends Parent {
 	private Rectangle background = new Rectangle();
 	private GridPane grid = new GridPane();
-	private Jeu jeu = new Jeu(new Profil(1, "Toto"), 500, 800);
+	private Jeu jeu = new Jeu(new Profil(1, "Toto"), 500, 800, this);
 	
     public JeuUI() {
     	background.setWidth(400);
@@ -44,13 +44,13 @@ public class JeuUI extends Parent {
     	return res;
     }
     
-    private void refreshView() {
+    public void refreshView() {
     	grid.getChildren().clear();
     	for(Map.Entry<Coordonnees, Elements> element : this.jeu.getElements().entrySet()) {
     		Elements elementUI = element.getValue();
     		System.out.println(element);
     		if (elementUI instanceof Ballz) {
-    			grid.add(new BallzUI(), elementUI.getX(), elementUI.getY());
+    			grid.add(new BallzUI(elementUI, this.jeu), elementUI.getX(), elementUI.getY());
     		} else {
     			grid.add(new EmptyElementUI(), elementUI.getX(), elementUI.getY());
     		}
@@ -63,7 +63,7 @@ public class JeuUI extends Parent {
     	for(Map.Entry<Coordonnees, Elements> element : this.jeu.getElements().entrySet()) {
     		Elements elementUI = element.getValue();
     		if (elementUI instanceof Ballz) {
-    			grid.add(new BallzUI(), elementUI.getX(), elementUI.getY());
+    			grid.add(new BallzUI(elementUI, this.jeu), elementUI.getX(), elementUI.getY());
     		} else {
     			grid.add(new EmptyElementUI(), elementUI.getX(), elementUI.getY());
     		}
@@ -71,7 +71,7 @@ public class JeuUI extends Parent {
     }
 	
 	public void restartJeu() {
-		this.jeu = new Jeu(new Profil(1, "Toto"), 500, 800);
+		this.jeu = new Jeu(new Profil(1, "Toto"), 500, 800, this);
 		this.refreshView();
 		this.initJeu();
 	}
