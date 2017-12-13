@@ -10,7 +10,6 @@ import util.Coordonnees;
 import util.ElementsList;
 import util.Services;
 
-import util.Coordonnees;
 
 public class Jeu {
 
@@ -20,8 +19,6 @@ public class Jeu {
 	private TreeMap<Coordonnees, Elements> elements;
 	private Services service = new Services();
 	private int turn;
-	private double dimensionX;
-	private double dimensionY;
 	private int nbBallzDetruits;
 	private JeuUI ui;
 	
@@ -34,10 +31,6 @@ public class Jeu {
 		this.elements = new TreeMap<>();
 		this.initJeu(this.elements);
 		this.turn = 1;
-		this.dimensionX = dimX-100;
-		this.dimensionY = dimY/2;
-		//Bille premiereBille = new Bille(new Coordonnees(dimX/2,dimY));
-		//this.billes.add(premiereBille);
 	}
 	/**
 	 * @return Si le jeu est fini ou pas
@@ -140,22 +133,6 @@ public class Jeu {
 		}
 		
 		return res;
-	}
-
-	public double getDimensionX() {
-		return dimensionX;
-	}
-
-	public void setDimensionX(double dimensionX) {
-		this.dimensionX = dimensionX;
-	}
-
-	public double getDimensionY() {
-		return dimensionY;
-	}
-
-	public void setDimensionY(double dimensionY) {
-		this.dimensionY = dimensionY;
 	}
 
 

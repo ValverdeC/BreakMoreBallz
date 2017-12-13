@@ -17,6 +17,9 @@ public class JeuUI extends Parent {
 	private Rectangle background = new Rectangle();
 	private GridPane grid = new GridPane();
 	private Jeu jeu = new Jeu(new Profil(1, "Toto"), 500, 800, this);
+	private Double dimX = (double) 400;
+	private Double dimY = (double) 400;
+	LanceurFX lanceur = new LanceurFX(dimX/2,dimY-50,dimX/2,dimY);
 	
     public JeuUI() {
     	background.setWidth(400);
@@ -32,6 +35,7 @@ public class JeuUI extends Parent {
     	
     	this.getChildren().add(background);
     	this.getChildren().add(grid);
+    	this.getChildren().add(lanceur);
     }
     
     /**
@@ -74,5 +78,33 @@ public class JeuUI extends Parent {
 		this.jeu = new Jeu(new Profil(1, "Toto"), 500, 800, this);
 		this.refreshView();
 		this.initJeu();
+	}
+	
+	public GridPane getGrid(){
+		return this.grid;
+	}
+
+	public Double getDimX() {
+		return dimX;
+	}
+
+	public void setDimX(Double dimX) {
+		this.dimX = dimX;
+	}
+
+	public Double getDimY() {
+		return dimY;
+	}
+
+	public void setDimY(Double dimY) {
+		this.dimY = dimY;
+	}
+	
+	public Jeu getJeu() {
+		return jeu;
+	}
+
+	public void setJeu(Jeu jeu) {
+		this.jeu = jeu;
 	}
 }
