@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import application.JeuUI;
 import util.Coordonnees;
 import util.ElementsList;
 import util.Services;
@@ -22,10 +23,12 @@ public class Jeu {
 	private double dimensionX;
 	private double dimensionY;
 	private int nbBallzDetruits;
+	private JeuUI ui;
 	
 	// Constructeur
 	
-	public Jeu(Profil profil, double dimX, double dimY) {
+	public Jeu(Profil profil, double dimX, double dimY, JeuUI ui) {
+		this.ui = ui;
 		this.profil = profil;
 		this.billes = new ArrayList<Bille>();
 		this.elements = new TreeMap<>();
@@ -184,5 +187,9 @@ public class Jeu {
 		}
 		
 		return res;
+	}
+	
+	public void refreshView() {
+		this.ui.refreshView();
 	}
 }
