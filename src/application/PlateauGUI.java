@@ -55,10 +55,10 @@ public class PlateauGUI extends Parent {
 		grid.setTranslateX(0);
 		grid.setTranslateY(0);
 		grid.setPadding(new Insets(0, 0, 0, 0));
-		grid.add(jeuUn, 1, 0);
-		grid.add(jeuDeux, 1, 1);
-		grid.add(jeu1Btn, 0, 0);
-		grid.add(jeu2Btn, 0, 1);
+		grid.add(jeuUn, 0, 0);
+		grid.add(jeuDeux, 0, 1);
+		grid.add(jeu1Btn, 1, 0);
+		grid.add(jeu2Btn, 1, 1);
 		changerJeuCourant();
 		this.app = main;
 		
@@ -176,8 +176,8 @@ public class PlateauGUI extends Parent {
     		}
     		double xVel = b.getVitesseX();
             double yVel = b.getVitesseY();
-            if ((b.getX() - b.getRayon() <= 15 && xVel < 15)
-                    || (b.getX() + b.getRayon() >= maxX && xVel > 15)) {
+            if ((b.getX() - b.getRayon() <= 0 && xVel < 0)
+                    || (b.getX() + b.getRayon() >= maxX && xVel > 0)) {
                 b.setVitesseX(-xVel);
             }
             if (b.getY() - b.getRayon() <= topY && yVel < 0) {
