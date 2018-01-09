@@ -34,7 +34,7 @@ public class Lanceur{
 	public void createBalls(int numBalls){
     	
         for (int i = 0; i < numBalls; i++) {
-            Bille ball = new Bille(coord.getX()+20, coord.getY()*nbJoueur, RAYON, VITESSE*cos(angle), VITESSE*sin(angle));
+            Bille ball = new Bille(coord.getX(), coord.getY()*nbJoueur, RAYON, VITESSE*cos(angle), VITESSE*sin(angle));
             billes.add(ball);
             
         }

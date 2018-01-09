@@ -24,10 +24,10 @@ public class Menu extends Parent {
         fond_menu.setHeight(800);
         
         
-        playButton.setTranslateX(180);
+        playButton.setTranslateX(205);
         playButton.setTranslateY(550);
         
-        profileButton.setTranslateX(172);
+        profileButton.setTranslateX(197);
         profileButton.setTranslateY(590);
         
         this.getChildren().add(fond_menu);

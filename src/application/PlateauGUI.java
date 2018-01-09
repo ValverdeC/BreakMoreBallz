@@ -1,5 +1,8 @@
 package application;
 
+import java.util.TreeMap;
+import java.util.Map.Entry;
+
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -10,10 +13,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import metier.Ballz;
 import metier.Bille;
+import metier.Elements;
+import metier.EmptyElement;
+import util.Coordonnees;
 
 public class PlateauGUI extends Parent {
 	
@@ -21,6 +30,7 @@ public class PlateauGUI extends Parent {
 	JeuUI jeuDeux = new JeuUI();
 	JeuUI jeuCourant = new JeuUI();
 	AnimationTimer timer;
+	ImageView iv1 = new ImageView();
 	
 	Button jeu1Btn = new Button("Jeu 1");
 	Button jeu2Btn = new Button("Jeu 2");
@@ -46,6 +56,9 @@ public class PlateauGUI extends Parent {
 	Main app;
 	
 	public PlateauGUI(Main main) {
+		Image image = new Image(getClass().getResourceAsStream("game_background.jpg"));
+		iv1.setImage(image);
+		this.getChildren().add(iv1);
 		this.setTranslateX(0);
 		this.setTranslateY(0);
 		this.getStyleClass().add("plateau");
@@ -115,6 +128,23 @@ public class PlateauGUI extends Parent {
     	}
 	}
 	
+	private void nextTurn() {
+		Alert alert = new Alert(AlertType.CONFIRMATION, "Perdu, recommencer ?", ButtonType.YES, ButtonType.NO);
+		boolean res = this.jeuCourant.nextTurn();
+		
+		if (res) {
+    		alert.showAndWait();
+
+    		if (alert.getResult() == ButtonType.YES) {
+    		   this.jeuUn.restartJeu();
+    		   this.jeuDeux.restartJeu();
+    		} else {
+    			resetView();
+    			this.app.setMenuView();
+    		}
+    	}
+	}
+	
 	private void resetView() {
 		this.getChildren().remove(this.grid);
 	}
@@ -138,7 +168,7 @@ public class PlateauGUI extends Parent {
             @Override
             public void handle(long timestamp) {
                 if (lastUpdateTime.get() > 0) {
-                	checkCollision(jeuCourant.getDimX()+20,jeuCourant.getDimY()*lanceur.getLanceur().getNbJoueur());
+                	checkCollision(jeuCourant.getDimX(),jeuCourant.getDimY()*lanceur.getLanceur().getNbJoueur());
                     long elapsedTime = timestamp - lastUpdateTime.get();
                     updateWorld(elapsedTime, lanceur);
                 }
@@ -167,6 +197,12 @@ public class PlateauGUI extends Parent {
     
     //Gestion des collisions
     private void checkCollision(double maxX, double maxY) {
+    	// Collison avec les ballz
+    	double ballzX;
+    	double ballzY;
+    	double distance;
+		TreeMap<Coordonnees, Elements> tmp = new TreeMap<>();
+
     	for (Bille b : jeuCourant.lanceur.getLanceur().getBilles()) {
     		double topY=0;
     		if(jeuCourant.lanceur.getLanceur().getNbJoueur() == 2) {
@@ -183,11 +219,34 @@ public class PlateauGUI extends Parent {
             if (b.getY() - b.getRayon() <= topY && yVel < 0) {
                 b.setVitesseY(-yVel);
             }
-            if (b.getY() + b.getRayon() >= maxY*jeuCourant.lanceur.getLanceur().getNbJoueur() && yVel > 0) {
-            	this.getChildren().remove(b.getVue());
-            	stopAnimation();
-            	changerJeuCourant();
-            	b.setLance(false);
+            for (Entry<Coordonnees, Elements> element : jeuCourant.getJeu().getElements().entrySet()) {
+            	if(element.getValue() instanceof Ballz) {
+	            	ballzX = element.getKey().getX()*40+20;
+	            	ballzY = element.getKey().getY()*40+20+(400*(jeuCourant.lanceur.getLanceur().getNbJoueur()-1));
+	            	distance = Math.sqrt(Math.pow(b.getX()-ballzX, 2) + Math.pow(b.getY()-ballzY, 2));
+	            	if(distance <= 35){
+	            		if(b.getX() >= ballzX + 20 || b.getX() <= ballzX - 20) {
+	            			b.setVitesseX(-xVel);
+	            		}
+	            		if(b.getY() >= ballzY + 20 || b.getY() <= ballzY - 20) {
+	            			b.setVitesseY(-yVel);
+	            		}
+	            		
+	            		tmp.putAll( jeuCourant.getJeu().getElements());
+	            		tmp.put(element.getValue().getCoordonnees(), new EmptyElement(element.getValue().getCoordonnees()));
+	            		jeuCourant.getJeu().setElements(tmp);
+	            		jeuCourant.refreshView();
+	            	}
+            	}
+            	
+            }
+            
+            // Changement de tour
+            if (b.getY() + b.getRayon() >= (maxY-1) && yVel > 0) {
+                this.getChildren().remove(b.getVue());
+                stopAnimation();
+                changerJeuCourant();
+                b.setLance(false);
             	
             }
             
