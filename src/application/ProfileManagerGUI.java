@@ -42,12 +42,12 @@ public class ProfileManagerGUI extends Parent {
 		iv1.setImage(background);
         this.getChildren().add(iv1);
         
-        add_input.setLayoutX(20);
+        add_input.setLayoutX(45);
         add_input.setLayoutY(50);
         add_input.setPrefWidth(300);
         this.getChildren().add(add_input);
                 
-        add_button.setLayoutX(337);
+        add_button.setLayoutX(362);
         add_button.setLayoutY(50);
         add_button.setText("Add");
         add_button.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -103,7 +103,7 @@ public class ProfileManagerGUI extends Parent {
         
         vbox.setSpacing(5);
         vbox.getChildren().addAll(table);
-        vbox.setLayoutX(20);
+        vbox.setLayoutX(45);
         vbox.setLayoutY(100);
  
         this.getChildren().addAll(vbox);
