@@ -24,7 +24,7 @@ public class JeuUI extends Parent {
     public JeuUI() {
     	background.setWidth(400);
     	background.setHeight(400);
-    	background.setStyle("-fx-fill: white;");
+    	background.setStyle("-fx-fill: white; -fx-opacity: 0.5");
     	background.setStroke(Color.BLACK);
     	background.setStrokeWidth(2);
     	background.setStrokeType(StrokeType.INSIDE);

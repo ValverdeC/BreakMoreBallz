@@ -5,6 +5,7 @@ import java.util.TreeMap;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import metier.Ballz;
 import metier.Elements;
@@ -21,8 +22,11 @@ public class BallzUI extends Parent {
 		this.jeu = jeu;
 		ball = (Ballz) elementUI;
 		ballz.getStyleClass().add("ballz");
-		ballz.setWidth(40);
+		ballz.setWidth(38);
 		ballz.setHeight(40);
+		ballz.setArcHeight(20);
+		ballz.setArcWidth(20);
+		ballz.setFill(Color.LIGHTCORAL);
 		
 		ballz.addEventHandler(MouseEvent.MOUSE_CLICKED,
 	        new EventHandler<MouseEvent>() {
