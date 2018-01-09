@@ -17,7 +17,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import metier.Ballz;
 import metier.Bille;
 import metier.Elements;
@@ -99,6 +98,8 @@ public class PlateauGUI extends Parent {
 		boolean res = this.jeuUn.nextTurn();
 		
 		if (res) {
+			this.stopAnimation();
+			
     		alert.showAndWait();
 
     		if (alert.getResult() == ButtonType.YES) {
@@ -116,6 +117,8 @@ public class PlateauGUI extends Parent {
 		boolean res = this.jeuDeux.nextTurn();
 		
 		if (res) {
+			this.stopAnimation();
+			
     		alert.showAndWait();
 
     		if (alert.getResult() == ButtonType.YES) {
@@ -133,6 +136,8 @@ public class PlateauGUI extends Parent {
 		boolean res = this.jeuCourant.nextTurn();
 		
 		if (res) {
+			this.stopAnimation();
+			
     		alert.showAndWait();
 
     		if (alert.getResult() == ButtonType.YES) {
@@ -204,52 +209,53 @@ public class PlateauGUI extends Parent {
 		TreeMap<Coordonnees, Elements> tmp = new TreeMap<>();
 
     	for (Bille b : jeuCourant.lanceur.getLanceur().getBilles()) {
-    		double topY=0;
-    		if(jeuCourant.lanceur.getLanceur().getNbJoueur() == 2) {
-    			topY = 400;
-    		}else {
-    			topY = 0;
-    		}
-    		double xVel = b.getVitesseX();
-            double yVel = b.getVitesseY();
-            if ((b.getX() - b.getRayon() <= 0 && xVel < 0)
-                    || (b.getX() + b.getRayon() >= maxX && xVel > 0)) {
-                b.setVitesseX(-xVel);
-            }
-            if (b.getY() - b.getRayon() <= topY && yVel < 0) {
-                b.setVitesseY(-yVel);
-            }
-            for (Entry<Coordonnees, Elements> element : jeuCourant.getJeu().getElements().entrySet()) {
-            	if(element.getValue() instanceof Ballz) {
-	            	ballzX = element.getKey().getX()*40+20;
-	            	ballzY = element.getKey().getY()*40+20+(400*(jeuCourant.lanceur.getLanceur().getNbJoueur()-1));
-	            	distance = Math.sqrt(Math.pow(b.getX()-ballzX, 2) + Math.pow(b.getY()-ballzY, 2));
-	            	if(distance <= 35){
-	            		if(b.getX() >= ballzX + 20 || b.getX() <= ballzX - 20) {
-	            			b.setVitesseX(-xVel);
-	            		}
-	            		if(b.getY() >= ballzY + 20 || b.getY() <= ballzY - 20) {
-	            			b.setVitesseY(-yVel);
-	            		}
-	            		
-	            		tmp.putAll( jeuCourant.getJeu().getElements());
-	            		tmp.put(element.getValue().getCoordonnees(), new EmptyElement(element.getValue().getCoordonnees()));
-	            		jeuCourant.getJeu().setElements(tmp);
-	            		jeuCourant.refreshView();
+    		if (b.isLance()) {
+	    		double topY=0;
+	    		if(jeuCourant.lanceur.getLanceur().getNbJoueur() == 2) {
+	    			topY = 400;
+	    		}else {
+	    			topY = 0;
+	    		}
+	    		double xVel = b.getVitesseX();
+	            double yVel = b.getVitesseY();
+	            if ((b.getX() - b.getRayon() <= 0 && xVel < 0)
+	                    || (b.getX() + b.getRayon() >= maxX && xVel > 0)) {
+	                b.setVitesseX(-xVel);
+	            }
+	            if (b.getY() - b.getRayon() <= topY && yVel < 0) {
+	                b.setVitesseY(-yVel);
+	            }
+	            for (Entry<Coordonnees, Elements> element : jeuCourant.getJeu().getElements().entrySet()) {
+	            	if(element.getValue() instanceof Ballz) {
+		            	ballzX = element.getKey().getX()*40+20;
+		            	ballzY = element.getKey().getY()*40+20+(400*(jeuCourant.lanceur.getLanceur().getNbJoueur()-1));
+		            	distance = Math.sqrt(Math.pow(b.getX()-ballzX, 2) + Math.pow(b.getY()-ballzY, 2));
+		            	if(distance <= 35){
+		            		if(b.getX() >= ballzX + 20 || b.getX() <= ballzX - 20) {
+		            			b.setVitesseX(-xVel);
+		            		}
+		            		if(b.getY() >= ballzY + 20 || b.getY() <= ballzY - 20) {
+		            			b.setVitesseY(-yVel);
+		            		}
+		            		
+		            		tmp.putAll( jeuCourant.getJeu().getElements());
+		            		tmp.put(element.getValue().getCoordonnees(), new EmptyElement(element.getValue().getCoordonnees()));
+		            		jeuCourant.getJeu().setElements(tmp);
+		            		jeuCourant.refreshView();
+		            	}
 	            	}
-            	}
-            	
-            }
-            
-            // Changement de tour
-            if (b.getY() + b.getRayon() >= (maxY-1) && yVel > 0) {
-                this.getChildren().remove(b.getVue());
-                stopAnimation();
-                changerJeuCourant();
-                b.setLance(false);
-            	
-            }
-            
+	            	
+	            }
+	            
+	            // Changement de tour
+	            if (b.getY() + b.getRayon() >= (maxY-1) && yVel > 0) {
+	                this.getChildren().remove(b.getVue());
+	                stopAnimation();
+	                changerJeuCourant();
+	                b.setLance(false);
+	            	
+	            }
+    		}
     	}
     }
 
@@ -258,6 +264,8 @@ public class PlateauGUI extends Parent {
         
 		jeuCourant.removeEventHandler(MouseEvent.MOUSE_CLICKED, handlerTir);
 		jeuCourant.removeEventHandler(MouseEvent.MOUSE_MOVED, handlerVisee);
+
+		this.nextTurn();
 		
 		if(jeuCourant==jeuUn) {
 			jeuCourant=jeuDeux;
