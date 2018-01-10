@@ -1,14 +1,18 @@
 package application;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -29,14 +33,27 @@ public class ProfileManagerGUI extends Parent {
 	Button add_button = new Button();
 	Button back_button = new Button("Retour");
 	ProfilManager manager = new ProfilManager();
-	Image background = new Image(getClass().getResourceAsStream("profiles_background.jpg"));
+
+	File fileBackground = new File("ressources/images/profiles_background.jpg");
+    Image background = new Image(fileBackground.toURI().toString());
+	
 	TextField add_input = new TextField ();
 	private TableView table = new TableView();
 	private ObservableList<Profil> data;
 	ImageView iv1 = new ImageView();
 	final VBox vbox = new VBox();
+	final ComboBox backgroundSelector = new ComboBox();
+	final ComboBox launcherSelector = new ComboBox();
+	
+	Image backgroundPreview;
+	Image launcherPreview;
+	ImageView ivBackground = new ImageView();
+	ImageView ivLauncher = new ImageView();
+	boolean firstEdit = true;
+	
+	Profil selectedProfil;
 
-	@SuppressWarnings({ "unchecked", "unchecked", "unchecked", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public ProfileManagerGUI() {
 		//INIT DES ELEMENTS GRAPHIQUES
 		iv1.setImage(background);
@@ -98,7 +115,6 @@ public class ProfileManagerGUI extends Parent {
 		highScore.setCellValueFactory( new PropertyValueFactory<Profil, Integer>("highScore"));
 
 	    //TableView
-
         //Initialisation du tableau
 		table.setPrefSize(360, 350);
         data = FXCollections.observableArrayList(manager.getProfiles());
@@ -107,13 +123,73 @@ public class ProfileManagerGUI extends Parent {
         
         table.getColumns().addAll(pseudo, highScore);
         table.setItems(data);
-        
+             
         vbox.setSpacing(5);
         vbox.getChildren().addAll(table);
         vbox.setLayoutX(45);
         vbox.setLayoutY(100);
+        
+        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        	displayForm(((Profil) newSelection));
+        });
+        
+//        backgroundSelector.getItems().addAll(
+//            "Default",
+//            "Space" 
+//        );
+//        backgroundSelector.setLayoutX(45);
+//        backgroundSelector.setLayoutY(520);
+//        
+        launcherSelector.getItems().addAll(
+        	"commander",
+            "fighter",
+            "interceptor",
+            "leopard",
+            "spaceship"
+        );
+        launcherSelector.setLayoutX(45);
+        launcherSelector.setLayoutY(650);
+        launcherSelector.valueProperty().addListener(new ChangeListener<String>() {
+            @Override 
+            public void changed(ObservableValue ov, String t, String t1) {                
+            	File filePreviewlauncher = new File("ressources/images/launcher/"+t1+".png");
+            	launcherPreview = new Image(filePreviewlauncher.toURI().toString());            	
+            	ivLauncher.setImage(launcherPreview);
+
+            	manager.editProfil(selectedProfil.getId(), selectedProfil.getPseudo(), t1);
+            }    
+        });
+        
+//        ivBackground.setImage(backgroundPreview);
+//        
+//        
+//        ivBackground.setLayoutX(270);
+//        ivBackground.setLayoutY(490);
+//        ivBackground.setFitWidth(100);
+//        ivBackground.setFitHeight(100);
+        
+        ivLauncher.setLayoutX(270);
+        ivLauncher.setLayoutY(620);
+        ivLauncher.setFitWidth(100);
+        ivLauncher.setFitHeight(100);    	
  
         this.getChildren().addAll(vbox);
+	}
+	
+	public void displayForm(Profil profil) {
+		//If the user select a profil for the first time, it's display the graphical settings
+		if(firstEdit){
+			this.getChildren().addAll(ivLauncher, launcherSelector);
+			firstEdit = false;
+		}
+		selectedProfil = profil;
+//		launcherPreview = new Image(getClass().getResourceAsStream("profiles_background.jpg"));
+//		backgroundSelector.getSelectionModel().select(profil.getBackground());
+		
+		launcherSelector.getSelectionModel().select(profil.getLauncher());
+		File filePreviewlauncher = new File("ressources/images/launcher/"+profil.getLauncher()+".png");
+	    launcherPreview = new Image(filePreviewlauncher.toURI().toString());
+	    ivLauncher.setImage(launcherPreview);
 	}
 	
 	protected void setMenuView() {
