@@ -29,7 +29,7 @@ public class ProfilManager {
 		List<String[]> data = gatherData();
 	
 		for (int i = 0; i < data.size(); i++) {
-			Profil currentProfile = new Profil(Integer.parseInt(data.get(i)[0]), data.get(i)[1]);
+			Profil currentProfile = new Profil(Integer.parseInt(data.get(i)[0]), data.get(i)[1],Integer.parseInt(data.get(i)[2]));
 			this.profiles.add(currentProfile);
 		}
 	}

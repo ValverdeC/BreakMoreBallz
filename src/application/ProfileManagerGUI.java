@@ -74,7 +74,7 @@ public class ProfileManagerGUI extends Parent {
                 
         //Creation des colonnes du tableau
         TableColumn pseudo = new TableColumn("Pseudo");
-        pseudo.prefWidthProperty().bind(table.widthProperty().subtract(2));
+        pseudo.prefWidthProperty().bind(table.widthProperty().divide(2).subtract(2));
 		pseudo.setCellFactory(TextFieldTableCell.forTableColumn());
         pseudo.setCellValueFactory(
         		new PropertyValueFactory<Profil,String>("pseudo")
@@ -92,13 +92,20 @@ public class ProfileManagerGUI extends Parent {
 		        }
 		    }
 		);
+		
+		TableColumn highScore = new TableColumn("High Score");
+		highScore.prefWidthProperty().bind(table.widthProperty().divide(2).subtract(1));
+		highScore.setCellValueFactory( new PropertyValueFactory<Profil, Integer>("highScore"));
+
+	    //TableView
 
         //Initialisation du tableau
 		table.setPrefSize(360, 350);
         data = FXCollections.observableArrayList(manager.getProfiles());
+       
         table.setEditable(true);
         
-        table.getColumns().addAll(pseudo);
+        table.getColumns().addAll(pseudo, highScore);
         table.setItems(data);
         
         vbox.setSpacing(5);
