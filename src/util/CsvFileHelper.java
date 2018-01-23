@@ -1,5 +1,7 @@
 package util;
-
+/** 
+ * Classe utilitaire permettant d'ouvrir, éditer et sauvegarder des fichier csv
+ */
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;

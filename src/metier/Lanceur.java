@@ -12,8 +12,10 @@ import metier.Bille;
 import util.Coordonnees;
 import util.CoordonneesDouble;
 
+/**
+ * Classe stockant les informations propres au lanceur d'un joueur
+ * */
 public class Lanceur{
-
 	private String apparence = "default";
 	private List<Bille> billes; 
 	private double angle = Math.toRadians(90);
@@ -24,6 +26,9 @@ public class Lanceur{
 	private List<Bille> temporaryBilles; 
 	
 	
+	/** Constructeur du lanceur
+	 * @param pCoord coordonnées du lanceur
+	 */
     public Lanceur(CoordonneesDouble pCoord) {
     	this.billes = new ArrayList<Bille>();
     	this.temporaryBilles = new ArrayList<Bille>();
@@ -33,17 +38,27 @@ public class Lanceur{
     /**
      * Crée le nombre de billes entré en paramètre
      * @param numBalls
-     * @throws InterruptedException 
      */
 	public void createBalls(int numBalls){
-    	
+		
+		// Pour chaque bille, on initialise ses coordonnées avec celles du lanceur
+		// On lui donne une acceleration basée sur l'angle du lanceur
+		// coord.getY()*nbJoueur+(50*(nbJoueur-1)) cette formule est complexe car elle depend du numéro
         for (int i = 0; i < numBalls; i++) {
-            Bille ball = new Bille(coord.getX(), coord.getY()*nbJoueur, RAYON, VITESSE*cos(angle), VITESSE*sin(angle));
+            Bille ball = new Bille(coord.getX(), coord.getY()*nbJoueur+(50*(nbJoueur-1)), RAYON, VITESSE*cos(angle), VITESSE*sin(angle));
             billes.add(ball);
             
         }
     }
 	
+	/** 
+	 * Permet de mettre à jours l'angle du lanceur, et l'acceleration des billes en fonction 
+	 * des coordonnées passées en paramètre
+	 * @param ex coordonnée x de depart
+	 * @param ey coordonnée y de depart
+	 * @param sx coordonnée x d'arrivé
+	 * @param sy coordonnée y d'arrivé
+	 */
 	public void updateCoord(double ex, double ey, double sx, double sy) {
 		angle = Math.toDegrees(Math.atan2(ey - sy, ex - sx));
 		angle += 180;
@@ -58,13 +73,6 @@ public class Lanceur{
 		}
 	}
 	
-	public String getApparence() {
-		return apparence;
-	}
-
-	public void setApparence(String apparence) {
-		this.apparence = apparence;
-	}
 	
 	public double getAngle() {
 		return angle;

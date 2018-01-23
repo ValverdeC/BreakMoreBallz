@@ -198,7 +198,6 @@ public class Jeu {
 	public void incrementNbBallzDetruits() {
 		this.nbBallzDetruits++;
 	}
-	
 	public boolean thereBallzOnLastLine(TreeMap<Coordonnees, Elements> elements) {
 		boolean res = false;
 		

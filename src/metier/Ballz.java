@@ -2,8 +2,11 @@ package metier;
 
 import util.Coordonnees;
 
+/** 
+ * Classe metier contenant les informations d'une ballz (Brique)
+ * */
 public class Ballz extends Elements{
-	private int life;
+	private int life; // points de vie de la Ballz
 
 	public Ballz(Coordonnees coord, int life) {
 		super(coord);

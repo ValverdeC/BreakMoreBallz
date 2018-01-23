@@ -1,5 +1,9 @@
 package metier;
 
+/** 
+ * Classe metier decrivant le plateau de jeu contenant les cadres de jeu des joueurs
+ * 
+ */
 public class Plateau {
 	
 	private Jeu jeuJ1;

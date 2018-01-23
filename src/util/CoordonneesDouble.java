@@ -1,5 +1,8 @@
 package util;
-
+/** 
+ * Classe utilitaire permettant de stocker les coordonnées aux différents éléments graphiques 
+ * Coordonnées stockées sous forme de doubles car plus simple pour certains elements javaFX. 
+ */
 public class CoordonneesDouble {
 		// attributs
 		private double x;
