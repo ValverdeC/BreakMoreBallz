@@ -21,13 +21,15 @@ public class BallzUI extends Parent {
 		this.jeu = jeu;
 		ball = (Ballz) elementUI;
 		rect.getStyleClass().add("ballz");
-		rect.setWidth(38);
-		rect.setHeight(38);
+		rect.setWidth(40);
+		rect.setHeight(40);
 		rect.setArcHeight(20);
 		rect.setArcWidth(20);
 		rect.setFill(Color.LIGHTCORAL);
 		
 		this.life.setText(Integer.toString(this.ball.getLife()));
+		this.life.setX(40f);
+		this.life.setY(40f);
 		
 		this.pane.getChildren().addAll(rect, life);
 		

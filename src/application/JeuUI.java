@@ -9,11 +9,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import metier.Ballz;
 import metier.BilleBonus;
+import metier.BilleMultiplicator;
 import metier.BlackHole;
 import metier.Elements;
-import metier.EmptyElement;
 import metier.Jeu;
 import metier.Profil;
+import metier.HorizontalLaser;
 import util.Coordonnees;
 
 public class JeuUI extends Parent {
@@ -53,23 +54,10 @@ public class JeuUI extends Parent {
     
     public void refreshView() {
     	grid.getChildren().clear();
-    	for(Map.Entry<Coordonnees, Elements> element : this.jeu.getElements().entrySet()) {
-    		Elements elementUI = element.getValue();
-    		if (elementUI instanceof Ballz) {
-    			grid.add(new BallzUI(elementUI, this.jeu), elementUI.getX(), elementUI.getY());
-    		} else if (elementUI instanceof BilleBonus) {
-    			grid.add(new BilleBonusUI(), elementUI.getX(), elementUI.getY());
-    		} else if (elementUI instanceof BlackHole) {
-    			grid.add(new BlackHoleUI(), elementUI.getX(), elementUI.getY());
-    		} else {
-    			grid.add(new EmptyElementUI(), elementUI.getX(), elementUI.getY());
-    		}
-    	}
+    	this.initJeu();
 	}
 
 	private void initJeu() {
-    	System.out.println("----------------------------------");
-    	
     	for(Map.Entry<Coordonnees, Elements> element : this.jeu.getElements().entrySet()) {
     		Elements elementUI = element.getValue();
     		if (elementUI instanceof Ballz) {
@@ -78,6 +66,10 @@ public class JeuUI extends Parent {
     			grid.add(new BilleBonusUI(), elementUI.getX(), elementUI.getY());
     		} else if (elementUI instanceof BlackHole) {
     			grid.add(new BlackHoleUI(), elementUI.getX(), elementUI.getY());
+    		} else if (elementUI instanceof HorizontalLaser) {
+    			grid.add(new HorizontalLaserUI(), elementUI.getX(), elementUI.getY());
+    		} else if (elementUI instanceof BilleMultiplicator) {
+    			grid.add(new BilleMultiplicatorUI(), elementUI.getX(), elementUI.getY());
     		} else {
     			grid.add(new EmptyElementUI(), elementUI.getX(), elementUI.getY());
     		}

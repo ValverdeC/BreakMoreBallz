@@ -6,7 +6,6 @@ import java.util.TreeMap;
 
 import javax.swing.Timer;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -27,9 +26,11 @@ import javafx.scene.layout.GridPane;
 import metier.Ballz;
 import metier.Bille;
 import metier.BilleBonus;
+import metier.BilleMultiplicator;
 import metier.BlackHole;
 import metier.Elements;
 import metier.EmptyElement;
+import metier.HorizontalLaser;
 import util.Coordonnees;
 
 public class PlateauGUI extends Parent {
@@ -98,7 +99,8 @@ public class PlateauGUI extends Parent {
 	public void displayBille() {
 		List<Bille> billes = this.jeuCourant.lanceur.getLanceur().getBilles();
 		
-		if (billes.size() > 0) {			
+		if (billes.size() > 0) {
+			System.out.println(billes.size());
 			for(Bille bille : billes) {
 				if (!bille.isLance() && !bille.isAlreadyLance()) {
 					this.getChildren().add(bille.getVue());
@@ -180,12 +182,12 @@ public class PlateauGUI extends Parent {
 	//Mise à jour des éléments graphiques (déplacement des billes)
     private void updateWorld(long elapsedTime, LanceurFX lanceur) {
         double elapsedSeconds = elapsedTime / 1_000_000_000.0;
-        for (Bille b : lanceur.getLanceur().getBilles()) {
+        for (Bille b : this.jeuCourant.lanceur.getLanceur().getBilles()) {
         	if(b.isLance()) {
         		b.setX(b.getX() + elapsedSeconds * b.getVitesseX());
             	b.setY(b.getY() + elapsedSeconds * b.getVitesseY());
         	}
-        }	
+        }
     }
     
     //Gestion des collisions
@@ -227,12 +229,31 @@ public class PlateauGUI extends Parent {
 		            		
 		            		this.handleCollision(element.getValue(), b);
 		            	}
-	            	} else if(element.getValue() instanceof BilleBonus || element.getValue() instanceof BlackHole) {
+	            	} else if(
+	            			element.getValue() instanceof BilleBonus ||
+	            			element.getValue() instanceof BlackHole ||
+	            			element.getValue() instanceof HorizontalLaser
+	            	) {
 		            	ballzX = element.getKey().getX()*40+20;
 		            	ballzY = element.getKey().getY()*40+20+(400*(jeuCourant.lanceur.getLanceur().getNbJoueur()-1));
 		            	distance = Math.sqrt(Math.pow(b.getX()-ballzX, 2) + Math.pow(b.getY()-ballzY, 2));
 		            	
-		            	if(distance <= 35) {		            		
+		            	if(distance <= 18) {		            		
+		            		this.handleCollision(element.getValue(), b);
+		            	}
+	            	} else if(element.getValue() instanceof BilleMultiplicator) {
+		            	ballzX = element.getKey().getX()*40+20;
+		            	ballzY = element.getKey().getY()*40+20+(400*(jeuCourant.lanceur.getLanceur().getNbJoueur()-1));
+		            	distance = Math.sqrt(Math.pow(b.getX()-ballzX, 2) + Math.pow(b.getY()-ballzY, 2));
+		            	
+		            	if(distance <= 18) {
+		            		if(b.getX() >= ballzX + 20 || b.getX() <= ballzX - 20) {
+		            			b.setVitesseX(-xVel);
+		            		}
+		            		if(b.getY() >= ballzY + 20 || b.getY() <= ballzY - 20) {
+		            			b.setVitesseY(-yVel);
+		            		}
+		            		
 		            		this.handleCollision(element.getValue(), b);
 		            	}
 	            	}
@@ -251,6 +272,7 @@ public class PlateauGUI extends Parent {
                 }
     		}
     	}
+    	this.jeuCourant.lanceur.getLanceur().checkTemporaryBilles();
     }
     
     private void handleCollision(Elements element, Bille bille) {
@@ -273,6 +295,36 @@ public class PlateauGUI extends Parent {
     		blackHole.setTouched();
     		bille.setLance(false);
             this.getChildren().remove(bille.getVue());
+    	} else if (element instanceof HorizontalLaser) {
+    		HorizontalLaser verticalLaser = (HorizontalLaser) element;
+    		verticalLaser.setTouched();
+    		int line = verticalLaser.getY();
+    		
+    		if (!bille.knowThisVerticalLaser(verticalLaser.getCoordonnees())) {
+	    		bille.addVerticalLaser(verticalLaser.getCoordonnees());
+	    		
+	    		for (Entry<Coordonnees, Elements> ballz : tmp.entrySet()) {
+	    			Elements b = ballz.getValue();
+	    			if (b instanceof Ballz) {
+		            	if (b.getY() == line) {
+		            		if (((Ballz) b).getLife() == 1) {
+		            			tmp.put(b.getCoordonnees(), new EmptyElement(b.getCoordonnees()));
+		            		} else {
+		            			((Ballz) b).decrementLife();
+		            			tmp.put(b.getCoordonnees(), b);
+		            		}
+		            	}
+	            	}
+	    		}
+    		}
+    	} else if (element instanceof BilleMultiplicator) {
+    		BilleMultiplicator billeMultiplicator = (BilleMultiplicator) element;
+    		billeMultiplicator.setTouched();
+    		
+    		if (!bille.knowThisBilleMultiplicator(billeMultiplicator.getCoordonnees())) {
+	    		bille.addBilleMultiplicator(billeMultiplicator.getCoordonnees());
+	    		this.jeuCourant.lanceur.getLanceur().addTemporaryBille(bille, billeMultiplicator.getCoordonnees());
+    		}
     	}
 		jeuCourant.getJeu().setElements(tmp);
 		jeuCourant.refreshView();

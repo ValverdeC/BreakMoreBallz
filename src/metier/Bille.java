@@ -2,6 +2,7 @@ package metier;
 
 import static java.lang.Math.sqrt;
 
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 import javafx.beans.binding.Bindings;
@@ -9,6 +10,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.shape.Circle;
+import util.Coordonnees;
 
 public class Bille  {
 
@@ -19,6 +21,8 @@ public class Bille  {
     private final double rayon; // rayon en pixels
     private boolean lance = false;
     private boolean alreadyLance = false;
+    private ArrayList<Coordonnees> verticalLasers = new ArrayList<Coordonnees>();
+    private ArrayList<Coordonnees> billeMultiplicators = new ArrayList<Coordonnees>();
 
     private final Circle vue;
 
@@ -117,5 +121,45 @@ public class Bille  {
 
 	public void setAlreadyLance(boolean alreadyLance) {
 		this.alreadyLance = alreadyLance;
+	}
+
+	public ArrayList<Coordonnees> getVerticalLasers() {
+		return verticalLasers;
+	}
+
+	public void setVerticalLasers(ArrayList<Coordonnees> verticalLasers) {
+		this.verticalLasers = verticalLasers;
+	}
+	
+	public void addVerticalLaser(Coordonnees verticalLasers) {
+		this.verticalLasers.add(verticalLasers);
+	}
+	
+	public boolean knowThisVerticalLaser(Coordonnees verticalLasers) {
+		return this.verticalLasers.contains(verticalLasers);
+	}
+	
+	public void clearVerticalLaserList() {
+		this.verticalLasers.clear();
+	}
+
+	public ArrayList<Coordonnees> getBilleMultiplicators() {
+		return billeMultiplicators;
+	}
+
+	public void setBilleMultiplicators(ArrayList<Coordonnees> billeMultiplicators) {
+		this.billeMultiplicators = billeMultiplicators;
+	}
+	
+	public void addBilleMultiplicator(Coordonnees billeMultiplicator) {
+		this.billeMultiplicators.add(billeMultiplicator);
+	}
+	
+	public boolean knowThisBilleMultiplicator(Coordonnees billeMultiplicator) {
+		return this.billeMultiplicators.contains(billeMultiplicator);
+	}
+	
+	public void clearBilleMultiplicatorList() {
+		this.billeMultiplicators.clear();
 	}
 }
