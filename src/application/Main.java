@@ -33,6 +33,9 @@ public class Main extends GameApplication {
 		launch(args);
 	}
 
+	/**
+	 * Methode d'initialisation de l'application
+	 */
 	@Override
 	protected void initSettings(GameSettings settings) {
 		settings.setTitle("BreakMoreBallz");
@@ -45,7 +48,8 @@ public class Main extends GameApplication {
         settings.setCloseConfirmation(false);
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
         
-        /*try {
+        // Chargement du fichier de son
+        try {
 			audioClip = AudioSystem.getClip();
 			audioClip.open(AudioSystem.getAudioInputStream(new File("src/application/resistance.wav")));
 		} catch (LineUnavailableException e) {
@@ -58,28 +62,30 @@ public class Main extends GameApplication {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-        audioClip.loop(Clip.LOOP_CONTINUOUSLY);*/
+        // Lancement de la musique en mode boucle
+        audioClip.loop(Clip.LOOP_CONTINUOUSLY);
         
 	}
 	
+	/** Initialisation du menu principal (choix de la vue Menu) */
 	@Override
     protected void initGame() {		
 		setMenuView();
     }
 	
+	/** Permet de switcher l'affichage sur la vue du menu */
 	protected void setMenuView() {
 		setView(menu);
 	}
-	
+	/** Permet de switcher l'affichage sur la vue des profils */
 	protected void setProfileView() {
 		setView(profile);
 	}
-	
+	/** Permet de switcher l'affichage sur la vue du jeu */
 	protected void setPlayView() {
 		setView(plateau);
 	}
-	
+	/** Permet de switcher l'affichage sur la vue choisie */
 	protected void setView(Node view) {		
 		ViewComponent viewComponent = new ViewComponent();
 		viewComponent.setView(view);

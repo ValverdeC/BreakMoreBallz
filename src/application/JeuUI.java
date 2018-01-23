@@ -17,14 +17,21 @@ import metier.Profil;
 import metier.HorizontalLaser;
 import util.Coordonnees;
 
+/** 
+ * Classe permettant d'afficher le cadre de jeu d'un joueur 
+ */
 public class JeuUI extends Parent {
 	private Rectangle background = new Rectangle();
 	private GridPane grid = new GridPane();
 	private Jeu jeu = new Jeu(new Profil(1, "Toto"), 500, 800, this);
 	private Double dimX = (double) 400;
 	private Double dimY = (double) 400;
-	LanceurFX lanceur = new LanceurFX(dimX/2,dimY-50,dimX/2,dimY);
+	LanceurFX lanceur = new LanceurFX(dimX/2,dimY-50,dimX/2,dimY-50);
 	
+	/** 
+	 * Constructeur qui initialise le terrain graphique
+	 * Ajout du lanceur au plateau
+	 * */
     public JeuUI() {
     	background.setWidth(400);
     	background.setHeight(400);
@@ -52,11 +59,19 @@ public class JeuUI extends Parent {
     	return res;
     }
     
+    /** 
+     * Actualisation des élements graphiques
+     * */
     public void refreshView() {
+    	// On supprime les éléments graphiques
     	grid.getChildren().clear();
+    	// On les réaffiche à leurs nouvelles coordonnées
     	this.initJeu();
 	}
 
+    /** 
+     * Génère la première  vague de ballz
+     * */
 	private void initJeu() {
     	for(Map.Entry<Coordonnees, Elements> element : this.jeu.getElements().entrySet()) {
     		Elements elementUI = element.getValue();
@@ -76,6 +91,9 @@ public class JeuUI extends Parent {
     	}
     }
 	
+	/** 
+	 * Recharge le jeu à son état initial (tour 1)
+	 * */
 	public void restartJeu() {
 		this.jeu = new Jeu(new Profil(1, "Toto"), 500, 800, this);
 		this.refreshView();

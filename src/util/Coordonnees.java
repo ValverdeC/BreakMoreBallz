@@ -1,5 +1,9 @@
 package util;
 
+/** 
+ * Classe utilitaire permettant de stocker les coordonnées aux différents éléments graphiques 
+ * Coordonnées stockées sous forme d'entiers. 
+ */
 public class Coordonnees implements Comparable<Coordonnees> {
 	// attributs
 	private int x;
