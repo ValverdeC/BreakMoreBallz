@@ -113,21 +113,18 @@ public class Jeu {
 			}
 			elements.put(new Coordonnees(x, 1), new Ballz(new Coordonnees(x, 1), this.turn));				
 		}
-		int i = 0;
-		while(this.thereSomethingHere(elements, new Coordonnees(i, 1))) {
-			i++;
-		}
-		elements.put(new Coordonnees(i, 1), new BilleBonus(new Coordonnees(i, 1)));
+		int randomIndex = this.getRandomIndex(elements);
+		elements.put(new Coordonnees(randomIndex, 1), new BilleBonus(new Coordonnees(randomIndex, 1)));
 		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(50)) {
-			int randomIndex = this.getRandomIndex(elements);
+			randomIndex = this.getRandomIndex(elements);
 			elements.put(new Coordonnees(randomIndex, 1), new BilleMultiplicator(new Coordonnees(randomIndex, 1)));
 		}
 		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(10)) {
-			int randomIndex = this.getRandomIndex(elements);
+			randomIndex = this.getRandomIndex(elements);
 			elements.put(new Coordonnees(randomIndex, 1), new HorizontalLaser(new Coordonnees(randomIndex, 1)));
 		}
 		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(50)) {
-			int randomIndex = this.getRandomIndex(elements);
+			randomIndex = this.getRandomIndex(elements);
 			elements.put(new Coordonnees(randomIndex, 1), new BlackHole(new Coordonnees(randomIndex, 1)));
 		}
 	}
