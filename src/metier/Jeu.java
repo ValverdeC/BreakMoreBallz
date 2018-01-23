@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import application.BlackHoleUI;
 import application.JeuUI;
 import util.Coordonnees;
 import util.ElementsList;
@@ -20,17 +21,19 @@ public class Jeu {
 	private Services service = new Services();
 	private int turn;
 	private int nbBallzDetruits;
+	private int nbBilles;
 	private JeuUI ui;
 	
 	// Constructeur
 	
 	public Jeu(Profil profil, double dimX, double dimY, JeuUI ui) {
+		this.turn = 1;
 		this.ui = ui;
 		this.profil = profil;
 		this.billes = new ArrayList<Bille>();
 		this.elements = new TreeMap<>();
 		this.initJeu(this.elements);
-		this.turn = 1;
+		this.nbBilles = 1;
 	}
 	/**
 	 * @return Si le jeu est fini ou pas
@@ -48,6 +51,20 @@ public class Jeu {
 		    	Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
 		    	ballz.setCoordonnees(newCoord);
 		    	newElements.put(newCoord, ballz);
+		    } else if (ballz.getName().equals(ElementsList.BilleBonus.name())) {
+		    	Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
+		    	ballz.setCoordonnees(newCoord);
+		    	newElements.put(newCoord, ballz);
+		    } else if (ballz.getName().equals(ElementsList.BlackHole.name())) {
+    			BlackHole blackHole = (BlackHole) ballz;
+    			if (!blackHole.isTouched()) {
+    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
+    		    	ballz.setCoordonnees(newCoord);
+    		    	newElements.put(newCoord, ballz);
+    			} else {
+    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
+    		    	newElements.put(newCoord, new EmptyElement(newCoord));
+    			}
 		    }
 		}
 		this.elements = newElements;
@@ -67,7 +84,7 @@ public class Jeu {
 
 	public void initJeu(TreeMap<Coordonnees, Elements> elements) {
 		this.initElementList(elements);
-		int nbOfBallz = this.service.randomGenerator(1, 10);
+		int nbOfBallz = this.service.randomGenerator(1, 9);
 		System.out.println(nbOfBallz);
 		for(int i = 0; i < nbOfBallz; i++) {
 			int x = this.service.randomGenerator(0, 9);
@@ -75,6 +92,15 @@ public class Jeu {
 				x = this.service.randomGenerator(0, 9);
 			}
 			elements.put(new Coordonnees(x, 1), new Ballz(new Coordonnees(x, 1), this.turn));				
+		}
+		int i = 0;
+		while(this.thereSomethingHere(elements, new Coordonnees(i, 1))) {
+			i++;
+		}
+		elements.put(new Coordonnees(i, 1), new BilleBonus(new Coordonnees(i, 1)));
+		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(5)) {
+			int randomIndex = this.getRandomIndex(elements);
+			elements.put(new Coordonnees(randomIndex, 1), new BlackHole(new Coordonnees(randomIndex, 1)));
 		}
 	}
 	
@@ -128,7 +154,7 @@ public class Jeu {
 		boolean res = false;
 		Elements element = elements.get(coord);
 		
-		if(element.getName().equals(ElementsList.Ballz.name())) {
+		if(!element.getName().equals(ElementsList.EmptyElement.name())) {
 			res = true;
 		}
 		
@@ -168,5 +194,42 @@ public class Jeu {
 	
 	public void refreshView() {
 		this.ui.refreshView();
+	}
+	
+	public int getNbBilles() {
+		return nbBilles;
+	}
+	
+	public void setNbBilles(int nbBilles) {
+		this.nbBilles = nbBilles;
+	}
+	
+	public boolean isThereFreePlace(TreeMap<Coordonnees, Elements> elements) {
+		boolean res = false;
+		int x;
+		
+		for (x = 0;x < 10;x++) {
+			if (!this.thereSomethingHere(elements, new Coordonnees(x, 1))) {
+				res = true;
+				break;
+			}
+		}
+		
+		return res;
+	}
+	
+	private int getRandomIndex(TreeMap<Coordonnees, Elements> elements) {
+		List<Integer> freeIndex = new ArrayList<Integer>();
+		int x = 0;
+		int index;
+		
+		for (x = 0;x < 10;x++) {
+			if (!this.thereSomethingHere(elements, new Coordonnees(x, 1))) {
+				freeIndex.add(x);
+			}
+		}
+		
+		index = this.service.randomGenerator(0, freeIndex.size() - 1);
+		return freeIndex.get(index);
 	}
 }

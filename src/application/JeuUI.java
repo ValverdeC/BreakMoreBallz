@@ -8,7 +8,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import metier.Ballz;
+import metier.BilleBonus;
+import metier.BlackHole;
 import metier.Elements;
+import metier.EmptyElement;
 import metier.Jeu;
 import metier.Profil;
 import util.Coordonnees;
@@ -52,9 +55,12 @@ public class JeuUI extends Parent {
     	grid.getChildren().clear();
     	for(Map.Entry<Coordonnees, Elements> element : this.jeu.getElements().entrySet()) {
     		Elements elementUI = element.getValue();
-    		System.out.println(element);
     		if (elementUI instanceof Ballz) {
     			grid.add(new BallzUI(elementUI, this.jeu), elementUI.getX(), elementUI.getY());
+    		} else if (elementUI instanceof BilleBonus) {
+    			grid.add(new BilleBonusUI(), elementUI.getX(), elementUI.getY());
+    		} else if (elementUI instanceof BlackHole) {
+    			grid.add(new BlackHoleUI(), elementUI.getX(), elementUI.getY());
     		} else {
     			grid.add(new EmptyElementUI(), elementUI.getX(), elementUI.getY());
     		}
@@ -68,6 +74,10 @@ public class JeuUI extends Parent {
     		Elements elementUI = element.getValue();
     		if (elementUI instanceof Ballz) {
     			grid.add(new BallzUI(elementUI, this.jeu), elementUI.getX(), elementUI.getY());
+    		} else if (elementUI instanceof BilleBonus) {
+    			grid.add(new BilleBonusUI(), elementUI.getX(), elementUI.getY());
+    		} else if (elementUI instanceof BlackHole) {
+    			grid.add(new BlackHoleUI(), elementUI.getX(), elementUI.getY());
     		} else {
     			grid.add(new EmptyElementUI(), elementUI.getX(), elementUI.getY());
     		}
@@ -106,5 +116,13 @@ public class JeuUI extends Parent {
 
 	public void setJeu(Jeu jeu) {
 		this.jeu = jeu;
+	}
+	
+	public int getNbOfBilles() {
+		return this.jeu.getNbBilles();
+	}
+	
+	public void incrementNbOfBilles() {
+		this.jeu.setNbBilles(this.jeu.getNbBilles() + 1);
 	}
 }
