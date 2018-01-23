@@ -8,11 +8,13 @@ import javafx.scene.text.Text;
 import metier.Ballz;
 import metier.Elements;
 import metier.Jeu;
-
+/** 
+ * Classe permettant de modeliser les Ballz sur le plateau
+ *  */
 public class BallzUI extends Parent {
 	Jeu jeu;
-	Ballz ball;
-	Rectangle rect = new Rectangle();
+	Ballz ball; // Element metier
+	Rectangle ballz = new Rectangle(); // Element graphique
 	Text life = new Text();
 	
 	StackPane pane = new StackPane();
@@ -20,18 +22,17 @@ public class BallzUI extends Parent {
 	public BallzUI(Elements elementUI, Jeu jeu) {
 		this.jeu = jeu;
 		ball = (Ballz) elementUI;
-		rect.getStyleClass().add("ballz");
-		rect.setWidth(40);
-		rect.setHeight(40);
-		rect.setArcHeight(20);
-		rect.setArcWidth(20);
-		rect.setFill(Color.LIGHTCORAL);
+		ballz.getStyleClass().add("ballz");
+		ballz.setWidth(38);
+		ballz.setHeight(38);
+		ballz.setArcHeight(20);
+		ballz.setArcWidth(20);
+		ballz.setFill(Color.LIGHTCORAL);
 		
 		this.life.setText(Integer.toString(this.ball.getLife()));
 		this.life.setX(40f);
 		this.life.setY(40f);
-		
-		this.pane.getChildren().addAll(rect, life);
+		this.pane.getChildren().addAll(ballz, life);
 		
 		this.getChildren().add(pane);
 	}

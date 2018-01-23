@@ -12,6 +12,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.shape.Circle;
 import util.Coordonnees;
 
+/** Classe metier décrivant les billes*/
 public class Bille  {
 
 	private String apparence = "default";

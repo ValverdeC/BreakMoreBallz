@@ -7,14 +7,17 @@ import javafx.beans.property.DoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.StrokeLineCap;
 import metier.Lanceur;
 import util.CoordonneesDouble;
 import metier.Bille;
 
+/**
+ * Classe permettant d'afficher le lanceur sur le plateau
+ * */
 public class LanceurFX extends Group{
 
 	private final Line line;
-	private Line predicteur;
 	private Lanceur lanceur = new Lanceur(new CoordonneesDouble(0,0));
 	private Double ex;
 	private Double ey;
@@ -24,6 +27,14 @@ public class LanceurFX extends Group{
 	private Double maxY;
 	private Double minY;
 	
+	/** 
+	 * Constructeur du lanceur
+	 * Le lanceur est composé d'un élément graphique Line (pour le viseur)
+	 * @param endX coordonnée x du point de depart du viseur
+	 * @param endY coordonnée y du point de depart du viseur
+	 * @param startX coordonnée x du point d'arrivée du viseur
+	 * @param startY coordonnée y du point d'arrivée du viseur
+	 */
     public LanceurFX(double endX, double endY, double startX, double startY) {
         this(new Line());
         setX(endX);
@@ -41,9 +52,17 @@ public class LanceurFX extends Group{
 		lanceur.getCoord().setY(sy);
     }
    
+    /** 
+     * Constructeur utilisé pour initialiser la ligne du viseur 
+     * et placer les écouteurs permettants de le déplacer
+     */
     public LanceurFX(Line line) {
     super(line);
     this.line = line;
+    this.line.setStroke(Color.WHITE);
+    this.line.setStrokeWidth(3);
+    this.line.setStrokeLineCap(StrokeLineCap.BUTT);
+    this.line.getStrokeDashArray().addAll(3d, 21d);
     InvalidationListener updater = o -> {
     	if(null != ex && null != ey) {
     		setEndX(ex);
@@ -52,7 +71,7 @@ public class LanceurFX extends Group{
         
     };
 
-    // add updater to properties
+    // ajout des écouteurs
     startXProperty().addListener(updater);
     startYProperty().addListener(updater);
     endXProperty().addListener(updater);
@@ -61,20 +80,30 @@ public class LanceurFX extends Group{
     
 	}
     
-    // Colorise les billes pour les rendre visibles
+    /**
+     *  Colorise les billes pour les rendre visibles 
+     *  @param numBalls nombre de billes à créer
+     */
     public void createBilles(int numBalls) {
+    	// On crée les billes dans l'objet "metier"
     	lanceur.createBalls(numBalls);
+    	// On colore les billes 
     	for(Bille bille : lanceur.getBilles()) {
     		bille.getVue().setFill(Color.RED);
     	}
     }
     
-    // Modifie l'orientation du lanceur en fonction des coordonnées de la souris
+    /** 
+     * Modifie l'orientation du lanceur en fonction des coordonnées de la souris 
+     * @param mx nouvelle coordonnée en x
+     * @param my nouvelle coordonnée en y
+     */
     public void orienterLanceur(double mx, double my) {
     		ey=my;
     		ex=mx;
 	    	setEndX(mx);
     		setEndY(my);
+    		// On mets aussi à jours les informations dans l'objet lanceur
     		this.lanceur.updateCoord(ex, ey, sx, sy);
     }
     

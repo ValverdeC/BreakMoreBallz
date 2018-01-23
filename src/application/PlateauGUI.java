@@ -33,12 +33,14 @@ import metier.Elements;
 import metier.EmptyElement;
 import metier.HorizontalLaser;
 import util.Coordonnees;
-
+/** 
+ * Classe permettant d'afficher le plateau de jeu, avec les cadres pour les 2 joueurs
+ */
 public class PlateauGUI extends Parent {
 	
 	JeuUI jeuUn = new JeuUI();
 	JeuUI jeuDeux = new JeuUI();
-	JeuUI jeuCourant = new JeuUI();
+	JeuUI jeuCourant = new JeuUI(); // Permet de savoir quel joueur peut effectuer des actions
 	JeuUI jeuOppose = new JeuUI();
 	AnimationTimer timer;
 	ImageView iv1 = new ImageView();
@@ -46,6 +48,7 @@ public class PlateauGUI extends Parent {
 	GridPane grid = new GridPane();
 	
 	boolean tirInProgress = false;
+	// Ecouteur sur le clic de souris, on lance le tir lors d'un clic
 	Timer tirTimer = new Timer(200, new ActionListener() {
 		
 		@Override
@@ -79,6 +82,8 @@ public class PlateauGUI extends Parent {
     		event.consume();
         }
     };
+    // Ecouteur permettant de detecter le mouvement de la souris et de reorienter 
+    // le lanceur par la meme occasion
 	private EventHandler<MouseEvent> handlerVisee = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
@@ -91,21 +96,23 @@ public class PlateauGUI extends Parent {
 	Main app;
 	
 	public PlateauGUI(Main main) {
-		Image image = new Image(getClass().getResourceAsStream("game_background.jpg"));
+		Image image = new Image(getClass().getResourceAsStream("game_background.jpg")); // Image de fond
 		iv1.setImage(image);
 		this.getChildren().add(iv1);
 		this.setTranslateX(0);
 		this.setTranslateY(0);
 		this.getStyleClass().add("plateau");
+		// On defini le numero des joueurs (utile pour la gestion des coordonnées)
 		jeuUn.lanceur.getLanceur().setNbJoueur(1);
 		jeuDeux.lanceur.getLanceur().setNbJoueur(2);
 		grid.getStyleClass().add("jeu");
 		grid.setTranslateX(0);
 		grid.setTranslateY(0);
 		grid.setPadding(new Insets(0, 0, 0, 0));
+		// On positionne les cadres de jeu sur le plateau
 		grid.add(jeuUn, 0, 0);
 		grid.add(jeuDeux, 0, 1);
-		changerJeuCourant();
+		changerJeuCourant(); // On initialise le jeu courant avec la methode de changement de jeu
 		this.app = main;
 				
 		this.getChildren().add(grid);
@@ -130,7 +137,7 @@ public class PlateauGUI extends Parent {
 			this.tirTimer.stop();
 		}
 	}
-	
+
 	public void displayTemporaryBilles() {
 		List<Bille> billes = this.jeuCourant.lanceur.getLanceur().getTemporaryBilles();
 		
@@ -150,6 +157,10 @@ public class PlateauGUI extends Parent {
 		}
 	}
 	
+	/** 
+	 * Permet de passer le tour du joueur courant à l'autre joueur
+	 * Check si le joueur à perdu ou non 
+	 */
 	private void nextTurn() {
 		Alert alert = new Alert(AlertType.INFORMATION, "Perdu, recommencer ?", ButtonType.YES, ButtonType.NO);
 		boolean res = this.jeuCourant.nextTurn();
@@ -171,10 +182,16 @@ public class PlateauGUI extends Parent {
     	}
 	}
 	
+	/** 
+	 * Retire les cadres de jeu du plateau 
+	 */
 	private void resetView() {
 		this.getChildren().remove(this.grid);
 	}
 	
+	/** 
+	 * Tir les billes du joueur courant à partir de son lanceur
+	 * */
 	private void tir() {
 		if (!this.tirInProgress) {
 			this.tirInProgress = true;

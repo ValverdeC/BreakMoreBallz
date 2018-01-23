@@ -1,5 +1,6 @@
 package metier;
 
+/** Classe metier contenant les informations des profils de joueurs */
 public class Profil {
 	
 	private String pseudo;
