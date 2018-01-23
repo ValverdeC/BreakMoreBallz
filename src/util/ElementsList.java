@@ -1,5 +1,5 @@
 package util;
 
 public enum ElementsList {
-	Ballz, EmptyElement, BilleBonus, BlackHole
+	Ballz, EmptyElement, BilleBonus, BlackHole, HorizontalLaser, BilleMultiplicator
 }

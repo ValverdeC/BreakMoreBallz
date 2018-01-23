@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import application.BlackHoleUI;
 import application.JeuUI;
 import util.Coordonnees;
 import util.ElementsList;
@@ -41,8 +40,9 @@ public class Jeu {
 	public boolean nextTurn() {
 		boolean end = false;
 		TreeMap<Coordonnees, Elements> newElements = new TreeMap<>();
-		initJeu(newElements);
 		this.turn++;
+		initJeu(newElements);
+		this.clearBillesVerticalLasersLists();
 		
 		for (Entry<Coordonnees, Elements> entry : elements.entrySet()) {
 			Elements ballz = entry.getValue();
@@ -58,6 +58,26 @@ public class Jeu {
 		    } else if (ballz.getName().equals(ElementsList.BlackHole.name())) {
     			BlackHole blackHole = (BlackHole) ballz;
     			if (!blackHole.isTouched()) {
+    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
+    		    	ballz.setCoordonnees(newCoord);
+    		    	newElements.put(newCoord, ballz);
+    			} else {
+    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
+    		    	newElements.put(newCoord, new EmptyElement(newCoord));
+    			}
+		    } else if (ballz.getName().equals(ElementsList.HorizontalLaser.name())) {
+    			HorizontalLaser verticalLaser = (HorizontalLaser) ballz;
+    			if (!verticalLaser.isTouched()) {
+    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
+    		    	ballz.setCoordonnees(newCoord);
+    		    	newElements.put(newCoord, ballz);
+    			} else {
+    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
+    		    	newElements.put(newCoord, new EmptyElement(newCoord));
+    			}
+		    } else if (ballz.getName().equals(ElementsList.BilleMultiplicator.name())) {
+    			BilleMultiplicator billeMultiplicator = (BilleMultiplicator) ballz;
+    			if (!billeMultiplicator.isTouched()) {
     				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
     		    	ballz.setCoordonnees(newCoord);
     		    	newElements.put(newCoord, ballz);
@@ -98,7 +118,15 @@ public class Jeu {
 			i++;
 		}
 		elements.put(new Coordonnees(i, 1), new BilleBonus(new Coordonnees(i, 1)));
-		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(5)) {
+		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(50)) {
+			int randomIndex = this.getRandomIndex(elements);
+			elements.put(new Coordonnees(randomIndex, 1), new BilleMultiplicator(new Coordonnees(randomIndex, 1)));
+		}
+		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(10)) {
+			int randomIndex = this.getRandomIndex(elements);
+			elements.put(new Coordonnees(randomIndex, 1), new HorizontalLaser(new Coordonnees(randomIndex, 1)));
+		}
+		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(50)) {
 			int randomIndex = this.getRandomIndex(elements);
 			elements.put(new Coordonnees(randomIndex, 1), new BlackHole(new Coordonnees(randomIndex, 1)));
 		}
@@ -171,14 +199,6 @@ public class Jeu {
 		this.nbBallzDetruits = nbBallzDetruits;
 	}
 	
-	private void jouer() {
-		
-	}
-	
-	private void orienterLanceur() {
-		
-	}
-	
 	public boolean thereBallzOnLastLine(TreeMap<Coordonnees, Elements> elements) {
 		boolean res = false;
 		
@@ -231,5 +251,11 @@ public class Jeu {
 		
 		index = this.service.randomGenerator(0, freeIndex.size() - 1);
 		return freeIndex.get(index);
+	}
+	
+	public void clearBillesVerticalLasersLists() {
+		for (Bille bille : this.billes) {
+			bille.clearVerticalLaserList();
+		}
 	}
 }

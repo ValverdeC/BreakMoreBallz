@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javafx.scene.paint.Color;
 import metier.Bille;
+import util.Coordonnees;
 import util.CoordonneesDouble;
 
 public class Lanceur{
@@ -19,10 +21,12 @@ public class Lanceur{
 	private static final double VITESSE = -400 ;
 	private static final double RAYON = 5 ;
 	private int nbJoueur;
+	private List<Bille> billesMultiplicator; 
 	
 	
     public Lanceur(CoordonneesDouble pCoord) {
     	this.billes = new ArrayList<Bille>();
+    	this.billesMultiplicator = new ArrayList<Bille>();
 		this.coord = pCoord;
 	}
 
@@ -92,5 +96,21 @@ public class Lanceur{
 	
 	public int getNbJoueur() {
 		return this.nbJoueur;
+	}
+	
+	public void addTemporaryBille(Bille bille, Coordonnees multiplicatorCoord) {
+		Bille newBille = new Bille(bille.getX(), bille.getY(), bille.getRayon(), -bille.getVitesseX(), bille.getVitesseY());
+		newBille.addBilleMultiplicator(multiplicatorCoord);
+		newBille.setLance(false);
+		newBille.setAlreadyLance(false);
+		newBille.getVue().setFill(Color.GREEN);
+		this.billesMultiplicator.add(newBille);
+	}
+	
+	public void checkTemporaryBilles() {
+		if (this.billesMultiplicator.size() > 0) {
+			this.billes.addAll(this.billesMultiplicator);
+			this.billesMultiplicator.clear();
+		}
 	}
 }
