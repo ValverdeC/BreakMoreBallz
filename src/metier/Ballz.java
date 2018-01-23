@@ -12,7 +12,7 @@ public class Ballz extends Elements{
 
 	@Override
 	public String toString() {
-		return "Ballz ["  + "Coord = " + this.getCoordonnees().toString() +"]";
+		return "Ballz ["  + "Coord = " + this.getCoordonnees().toString() + " Life = " + this.life + "]";
 	}
 
 	public int getLife() {
@@ -21,5 +21,9 @@ public class Ballz extends Elements{
 
 	public void setLife(int life) {
 		this.life = life;
+	}
+	
+	public void decrementLife() {
+		this.life--;
 	}
 }

@@ -45,7 +45,7 @@ public class Main extends GameApplication {
         settings.setCloseConfirmation(false);
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
         
-        try {
+        /*try {
 			audioClip = AudioSystem.getClip();
 			audioClip.open(AudioSystem.getAudioInputStream(new File("src/application/resistance.wav")));
 		} catch (LineUnavailableException e) {
@@ -59,7 +59,7 @@ public class Main extends GameApplication {
 			e.printStackTrace();
 		}
         
-        audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+        audioClip.loop(Clip.LOOP_CONTINUOUSLY);*/
         
 	}
 	

@@ -1,16 +1,23 @@
 package application;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.TreeMap;
+
+import javax.swing.Timer;
+
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
@@ -19,6 +26,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import metier.Ballz;
 import metier.Bille;
+import metier.BilleBonus;
+import metier.BlackHole;
 import metier.Elements;
 import metier.EmptyElement;
 import util.Coordonnees;
@@ -31,10 +40,22 @@ public class PlateauGUI extends Parent {
 	AnimationTimer timer;
 	ImageView iv1 = new ImageView();
 	
-	Button jeu1Btn = new Button("Jeu 1");
-	Button jeu2Btn = new Button("Jeu 2");
 	GridPane grid = new GridPane();
-	private static final int NBBILLES = 1;
+	
+	boolean tirInProgress = false;
+	Timer tirTimer = new Timer(200, new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Platform.runLater(new Runnable() {
+			    @Override
+			    public void run() {
+			    	displayBille();
+			    }
+			});
+		}
+	});
+	
 	private EventHandler<MouseEvent> handlerTir = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
@@ -45,13 +66,12 @@ public class PlateauGUI extends Parent {
 	private EventHandler<MouseEvent> handlerVisee = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-        	jeuCourant.lanceur.orienterLanceur(mouseEvent.getX(),mouseEvent.getY());
-        	
+        	if (!tirInProgress) {
+        		jeuCourant.lanceur.orienterLanceur(mouseEvent.getX(),mouseEvent.getY());
+        	}
         }
     };
-	
-	Button backBtn = new Button("");
-	
+		
 	Main app;
 	
 	public PlateauGUI(Main main) {
@@ -69,66 +89,30 @@ public class PlateauGUI extends Parent {
 		grid.setPadding(new Insets(0, 0, 0, 0));
 		grid.add(jeuUn, 0, 0);
 		grid.add(jeuDeux, 0, 1);
-		grid.add(jeu1Btn, 1, 0);
-		grid.add(jeu2Btn, 1, 1);
 		changerJeuCourant();
 		this.app = main;
-		
-		jeu1Btn.addEventHandler(MouseEvent.MOUSE_CLICKED,
-	        new EventHandler<MouseEvent>() {
-	          @Override
-	          public void handle(MouseEvent e) {
-	        	  nextTurn1();
-	          }
-        });
-		
-		jeu2Btn.addEventHandler(MouseEvent.MOUSE_CLICKED,
-	        new EventHandler<MouseEvent>() {
-	          @Override
-	          public void handle(MouseEvent e) {
-	        	  nextTurn2();
-	          }
-        });
 				
 		this.getChildren().add(grid);
 	}
-
-	private void nextTurn1() {
-		Alert alert = new Alert(AlertType.CONFIRMATION, "Perdu, recommencer ?", ButtonType.YES, ButtonType.NO);
-		boolean res = this.jeuUn.nextTurn();
-		
-		if (res) {
-			this.stopAnimation();
-			
-    		alert.showAndWait();
-
-    		if (alert.getResult() == ButtonType.YES) {
-    		   this.jeuUn.restartJeu();
-    		   this.jeuDeux.restartJeu();
-    		} else {
-    			resetView();
-    			this.app.setMenuView();
-    		}
-    	}
-	}
 	
-	private void nextTurn2() {
-		Alert alert = new Alert(AlertType.CONFIRMATION, "Perdu, recommencer ?", ButtonType.YES, ButtonType.NO);
-		boolean res = this.jeuDeux.nextTurn();
+	public void displayBille() {
+		List<Bille> billes = this.jeuCourant.lanceur.getLanceur().getBilles();
 		
-		if (res) {
-			this.stopAnimation();
-			
-    		alert.showAndWait();
-
-    		if (alert.getResult() == ButtonType.YES) {
-    		   this.jeuUn.restartJeu();
-    		   this.jeuDeux.restartJeu();
-    		} else {
-    			resetView();
-    			this.app.setMenuView();
-    		}
-    	}
+		if (billes.size() > 0) {			
+			for(Bille bille : billes) {
+				if (!bille.isLance() && !bille.isAlreadyLance()) {
+					this.getChildren().add(bille.getVue());
+		    		bille.setLance(true);
+		    		bille.setAlreadyLance(true);
+		    		break;
+				}
+			}
+		}
+				
+		if (!isBilleAlive()) {
+			this.tirInProgress = false;
+			this.tirTimer.stop();
+		}
 	}
 	
 	private void nextTurn() {
@@ -155,14 +139,17 @@ public class PlateauGUI extends Parent {
 	}
 	
 	private void tir() {
-		for(Bille bille : jeuCourant.lanceur.getLanceur().getBilles()) {
-			this.getChildren().remove(bille.getVue());
-		}
-		jeuCourant.lanceur.getLanceur().getBilles().clear();
-		jeuCourant.lanceur.createBilles(NBBILLES);
-		for(Bille bille : jeuCourant.lanceur.getLanceur().getBilles()) {
-			this.getChildren().add(bille.getVue());
-    		bille.setLance(true);
+		if (!this.tirInProgress) {
+			this.tirInProgress = true;
+			for(Bille bille : jeuCourant.lanceur.getLanceur().getBilles()) {
+				this.getChildren().remove(bille.getVue());
+			}
+			
+			jeuCourant.lanceur.getLanceur().getBilles().clear();
+			jeuCourant.lanceur.createBilles(this.getNbOfBilles());
+			
+			this.tirTimer.start();
+			this.displayBille();
 		}
 	}
 	
@@ -186,7 +173,8 @@ public class PlateauGUI extends Parent {
 
 	//Gestion des animations (collision + déplacement)
     private void stopAnimation() {
-        timer.stop();
+        this.timer.stop();
+        this.tirTimer.stop();
     }
     
 	//Mise à jour des éléments graphiques (déplacement des billes)
@@ -206,7 +194,6 @@ public class PlateauGUI extends Parent {
     	double ballzX;
     	double ballzY;
     	double distance;
-		TreeMap<Coordonnees, Elements> tmp = new TreeMap<>();
 
     	for (Bille b : jeuCourant.lanceur.getLanceur().getBilles()) {
     		if (b.isLance()) {
@@ -238,39 +225,89 @@ public class PlateauGUI extends Parent {
 		            			b.setVitesseY(-yVel);
 		            		}
 		            		
-		            		tmp.putAll( jeuCourant.getJeu().getElements());
-		            		tmp.put(element.getValue().getCoordonnees(), new EmptyElement(element.getValue().getCoordonnees()));
-		            		jeuCourant.getJeu().setElements(tmp);
-		            		jeuCourant.refreshView();
+		            		this.handleCollision(element.getValue(), b);
+		            	}
+	            	} else if(element.getValue() instanceof BilleBonus || element.getValue() instanceof BlackHole) {
+		            	ballzX = element.getKey().getX()*40+20;
+		            	ballzY = element.getKey().getY()*40+20+(400*(jeuCourant.lanceur.getLanceur().getNbJoueur()-1));
+		            	distance = Math.sqrt(Math.pow(b.getX()-ballzX, 2) + Math.pow(b.getY()-ballzY, 2));
+		            	
+		            	if(distance <= 35) {		            		
+		            		this.handleCollision(element.getValue(), b);
 		            	}
 	            	}
 	            	
 	            }
 	            
-	            // Changement de tour
+	            // Si la bille touche le bas du plateau
 	            if (b.getY() + b.getRayon() >= (maxY-1) && yVel > 0) {
+	            	b.setLance(false);
 	                this.getChildren().remove(b.getVue());
+	            }
+
+                if (!this.isBilleAlive()) {
 	                stopAnimation();
 	                changerJeuCourant();
-	                b.setLance(false);
-	            	
-	            }
+                }
     		}
     	}
+    }
+    
+    private void handleCollision(Elements element, Bille bille) {
+    	TreeMap<Coordonnees, Elements> tmp = new TreeMap<>();
+    	tmp.putAll(jeuCourant.getJeu().getElements());
+    	
+    	if (element instanceof Ballz) {
+    		Ballz ballz = (Ballz) element;
+    		if (ballz.getLife() == 1) {
+    			tmp.put(ballz.getCoordonnees(), new EmptyElement(ballz.getCoordonnees()));
+    		} else {
+    			ballz.decrementLife();
+    			tmp.put(ballz.getCoordonnees(), ballz);
+    		}
+    	} else if (element instanceof BilleBonus) {
+			tmp.put(element.getCoordonnees(), new EmptyElement(element.getCoordonnees()));
+			this.jeuCourant.incrementNbOfBilles();
+    	} else if (element instanceof BlackHole) {
+    		BlackHole blackHole = (BlackHole) element;
+    		blackHole.setTouched();
+    		bille.setLance(false);
+            this.getChildren().remove(bille.getVue());
+    	}
+		jeuCourant.getJeu().setElements(tmp);
+		jeuCourant.refreshView();
+    }
+    
+    private boolean isBilleAlive() {
+    	boolean res = false;
+    	List<Bille> billes = this.jeuCourant.lanceur.getLanceur().getBilles();
+		
+		if (billes.size() > 0) {
+			
+			for(Bille bille : billes) {
+				if (bille.isLance() && bille.isAlreadyLance()) {
+					res = true;
+					break;
+				}
+			}
+		}
+		
+		return res;
     }
 
     // On change de jeuCourant et on actualise les écouteurs d'action
 	private void changerJeuCourant() {
-        
 		jeuCourant.removeEventHandler(MouseEvent.MOUSE_CLICKED, handlerTir);
 		jeuCourant.removeEventHandler(MouseEvent.MOUSE_MOVED, handlerVisee);
+		
+        this.tirInProgress = false;
 
 		this.nextTurn();
 		
-		if(jeuCourant==jeuUn) {
-			jeuCourant=jeuDeux;
-		}else {
-			jeuCourant=jeuUn;
+		if (jeuCourant == jeuUn) {
+			jeuCourant = jeuDeux;
+		} else {
+			jeuCourant = jeuUn;
 		}
 		
 		jeuCourant.addEventHandler(MouseEvent.MOUSE_CLICKED,handlerTir);
@@ -279,5 +316,8 @@ public class PlateauGUI extends Parent {
 		startAnimation(jeuCourant.getGrid(), jeuCourant.lanceur);
 	}
     
+	private int getNbOfBilles() {
+		return this.jeuCourant.getNbOfBilles();
+	}
     
 }

@@ -1,49 +1,36 @@
 package application;
 
-import java.util.TreeMap;
-
-import javafx.event.EventHandler;
 import javafx.scene.Parent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import metier.Ballz;
 import metier.Elements;
-import metier.EmptyElement;
 import metier.Jeu;
-import util.Coordonnees;
 
 public class BallzUI extends Parent {
 	Jeu jeu;
 	Ballz ball;
-	Rectangle ballz = new Rectangle();
+	Rectangle rect = new Rectangle();
+	Text life = new Text();
+	
+	StackPane pane = new StackPane();
 	
 	public BallzUI(Elements elementUI, Jeu jeu) {
 		this.jeu = jeu;
 		ball = (Ballz) elementUI;
-		ballz.getStyleClass().add("ballz");
-		ballz.setWidth(38);
-		ballz.setHeight(40);
-		ballz.setArcHeight(20);
-		ballz.setArcWidth(20);
-		ballz.setFill(Color.LIGHTCORAL);
+		rect.getStyleClass().add("ballz");
+		rect.setWidth(38);
+		rect.setHeight(38);
+		rect.setArcHeight(20);
+		rect.setArcWidth(20);
+		rect.setFill(Color.LIGHTCORAL);
 		
-		ballz.addEventHandler(MouseEvent.MOUSE_CLICKED,
-	        new EventHandler<MouseEvent>() {
-	          @Override
-	          public void handle(MouseEvent e) {
-	        	  onClick();
-	          }
-        });
+		this.life.setText(Integer.toString(this.ball.getLife()));
 		
-		this.getChildren().add(ballz);
-	}
-	
-	private void onClick() {
-		TreeMap<Coordonnees, Elements> tmp = new TreeMap<>();
-		tmp.putAll(this.jeu.getElements());
-		tmp.put(this.ball.getCoordonnees(), new EmptyElement(this.ball.getCoordonnees()));
-		this.jeu.setElements(tmp);
-		this.jeu.refreshView();
+		this.pane.getChildren().addAll(rect, life);
+		
+		this.getChildren().add(pane);
 	}
 }

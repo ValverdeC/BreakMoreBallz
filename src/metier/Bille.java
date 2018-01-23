@@ -18,6 +18,7 @@ public class Bille  {
     private final ReadOnlyDoubleWrapper vitesse ;
     private final double rayon; // rayon en pixels
     private boolean lance = false;
+    private boolean alreadyLance = false;
 
     private final Circle vue;
 
@@ -108,5 +109,13 @@ public class Bille  {
 
 	public void setLance(boolean lance) {
 		this.lance = lance;
+	}
+
+	public boolean isAlreadyLance() {
+		return alreadyLance;
+	}
+
+	public void setAlreadyLance(boolean alreadyLance) {
+		this.alreadyLance = alreadyLance;
 	}
 }
