@@ -124,7 +124,7 @@ public class PlateauGUI extends Parent {
 		grid.add(rb2, 1, 1);
 		changerJeuCourant(); // On initialise le jeu courant avec la methode de changement de jeu
 		this.app = main;
-		
+				
 		this.getChildren().add(grid);
 	}
 	
