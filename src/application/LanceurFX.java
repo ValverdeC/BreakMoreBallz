@@ -8,6 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeType;
 import metier.Lanceur;
 import util.CoordonneesDouble;
 import metier.Bille;
@@ -90,6 +91,9 @@ public class LanceurFX extends Group{
     	// On colore les billes 
     	for(Bille bille : lanceur.getBilles()) {
     		bille.getVue().setFill(Color.RED);
+    		bille.getVue().setStroke(Color.YELLOW);
+    		bille.getVue().setStrokeWidth(2);
+    		bille.getVue().setStrokeType(StrokeType.INSIDE);
     	}
     }
     
