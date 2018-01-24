@@ -68,6 +68,19 @@ public class ParametresPlateau {
 	private ProfilManager profilManager;
 	private Profil tempProfil1;
 	private Profil tempProfil2;
+	
+	//Check if all fields are correctly initialized
+	public boolean checkParametres(){
+		boolean	result = false;
+		
+		if(this.tempProfil1 != null){
+			if(this.tempProfil2 != null){
+				result = true;				
+			}
+		}
+		
+		return result;
+	}
 }
 
 

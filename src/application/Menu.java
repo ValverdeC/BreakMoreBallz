@@ -1,19 +1,12 @@
 package application;
 
-import java.util.LinkedHashMap;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
-import metier.Profil;
 import metier.ProfilManager;
 
 /** Classe permettant d'afficher le menu */
@@ -24,24 +17,14 @@ public class Menu extends Parent {
 	Button profileButton = new Button("PROFILES");
 	Button exitButton = new Button("QUITTER");
 	ProfilManager profilManager = new ProfilManager();
-//	final ComboBox player1Selector = new ComboBox();
-	final ComboBox player2Selector = new ComboBox();
-	private ObservableList<Profil> data;
-	private LinkedHashMap<String, Profil> mapProfil = profilManager.getMapProfils();
-
 	
 	public Menu() {
         // Ajout de l'image de fond
 		Image image = new Image(getClass().getResourceAsStream("background.jpg")); // Image de fond
         iv1.setImage(image);
+        
         // Ajout de la feuille de style css
         this.getStylesheets().add("application/application.css");
-
-		fond_menu.getStyleClass().add("menu");
-
-		// Dimensions du menu
-        fond_menu.setWidth(450);
-        fond_menu.setHeight(800);
         
         // Bouton jouer
         playButton.setTranslateX(170);
@@ -57,31 +40,13 @@ public class Menu extends Parent {
         exitButton.setTranslateY(660);
         exitButton.getStyleClass().add("menu-button");
         
-        // Ajout des éléments a la vue menu
+        // Ajout des ï¿½lï¿½ments a la vue menu
         this.getChildren().add(fond_menu);
         this.getChildren().add(iv1);
         this.getChildren().add(playButton);
         this.getChildren().add(profileButton);
         this.getChildren().add(exitButton);
-         
-		ComboBox<String> player1Selector = new ComboBox<String>();
-        // Ecouteurs de clic sur les boutons
-		player1Selector.getItems().addAll(profilManager.getListPseudo());
-		player1Selector.valueProperty().addListener(new ChangeListener<String>() {
-			@Override 
-			public void changed(ObservableValue ov, String t, String t1) {                
-				System.out.println(t1);
-			}    
-		});
-		
-        player1Selector.setLayoutX(45);
-        player1Selector.setLayoutY(650);
- 
-//        this.getChildren().add(player1Selector);
 
-        
-
-        
         profileButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
 	        new EventHandler<MouseEvent>() {
 	          @Override
@@ -99,12 +64,12 @@ public class Menu extends Parent {
         });
         
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-    	        new EventHandler<MouseEvent>() {
-    	          @Override
-    	          public void handle(MouseEvent e) {
-    	        	  System.exit(0);
-    	          }
-            });
+    	     new EventHandler<MouseEvent>() {
+    	       @Override
+    	       public void handle(MouseEvent e) {
+    	    	   System.exit(0);
+    	       }
+        });
 	}
 	
 	/** Permet d'afficher la vue profils */
@@ -120,7 +85,7 @@ public class Menu extends Parent {
 		resetView();
 		main.setParamView();
 	}
-	/** Permet de supprimer les éléments de la vue menu (pour en réafficher d'autres) */
+	/** Permet de supprimer les ï¿½lï¿½ments de la vue menu (pour en rï¿½afficher d'autres) */
 	private void resetView() {
 	    this.getChildren().remove(fond_menu);
 		this.getChildren().remove(iv1);
