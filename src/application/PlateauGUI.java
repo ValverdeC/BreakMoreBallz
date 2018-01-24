@@ -33,6 +33,8 @@ import metier.Elements;
 import metier.EmptyElement;
 import metier.HorizontalLaser;
 import metier.Profil;
+import metier.StarDestroyer;
+import metier.VerticalLaser;
 import util.Coordonnees;
 /** 
  * Classe permettant d'afficher le plateau de jeu, avec les cadres pour les 2 joueurs
@@ -291,7 +293,7 @@ public class PlateauGUI extends Parent {
 		            	ballzX = element.getKey().getX()*40+20;
 		            	ballzY = element.getKey().getY()*40+20+(400*(jeuCourant.lanceur.getLanceur().getNbJoueur()-1));
 		            	distance = Math.sqrt(Math.pow(b.getX()-ballzX, 2) + Math.pow(b.getY()-ballzY, 2));
-		            	if(distance <= 35){
+		            	if(distance <= 35 && !b.isAccrossBallz()){
 		            		if(b.getX() >= ballzX + 20 || b.getX() <= ballzX - 20) {
 		            			b.setVitesseX(-xVel);
 		            		}
@@ -300,11 +302,15 @@ public class PlateauGUI extends Parent {
 		            		}
 		            		
 		            		this.handleCollision(element.getValue(), b);
+		            	} else if (distance <= 35 && b.isAccrossBallz()) {
+		            		this.handleCollision(element.getValue(), b);
 		            	}
 	            	} else if(
 	            			element.getValue() instanceof BilleBonus ||
 	            			element.getValue() instanceof BlackHole ||
-	            			element.getValue() instanceof HorizontalLaser
+	            			element.getValue() instanceof HorizontalLaser ||
+	            			element.getValue() instanceof VerticalLaser ||
+	            			element.getValue() instanceof StarDestroyer
 	            	) {
 		            	ballzX = element.getKey().getX()*40+20;
 		            	ballzY = element.getKey().getY()*40+20+(400*(jeuCourant.lanceur.getLanceur().getNbJoueur()-1));
@@ -374,12 +380,12 @@ public class PlateauGUI extends Parent {
     		bille.setLance(false);
             this.getChildren().remove(bille.getVue());
     	} else if (element instanceof HorizontalLaser) {
-    		HorizontalLaser verticalLaser = (HorizontalLaser) element;
-    		verticalLaser.setTouched();
-    		int line = verticalLaser.getY();
+    		HorizontalLaser horizontalLaser = (HorizontalLaser) element;
+    		horizontalLaser.setTouched();
+    		int line = horizontalLaser.getY();
     		
-    		if (!bille.knowThisVerticalLaser(verticalLaser.getCoordonnees())) {
-	    		bille.addVerticalLaser(verticalLaser.getCoordonnees());
+    		if (!bille.knowThisHorizontalLaser(horizontalLaser.getCoordonnees())) {
+	    		bille.addHorizontalLaser(horizontalLaser.getCoordonnees());
 	    		
 	    		for (Entry<Coordonnees, Elements> ballz : tmp.entrySet()) {
 	    			Elements b = ballz.getValue();
@@ -407,6 +413,35 @@ public class PlateauGUI extends Parent {
 	    		this.displayTemporaryBilles();
 	    		this.temporaryBillesTimer.start();
     		}
+    	} else if (element instanceof VerticalLaser) {
+    		VerticalLaser verticalLaser = (VerticalLaser) element;
+    		verticalLaser.setTouched();
+    		int column = verticalLaser.getX();
+    		
+    		if (!bille.knowThisVerticalLaser(verticalLaser.getCoordonnees())) {
+	    		bille.addVerticalLaser(verticalLaser.getCoordonnees());
+	    		
+	    		for (Entry<Coordonnees, Elements> ballz : tmp.entrySet()) {
+	    			Elements b = ballz.getValue();
+	    			if (b instanceof Ballz) {
+		            	if (b.getX() == column) {
+		            		if (((Ballz) b).getLife() == 1) {
+		            			tmp.put(b.getCoordonnees(), new EmptyElement(b.getCoordonnees()));
+		            			this.jeuCourant.incrementNbBallzDetruit();
+		            			// TODO increment score here
+		            		} else {
+		            			((Ballz) b).decrementLife();
+		            			tmp.put(b.getCoordonnees(), b);
+		            		}
+		            	}
+	            	}
+	    		}
+    		}
+    	} else if (element instanceof StarDestroyer) {
+    		StarDestroyer starDestroyer = (StarDestroyer) element;
+    		starDestroyer.setTouched();
+    		tmp.put(element.getCoordonnees(), new EmptyElement(element.getCoordonnees()));
+    		bille.setAccrossBallz();
     	}
 		jeuCourant.getJeu().setElements(tmp);
 		jeuCourant.refreshView();

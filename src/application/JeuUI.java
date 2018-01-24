@@ -17,6 +17,8 @@ import metier.BlackHole;
 import metier.Elements;
 import metier.Jeu;
 import metier.Profil;
+import metier.StarDestroyer;
+import metier.VerticalLaser;
 import metier.HorizontalLaser;
 import util.Coordonnees;
 
@@ -102,6 +104,10 @@ public class JeuUI extends Parent {
     			grid.add(new HorizontalLaserUI(), elementUI.getX(), elementUI.getY());
     		} else if (elementUI instanceof BilleMultiplicator) {
     			grid.add(new BilleMultiplicatorUI(), elementUI.getX(), elementUI.getY());
+    		} else if (elementUI instanceof VerticalLaser) {
+    			grid.add(new VerticalLaserUI(), elementUI.getX(), elementUI.getY());
+    		} else if (elementUI instanceof StarDestroyer) {
+    			grid.add(new StarDestroyerUI(), elementUI.getX(), elementUI.getY());
     		} else {
     			grid.add(new EmptyElementUI(), elementUI.getX(), elementUI.getY());
     		}

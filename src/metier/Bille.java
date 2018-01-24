@@ -24,6 +24,9 @@ public class Bille  {
     private boolean alreadyLance = false;
     private ArrayList<Coordonnees> verticalLasers = new ArrayList<Coordonnees>();
     private ArrayList<Coordonnees> billeMultiplicators = new ArrayList<Coordonnees>();
+    private ArrayList<Coordonnees> horizontalLasers = new ArrayList<Coordonnees>();
+    private boolean accrossBallz = false;
+
 
     private Circle vue;
 
@@ -162,5 +165,33 @@ public class Bille  {
 	
 	public void clearBilleMultiplicatorList() {
 		this.billeMultiplicators.clear();
+	}
+
+	public ArrayList<Coordonnees> getHorizontalLasers() {
+		return horizontalLasers;
+	}
+
+	public void setHorizontalLasers(ArrayList<Coordonnees> horizontalLasers) {
+		this.horizontalLasers = horizontalLasers;
+	}
+	
+	public void addHorizontalLaser(Coordonnees horizontalLasers) {
+		this.horizontalLasers.add(horizontalLasers);
+	}
+	
+	public boolean knowThisHorizontalLaser(Coordonnees horizontalLasers) {
+		return this.horizontalLasers.contains(horizontalLasers);
+	}
+	
+	public void clearHorizontalLaserList() {
+		this.horizontalLasers.clear();
+	}
+
+	public boolean isAccrossBallz() {
+		return accrossBallz;
+	}
+
+	public void setAccrossBallz() {
+		this.accrossBallz = true;
 	}
 }
