@@ -52,6 +52,7 @@ public class ProfileManagerGUI extends Parent {
 	boolean firstEdit = true;
 	
 	Profil selectedProfil;
+	
 
 	@SuppressWarnings({ "unchecked" })
 	public ProfileManagerGUI() {
@@ -152,7 +153,8 @@ public class ProfileManagerGUI extends Parent {
             "fighter",
             "interceptor",
             "leopard",
-            "spaceship"
+            "spaceship",
+            "millenium"
         );
         launcherSelector.setLayoutX(45);
         launcherSelector.setLayoutY(650);

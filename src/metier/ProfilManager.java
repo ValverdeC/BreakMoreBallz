@@ -2,11 +2,15 @@ package metier;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+
 import util.CsvFileHelper;
 
 public class ProfilManager {
@@ -87,9 +91,32 @@ public class ProfilManager {
 		saveToCsv();
 	}
 	
-	
+	public List<String> getListPseudo() {
+		List<String> pseudoList = new LinkedList<String>();
+		
+		Iterator<Profil> li = this.profiles.iterator();
+		
+		while(li.hasNext()){
+			pseudoList.add(li.next().getPseudo());
+		}
 
+		return pseudoList;
+	}
 	
+	public LinkedHashMap<String, Profil> getMapProfils() {
+		LinkedHashMap<String, Profil> mapProfils = new LinkedHashMap<>();
+		
+		Iterator<Profil> li = this.profiles.iterator();
+		
+		Profil currentProfil;
+			
+		while(li.hasNext()){
+			currentProfil=li.next();
+			mapProfils.put(currentProfil.getPseudo(), currentProfil);
+		}
+		
+		return mapProfils;
+	}
 
 	//LINK TO MODEL
 	public List<String[]>gatherData() {		
