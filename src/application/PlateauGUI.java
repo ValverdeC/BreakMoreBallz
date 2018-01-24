@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import javax.swing.Timer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -38,6 +39,7 @@ public class PlateauGUI extends Parent {
 	JeuUI jeuUn = new JeuUI();
 	JeuUI jeuDeux = new JeuUI();
 	JeuUI jeuCourant = new JeuUI();
+	JeuUI jeuOppose = new JeuUI();
 	AnimationTimer timer;
 	ImageView iv1 = new ImageView();
 	
@@ -52,6 +54,19 @@ public class PlateauGUI extends Parent {
 			    @Override
 			    public void run() {
 			    	displayBille();
+			    }
+			});
+		}
+	});
+	
+	Timer temporaryBillesTimer = new Timer(200, new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Platform.runLater(new Runnable() {
+			    @Override
+			    public void run() {
+			    	displayTemporaryBilles();
 			    }
 			});
 		}
@@ -100,7 +115,6 @@ public class PlateauGUI extends Parent {
 		List<Bille> billes = this.jeuCourant.lanceur.getLanceur().getBilles();
 		
 		if (billes.size() > 0) {
-			System.out.println(billes.size());
 			for(Bille bille : billes) {
 				if (!bille.isLance() && !bille.isAlreadyLance()) {
 					this.getChildren().add(bille.getVue());
@@ -117,22 +131,43 @@ public class PlateauGUI extends Parent {
 		}
 	}
 	
+	public void displayTemporaryBilles() {
+		List<Bille> billes = this.jeuCourant.lanceur.getLanceur().getTemporaryBilles();
+		
+		if (billes.size() > 0) {
+			for(Bille bille : billes) {
+				if (!bille.isLance() && !bille.isAlreadyLance()) {
+					this.getChildren().add(bille.getVue());
+		    		bille.setLance(true);
+		    		bille.setAlreadyLance(true);
+		    		break;
+				}
+			}
+		}
+				
+		if (!isTemporaryBilleAlive()) {
+			this.temporaryBillesTimer.stop();
+		}
+	}
+	
 	private void nextTurn() {
-		Alert alert = new Alert(AlertType.CONFIRMATION, "Perdu, recommencer ?", ButtonType.YES, ButtonType.NO);
+		Alert alert = new Alert(AlertType.INFORMATION, "Perdu, recommencer ?", ButtonType.YES, ButtonType.NO);
 		boolean res = this.jeuCourant.nextTurn();
 		
 		if (res) {
 			this.stopAnimation();
 			
-    		alert.showAndWait();
+			alert.setOnHidden(evt -> {
+				if (alert.getResult() == ButtonType.YES) {
+	    		   this.jeuUn.restartJeu();
+	    		   this.jeuDeux.restartJeu();
+	    		} else {
+	    			resetView();
+	    			this.app.setMenuView();
+	    		}
+			});
 
-    		if (alert.getResult() == ButtonType.YES) {
-    		   this.jeuUn.restartJeu();
-    		   this.jeuDeux.restartJeu();
-    		} else {
-    			resetView();
-    			this.app.setMenuView();
-    		}
+		    alert.show();
     	}
 	}
 	
@@ -182,7 +217,12 @@ public class PlateauGUI extends Parent {
 	//Mise à jour des éléments graphiques (déplacement des billes)
     private void updateWorld(long elapsedTime, LanceurFX lanceur) {
         double elapsedSeconds = elapsedTime / 1_000_000_000.0;
-        for (Bille b : this.jeuCourant.lanceur.getLanceur().getBilles()) {
+        ArrayList<Bille> billes = new ArrayList<Bille>();
+        
+        billes.addAll(this.jeuCourant.lanceur.getLanceur().getBilles());
+        billes.addAll(this.jeuCourant.lanceur.getLanceur().getTemporaryBilles());
+        
+        for (Bille b : billes) {
         	if(b.isLance()) {
         		b.setX(b.getX() + elapsedSeconds * b.getVitesseX());
             	b.setY(b.getY() + elapsedSeconds * b.getVitesseY());
@@ -196,8 +236,13 @@ public class PlateauGUI extends Parent {
     	double ballzX;
     	double ballzY;
     	double distance;
+    	
+    	ArrayList<Bille> billes = new ArrayList<Bille>();
+        
+        billes.addAll(this.jeuCourant.lanceur.getLanceur().getBilles());
+        billes.addAll(this.jeuCourant.lanceur.getLanceur().getTemporaryBilles());
 
-    	for (Bille b : jeuCourant.lanceur.getLanceur().getBilles()) {
+    	for (Bille b : billes) {
     		if (b.isLance()) {
 	    		double topY=0;
 	    		if(jeuCourant.lanceur.getLanceur().getNbJoueur() == 2) {
@@ -266,13 +311,16 @@ public class PlateauGUI extends Parent {
 	                this.getChildren().remove(b.getVue());
 	            }
 
-                if (!this.isBilleAlive()) {
+                if (!this.isBilleAlive() && !this.isTemporaryBilleAlive()) {
 	                stopAnimation();
 	                changerJeuCourant();
                 }
     		}
     	}
-    	this.jeuCourant.lanceur.getLanceur().checkTemporaryBilles();
+    	
+    	if (this.jeuCourant.lanceur.getLanceur().checkTemporaryBilles() && !this.temporaryBillesTimer.isRunning()) {
+    		this.temporaryBillesTimer.start();
+    	}
     }
     
     private void handleCollision(Elements element, Bille bille) {
@@ -283,6 +331,7 @@ public class PlateauGUI extends Parent {
     		Ballz ballz = (Ballz) element;
     		if (ballz.getLife() == 1) {
     			tmp.put(ballz.getCoordonnees(), new EmptyElement(ballz.getCoordonnees()));
+    			this.jeuCourant.incrementNbBallzDetruit();
     		} else {
     			ballz.decrementLife();
     			tmp.put(ballz.getCoordonnees(), ballz);
@@ -309,6 +358,8 @@ public class PlateauGUI extends Parent {
 		            	if (b.getY() == line) {
 		            		if (((Ballz) b).getLife() == 1) {
 		            			tmp.put(b.getCoordonnees(), new EmptyElement(b.getCoordonnees()));
+		            			this.jeuCourant.incrementNbBallzDetruit();
+		            			// TODO increment score here
 		            		} else {
 		            			((Ballz) b).decrementLife();
 		            			tmp.put(b.getCoordonnees(), b);
@@ -324,6 +375,8 @@ public class PlateauGUI extends Parent {
     		if (!bille.knowThisBilleMultiplicator(billeMultiplicator.getCoordonnees())) {
 	    		bille.addBilleMultiplicator(billeMultiplicator.getCoordonnees());
 	    		this.jeuCourant.lanceur.getLanceur().addTemporaryBille(bille, billeMultiplicator.getCoordonnees());
+	    		this.displayTemporaryBilles();
+	    		this.temporaryBillesTimer.start();
     		}
     	}
 		jeuCourant.getJeu().setElements(tmp);
@@ -346,6 +399,23 @@ public class PlateauGUI extends Parent {
 		
 		return res;
     }
+    
+    private boolean isTemporaryBilleAlive() {
+    	boolean res = false;
+    	List<Bille> billes = this.jeuCourant.lanceur.getLanceur().getTemporaryBilles();
+		
+		if (billes.size() > 0) {
+			
+			for(Bille bille : billes) {
+				if (bille.isLance() && bille.isAlreadyLance()) {
+					res = true;
+					break;
+				}
+			}
+		}
+		
+		return res;
+    }
 
     // On change de jeuCourant et on actualise les écouteurs d'action
 	private void changerJeuCourant() {
@@ -353,13 +423,22 @@ public class PlateauGUI extends Parent {
 		jeuCourant.removeEventHandler(MouseEvent.MOUSE_MOVED, handlerVisee);
 		
         this.tirInProgress = false;
+        
+        if (!this.jeuCourant.isThereAnyBallzOnPlate()) {
+        	this.jeuCourant.incrementNbOfBilles();
+        }
+        
+        this.jeuOppose.getJeu().addMalusBallz(this.jeuCourant.getNbBallzDetruits() > 4 ? 4 : this.jeuCourant.getNbBallzDetruits());
+        this.jeuCourant.resetNbBallzDetruits();
 
 		this.nextTurn();
 		
 		if (jeuCourant == jeuUn) {
 			jeuCourant = jeuDeux;
+			jeuOppose = jeuUn;
 		} else {
 			jeuCourant = jeuUn;
+			jeuOppose = jeuDeux;
 		}
 		
 		jeuCourant.addEventHandler(MouseEvent.MOUSE_CLICKED,handlerTir);

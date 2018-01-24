@@ -104,8 +104,7 @@ public class Jeu {
 
 	public void initJeu(TreeMap<Coordonnees, Elements> elements) {
 		this.initElementList(elements);
-		int nbOfBallz = this.service.randomGenerator(1, 9);
-		System.out.println(nbOfBallz);
+		int nbOfBallz = this.service.randomGeneratorWithChance(1, 9, 50);
 		for(int i = 0; i < nbOfBallz; i++) {
 			int x = this.service.randomGenerator(0, 9);
 			while(this.thereSomethingHere(elements, new Coordonnees(x, 1))) {
@@ -196,6 +195,10 @@ public class Jeu {
 		this.nbBallzDetruits = nbBallzDetruits;
 	}
 	
+	public void incrementNbBallzDetruits() {
+		this.nbBallzDetruits++;
+	}
+	
 	public boolean thereBallzOnLastLine(TreeMap<Coordonnees, Elements> elements) {
 		boolean res = false;
 		
@@ -255,4 +258,45 @@ public class Jeu {
 			bille.clearVerticalLaserList();
 		}
 	}
+	
+	private boolean isBallzOrEmptyElement(Elements element) {
+		if (element instanceof Ballz || element instanceof EmptyElement) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public void addMalusBallz(int nb) {
+		int incrementLife = this.turn == 1 ? this.turn : this.turn/2;
+		
+		for (int i = 0;i < nb; i++) {
+			int x = this.service.randomGenerator(0, 9);
+			int y = this.service.randomGenerator(1, 7);
+			Elements element = this.elements.get(new Coordonnees(x, y));
+			while (!this.isBallzOrEmptyElement(element)) {
+				x = this.service.randomGenerator(0, 9);
+				y = this.service.randomGenerator(1, 7);
+				element = this.elements.get(new Coordonnees(x, y));
+			}
+			if (element instanceof Ballz) {
+				((Ballz) element).setLife(((Ballz) element).getLife() + incrementLife);
+			} else {
+				this.elements.put(element.getCoordonnees(), new Ballz(element.getCoordonnees(), incrementLife));
+			}
+		}
+		this.refreshView();
+	}
+	
+	public boolean isThereAnyBallzOnPlate() {
+		for (int x = 0;x < 10;x++) {
+			for (int y = 0;y < 10;y++) {
+				if (this.elements.get(new Coordonnees(x, y)) instanceof Ballz) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 }
