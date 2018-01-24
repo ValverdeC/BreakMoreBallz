@@ -41,11 +41,10 @@ public class PlateauGUI extends Parent {
 	// Elements test right bar
 	RightBarUI rb1 = new RightBarUI(new Profil(1, "Toto"), 1);
 	RightBarUI rb2 = new RightBarUI(new Profil(1, "Max"), 2);
-	
-	JeuUI jeuUn = new JeuUI();
-	JeuUI jeuDeux = new JeuUI();
-	JeuUI jeuCourant = new JeuUI(); // Permet de savoir quel joueur peut effectuer des actions
-	JeuUI jeuOppose = new JeuUI();
+	JeuUI jeuUn;
+	JeuUI jeuDeux;
+	JeuUI jeuCourant;
+	JeuUI jeuOppose;
 	AnimationTimer timer;
 	ImageView iv1 = new ImageView();
 	
@@ -100,8 +99,12 @@ public class PlateauGUI extends Parent {
 		
 	Main app;
 	
-	public PlateauGUI(Main main) {
+	public PlateauGUI(Main main, Profil profil1, Profil profil2) {
 		Image image = new Image(getClass().getResourceAsStream("game_background.jpg")); // Image de fond
+		jeuUn = new JeuUI(profil1);
+		jeuDeux = new JeuUI(profil2);
+		jeuCourant = new JeuUI(profil1);
+		jeuOppose = new JeuUI(profil2);
 		iv1.setImage(image);
 		this.getChildren().add(iv1);
 		this.setTranslateX(0);
@@ -121,7 +124,7 @@ public class PlateauGUI extends Parent {
 		grid.add(rb2, 1, 1);
 		changerJeuCourant(); // On initialise le jeu courant avec la methode de changement de jeu
 		this.app = main;
-				
+		
 		this.getChildren().add(grid);
 	}
 	
@@ -214,7 +217,7 @@ public class PlateauGUI extends Parent {
 		}
 	}
 	
-	//Gestion des animations (collision + déplacement)
+	//Gestion des animations (collision + dï¿½placement)
     private void startAnimation(final GridPane field, LanceurFX lanceur) {
         final LongProperty lastUpdateTime = new SimpleLongProperty(0);
         timer = new AnimationTimer() {
@@ -232,13 +235,13 @@ public class PlateauGUI extends Parent {
         timer.start();
     }
 
-	//Gestion des animations (collision + déplacement)
+	//Gestion des animations (collision + dï¿½placement)
     private void stopAnimation() {
         this.timer.stop();
         this.tirTimer.stop();
     }
     
-	//Mise à jour des éléments graphiques (déplacement des billes)
+	//Mise ï¿½ jour des ï¿½lï¿½ments graphiques (dï¿½placement des billes)
     private void updateWorld(long elapsedTime, LanceurFX lanceur) {
         double elapsedSeconds = elapsedTime / 1_000_000_000.0;
         ArrayList<Bille> billes = new ArrayList<Bille>();
@@ -443,7 +446,7 @@ public class PlateauGUI extends Parent {
 		return res;
     }
 
-    // On change de jeuCourant et on actualise les écouteurs d'action
+    // On change de jeuCourant et on actualise les ï¿½couteurs d'action
 	private void changerJeuCourant() {
 		jeuCourant.removeEventHandler(MouseEvent.MOUSE_CLICKED, handlerTir);
 		jeuCourant.removeEventHandler(MouseEvent.MOUSE_MOVED, handlerVisee);
@@ -493,7 +496,5 @@ public class PlateauGUI extends Parent {
 		}else {
 			rb2.incrementerNbBilles();
 		}
-	}
-    
-    
+	} 
 }

@@ -26,7 +26,7 @@ import util.Coordonnees;
 public class JeuUI extends Parent {
 	private Rectangle background = new Rectangle();
 	private GridPane grid = new GridPane();
-	private Jeu jeu = new Jeu(new Profil(1, "Toto"), 500, 800, this);
+	Jeu jeu; 
 	private Double dimX = (double) 400;
 	private Double dimY = (double) 400;
 	LanceurFX lanceur = new LanceurFX(dimX/2,dimY-50,dimX/2,dimY-50);
@@ -38,8 +38,9 @@ public class JeuUI extends Parent {
 	/** 
 	 * Constructeur qui initialise le terrain graphique
 	 * Ajout du lanceur au plateau
-	 * */
-    public JeuUI() {
+	 * */    
+	public JeuUI(Profil profil) {
+    	jeu = new Jeu(profil, 500, 800, this);
     	// Image du lanceur
     	iv1.setImage(img);
     	iv1.setX(dimX/2-35);
