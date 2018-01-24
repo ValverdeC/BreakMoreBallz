@@ -25,7 +25,7 @@ public class Bille  {
     private ArrayList<Coordonnees> verticalLasers = new ArrayList<Coordonnees>();
     private ArrayList<Coordonnees> billeMultiplicators = new ArrayList<Coordonnees>();
 
-    private final Circle vue;
+    private Circle vue;
 
     public Bille(double centerX, double centerY, double rayon,
             double vitesseX, double vitesseY) {

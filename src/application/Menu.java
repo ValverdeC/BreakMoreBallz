@@ -14,10 +14,14 @@ public class Menu extends Parent {
 	ImageView iv1 = new ImageView(); // ImageView permettant d'afficher l'image de fond
 	Button playButton = new Button("JOUER");
 	Button profileButton = new Button("PROFILES");
+	Button exitButton = new Button("QUITTER");
 	
 	public Menu() {
+        // Ajout de l'image de fond
 		Image image = new Image(getClass().getResourceAsStream("background.jpg")); // Image de fond
         iv1.setImage(image);
+        // Ajout de la feuille de style css
+        this.getStylesheets().add("application/application.css");
 				
 		fond_menu.getStyleClass().add("menu");
 		
@@ -26,16 +30,25 @@ public class Menu extends Parent {
         fond_menu.setHeight(800);
         
         // Bouton jouer
-        playButton.setTranslateX(205);
-        playButton.setTranslateY(550);
+        playButton.setTranslateX(170);
+        playButton.setTranslateY(560);
+        playButton.getStyleClass().add("menu-button");
         // Bouton profils
-        profileButton.setTranslateX(197);
-        profileButton.setTranslateY(590);
+        profileButton.setTranslateX(170);
+        profileButton.setTranslateY(610);
+        profileButton.getStyleClass().add("menu-button");
+        
+        // Bouton quitter
+        exitButton.setTranslateX(170);
+        exitButton.setTranslateY(660);
+        exitButton.getStyleClass().add("menu-button");
+        
         // Ajout des éléments a la vue menu
         this.getChildren().add(fond_menu);
         this.getChildren().add(iv1);
         this.getChildren().add(playButton);
         this.getChildren().add(profileButton);
+        this.getChildren().add(exitButton);
          
         // Ecouteurs de clic sur les boutons
         profileButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -53,6 +66,14 @@ public class Menu extends Parent {
 	        	  setPlayView();
 	          }
         });
+        
+        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+    	        new EventHandler<MouseEvent>() {
+    	          @Override
+    	          public void handle(MouseEvent e) {
+    	        	  System.exit(0);
+    	          }
+            });
 	}
 	
 	/** Permet d'afficher la vue profils */
