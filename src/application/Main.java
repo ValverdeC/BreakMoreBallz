@@ -20,14 +20,16 @@ import com.almasb.fxgl.settings.GameSettings;
 
 	
 import javafx.scene.Node;
+import metier.Profil;
 
 public class Main extends GameApplication {
 	
-	private  Clip audioClip;  //le son créé depuis l'url
+	private  Clip audioClip;  //le son crï¿½ï¿½ depuis l'url
 
 	Menu menu = new Menu();
 	ProfileManagerGUI profile = new ProfileManagerGUI();
-	PlateauGUI plateau = new PlateauGUI(this);
+	PlateauGUI plateau;
+	ParametresPlateauUi param = new ParametresPlateauUi();
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -82,7 +84,12 @@ public class Main extends GameApplication {
 		setView(profile);
 	}
 	/** Permet de switcher l'affichage sur la vue du jeu */
-	protected void setPlayView() {
+	protected void setParamView() {
+		setView(param);
+	}
+	
+	protected void setPlayView(Main app, Profil profil1, Profil profil2) {
+		plateau = new PlateauGUI(app, profil1, profil2);
 		setView(plateau);
 	}
 	/** Permet de switcher l'affichage sur la vue choisie */
