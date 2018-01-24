@@ -40,7 +40,7 @@ public class Main extends GameApplication {
 	protected void initSettings(GameSettings settings) {
 		settings.setTitle("BreakMoreBallz");
         settings.setVersion("beta-0.2");
-        settings.setWidth(450);
+        settings.setWidth(500);
         settings.setHeight(800);
         settings.setIntroEnabled(false);
         settings.setMenuEnabled(false);
@@ -63,7 +63,7 @@ public class Main extends GameApplication {
 			e.printStackTrace();
 		}
         // Lancement de la musique en mode boucle
-        audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+        //audioClip.loop(Clip.LOOP_CONTINUOUSLY);
         
 	}
 	

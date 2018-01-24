@@ -58,6 +58,11 @@ public class ProfileManagerGUI extends Parent {
 		//INIT DES ELEMENTS GRAPHIQUES
 		iv1.setImage(background);
         this.getChildren().add(iv1);
+        // Ajout de la feuille de style css
+        this.getStylesheets().add("application/application.css");
+       
+        back_button.setTranslateX(5);
+        back_button.setTranslateY(5);
         
         add_input.setLayoutX(45);
         add_input.setLayoutY(50);
@@ -67,6 +72,7 @@ public class ProfileManagerGUI extends Parent {
         add_button.setLayoutX(362);
         add_button.setLayoutY(50);
         add_button.setText("Add");
+        add_button.getStyleClass().add("profil-button");
         add_button.addEventHandler(MouseEvent.MOUSE_CLICKED,
         	new EventHandler<MouseEvent>() {
     	    	@Override
@@ -87,6 +93,7 @@ public class ProfileManagerGUI extends Parent {
     	        }
         	}
         );
+        back_button.getStyleClass().add("profil-button");
         this.getChildren().add(back_button);
                 
         //Creation des colonnes du tableau

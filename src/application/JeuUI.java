@@ -1,8 +1,11 @@
 package application;
 
+import java.io.File;
 import java.util.Map;
 
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -27,18 +30,30 @@ public class JeuUI extends Parent {
 	private Double dimX = (double) 400;
 	private Double dimY = (double) 400;
 	LanceurFX lanceur = new LanceurFX(dimX/2,dimY-50,dimX/2,dimY-50);
+	// Image du lanceur 
+	File fileImg = new File("ressources/images/launcher/leopard.png");
+	private Image img = new Image(fileImg.toURI().toString());
+	ImageView iv1 = new ImageView();
 	
 	/** 
 	 * Constructeur qui initialise le terrain graphique
 	 * Ajout du lanceur au plateau
 	 * */
     public JeuUI() {
+    	// Image du lanceur
+    	iv1.setImage(img);
+    	iv1.setX(dimX/2-35);
+    	iv1.setY(dimY-80);
+    	// Dimensions du cadre de jeu
     	background.setWidth(400);
     	background.setHeight(400);
-    	background.setStyle("-fx-fill: white; -fx-opacity: 0.5");
+    	// Opacité du cadre
+    	background.setStyle("-fx-fill: white; -fx-opacity: 0.1");
+    	// Bordures du cadre
     	background.setStroke(Color.BLACK);
     	background.setStrokeWidth(2);
     	background.setStrokeType(StrokeType.INSIDE);
+    	// Init de la grille de jeu
     	grid.setMinSize(400, 400);
     	grid.setMaxSize(400, 400);
     	
@@ -47,6 +62,7 @@ public class JeuUI extends Parent {
     	this.getChildren().add(background);
     	this.getChildren().add(grid);
     	this.getChildren().add(lanceur);
+    	this.getChildren().add(iv1);
     }
     
     /**
@@ -138,6 +154,10 @@ public class JeuUI extends Parent {
 	
 	public void incrementNbBallzDetruit() {
 		this.jeu.incrementNbBallzDetruits();
+	}
+	
+	public void orienterLanceur() {
+		iv1.setRotate(Math.toDegrees(this.lanceur.getLanceur().getAngle())-90);
 	}
 	
 	public int getNbBallzDetruits() {

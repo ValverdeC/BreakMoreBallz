@@ -32,11 +32,15 @@ import metier.BlackHole;
 import metier.Elements;
 import metier.EmptyElement;
 import metier.HorizontalLaser;
+import metier.Profil;
 import util.Coordonnees;
 /** 
  * Classe permettant d'afficher le plateau de jeu, avec les cadres pour les 2 joueurs
  */
 public class PlateauGUI extends Parent {
+	// Elements test right bar
+	RightBarUI rb1 = new RightBarUI(new Profil(1, "Toto"), 1);
+	RightBarUI rb2 = new RightBarUI(new Profil(1, "Max"), 2);
 	
 	JeuUI jeuUn = new JeuUI();
 	JeuUI jeuDeux = new JeuUI();
@@ -89,6 +93,7 @@ public class PlateauGUI extends Parent {
         public void handle(MouseEvent mouseEvent) {
         	if (!tirInProgress) {
         		jeuCourant.lanceur.orienterLanceur(mouseEvent.getX(),mouseEvent.getY());
+        		jeuCourant.orienterLanceur();
         	}
         }
     };
@@ -111,7 +116,9 @@ public class PlateauGUI extends Parent {
 		grid.setPadding(new Insets(0, 0, 0, 0));
 		// On positionne les cadres de jeu sur le plateau
 		grid.add(jeuUn, 0, 0);
+		grid.add(rb1, 1, 0);
 		grid.add(jeuDeux, 0, 1);
+		grid.add(rb2, 1, 1);
 		changerJeuCourant(); // On initialise le jeu courant avec la methode de changement de jeu
 		this.app = main;
 				
@@ -349,6 +356,7 @@ public class PlateauGUI extends Parent {
     		if (ballz.getLife() == 1) {
     			tmp.put(ballz.getCoordonnees(), new EmptyElement(ballz.getCoordonnees()));
     			this.jeuCourant.incrementNbBallzDetruit();
+    			this.incrementerScore(jeuCourant.lanceur.getLanceur().getNbJoueur());
     		} else {
     			ballz.decrementLife();
     			tmp.put(ballz.getCoordonnees(), ballz);
@@ -356,6 +364,7 @@ public class PlateauGUI extends Parent {
     	} else if (element instanceof BilleBonus) {
 			tmp.put(element.getCoordonnees(), new EmptyElement(element.getCoordonnees()));
 			this.jeuCourant.incrementNbOfBilles();
+			this.incrementerNbBilles(jeuCourant.lanceur.getLanceur().getNbJoueur());
     	} else if (element instanceof BlackHole) {
     		BlackHole blackHole = (BlackHole) element;
     		blackHole.setTouched();
@@ -467,5 +476,24 @@ public class PlateauGUI extends Parent {
 	private int getNbOfBilles() {
 		return this.jeuCourant.getNbOfBilles();
 	}
+	
+	/** Incremente le score du joueur courant */
+	private void incrementerScore(int numJoueur) {
+		if(numJoueur == 1) {
+			rb1.incrementerScore();
+		}else {
+			rb2.incrementerScore();
+		}
+	}
+	
+	/** Incremente le score du joueur courant */
+	private void incrementerNbBilles(int numJoueur) {
+		if(numJoueur == 1) {
+			rb1.incrementerNbBilles();
+		}else {
+			rb2.incrementerNbBilles();
+		}
+	}
+    
     
 }
