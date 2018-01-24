@@ -1,11 +1,15 @@
 package metier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.TreeMap;
 
 import application.JeuUI;
+import util.Bonus;
 import util.Coordonnees;
 import util.ElementsList;
 import util.Services;
@@ -22,6 +26,7 @@ public class Jeu {
 	private int nbBallzDetruits;
 	private int nbBilles;
 	private JeuUI ui;
+	private static final List<Bonus> BONUS = Collections.unmodifiableList(Arrays.asList(Bonus.values()));
 	
 	// Constructeur
 	
@@ -42,7 +47,7 @@ public class Jeu {
 		TreeMap<Coordonnees, Elements> newElements = new TreeMap<>();
 		this.turn++;
 		initJeu(newElements);
-		this.clearBillesVerticalLasersLists();
+		this.clearBillesVerticalAndHorizontalLasersLists();
 		
 		for (Entry<Coordonnees, Elements> entry : elements.entrySet()) {
 			Elements ballz = entry.getValue();
@@ -66,8 +71,8 @@ public class Jeu {
     		    	newElements.put(newCoord, new EmptyElement(newCoord));
     			}
 		    } else if (ballz.getName().equals(ElementsList.HorizontalLaser.name())) {
-    			HorizontalLaser verticalLaser = (HorizontalLaser) ballz;
-    			if (!verticalLaser.isTouched()) {
+    			HorizontalLaser horizontalLaser = (HorizontalLaser) ballz;
+    			if (!horizontalLaser.isTouched()) {
     				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
     		    	ballz.setCoordonnees(newCoord);
     		    	newElements.put(newCoord, ballz);
@@ -78,6 +83,26 @@ public class Jeu {
 		    } else if (ballz.getName().equals(ElementsList.BilleMultiplicator.name())) {
     			BilleMultiplicator billeMultiplicator = (BilleMultiplicator) ballz;
     			if (!billeMultiplicator.isTouched()) {
+    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
+    		    	ballz.setCoordonnees(newCoord);
+    		    	newElements.put(newCoord, ballz);
+    			} else {
+    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
+    		    	newElements.put(newCoord, new EmptyElement(newCoord));
+    			}
+		    } else if (ballz.getName().equals(ElementsList.VerticalLaser.name())) {
+    			VerticalLaser verticalLaser = (VerticalLaser) ballz;
+    			if (!verticalLaser.isTouched()) {
+    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
+    		    	ballz.setCoordonnees(newCoord);
+    		    	newElements.put(newCoord, ballz);
+    			} else {
+    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
+    		    	newElements.put(newCoord, new EmptyElement(newCoord));
+    			}
+		    } else if (ballz.getName().equals(ElementsList.StarDestroyer.name())) {
+    			StarDestroyer starDestroyer = (StarDestroyer) ballz;
+    			if (!starDestroyer.isTouched()) {
     				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
     		    	ballz.setCoordonnees(newCoord);
     		    	newElements.put(newCoord, ballz);
@@ -104,7 +129,9 @@ public class Jeu {
 
 	public void initJeu(TreeMap<Coordonnees, Elements> elements) {
 		this.initElementList(elements);
-		int nbOfBallz = this.service.randomGeneratorWithChance(1, 9, 50);
+		
+		// Init des nouvelles Ballz aléatoirement avec pourcentage de chance d'avoir 7 ballz et +
+		int nbOfBallz = this.service.randomGeneratorWithChance(1, 9, 50, 7);
 		for(int i = 0; i < nbOfBallz; i++) {
 			int x = this.service.randomGenerator(0, 9);
 			while(this.thereSomethingHere(elements, new Coordonnees(x, 1))) {
@@ -112,17 +139,33 @@ public class Jeu {
 			}
 			elements.put(new Coordonnees(x, 1), new Ballz(new Coordonnees(x, 1), this.turn));				
 		}
+		
+		// Ajout sur le plateau de la nouvelle bille à attraper, position aléatoire
 		int randomIndex = this.getRandomIndex(elements);
 		elements.put(new Coordonnees(randomIndex, 1), new BilleBonus(new Coordonnees(randomIndex, 1)));
-		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(50)) {
-			randomIndex = this.getRandomIndex(elements);
-			elements.put(new Coordonnees(randomIndex, 1), new BilleMultiplicator(new Coordonnees(randomIndex, 1)));
+		
+		// On a une chance sur 3 d'avoir un bonus sur le plateau s'il y a une place libre
+		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(100)) {
+			switch (this.getRandomBonus()) {
+			case HorizontalLaser:
+				randomIndex = this.getRandomIndex(elements);
+				elements.put(new Coordonnees(randomIndex, 1), new HorizontalLaser(new Coordonnees(randomIndex, 1)));
+				break;
+			case BilleMultiplicator:
+				randomIndex = this.getRandomIndex(elements);
+				elements.put(new Coordonnees(randomIndex, 1), new BilleMultiplicator(new Coordonnees(randomIndex, 1)));
+				break;
+			case VerticalLaser:
+				randomIndex = this.getRandomIndex(elements);
+				elements.put(new Coordonnees(randomIndex, 1), new VerticalLaser(new Coordonnees(randomIndex, 1)));
+				break;
+			case StarDestroyer:
+				randomIndex = this.getRandomIndex(elements);
+				elements.put(new Coordonnees(randomIndex, 1), new StarDestroyer(new Coordonnees(randomIndex, 1)));
+				break;
+			}
 		}
 		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(10)) {
-			randomIndex = this.getRandomIndex(elements);
-			elements.put(new Coordonnees(randomIndex, 1), new HorizontalLaser(new Coordonnees(randomIndex, 1)));
-		}
-		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(50)) {
 			randomIndex = this.getRandomIndex(elements);
 			elements.put(new Coordonnees(randomIndex, 1), new BlackHole(new Coordonnees(randomIndex, 1)));
 		}
@@ -252,9 +295,10 @@ public class Jeu {
 		return freeIndex.get(index);
 	}
 	
-	public void clearBillesVerticalLasersLists() {
+	public void clearBillesVerticalAndHorizontalLasersLists() {
 		for (Bille bille : this.billes) {
 			bille.clearVerticalLaserList();
+			bille.clearHorizontalLaserList();
 		}
 	}
 	
@@ -298,4 +342,7 @@ public class Jeu {
 		return false;
 	}
 	
+	private Bonus getRandomBonus() {
+		return BONUS.get(new Random().nextInt(BONUS.size()));
+	}
 }

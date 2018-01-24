@@ -11,16 +11,19 @@ public class Services {
 		return rand.nextInt((end - start) + 1) + start;
 	}
 	
-	public int randomGeneratorWithChance(int start, int end, int chance) {
+	public int randomGeneratorWithChance(int start, int end, int chance, int limit) {
 		Random rand = new Random();
 		int nb = rand.nextInt((end - start) + 1) + start;
 		
-		if (nb >= 7 && this.trueOrFalseRandom(chance)) {
+		if (nb >= limit && this.trueOrFalseRandom(chance)) {
+			// Pas de chance on garde ce nombre
 			return nb;
-		} else if (nb < 7) {
+		} else if (nb < limit) {
+			// Le nombre était en dessous de la limite
 			return nb;
 		} else {
-			return this.randomGeneratorWithChance(start, end, chance);
+			// Tu as de la chance, le nombre au dessus de la limite est pas gardé, on retire un nombre
+			return this.randomGeneratorWithChance(start, end, chance, limit);
 		}
 	}
 	
