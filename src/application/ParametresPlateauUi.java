@@ -1,11 +1,15 @@
 package application;
 
 import java.util.LinkedHashMap;
+import java.util.Optional;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,18 +36,16 @@ public class ParametresPlateauUi extends Parent {
 	ImageView iv1 = new ImageView();
 
 	public ParametresPlateauUi() {
+		//Initialize style sheet
 		this.getStylesheets().add("application/application.css");
+
+		//Setup background image
 		Image image = new Image(getClass().getResourceAsStream("parametres_background.jpg"));
 	    iv1.setImage(image);
+        this.getChildren().addAll(iv1, fond_menu);
 
-		fond_menu.getStyleClass().add("menu");
-
-	    fond_menu.setWidth(450);
-	    fond_menu.setHeight(800);
-	    
-        this.getChildren().add(fond_menu);
-        this.getChildren().add(iv1);
         
+	    //Setup selector for player1
 		player1Selector.getItems().addAll(profilManager.getListPseudo());
 		player1Selector.valueProperty().addListener(new ChangeListener<String>() {
 			@Override 
@@ -51,10 +53,10 @@ public class ParametresPlateauUi extends Parent {
 				manageProfilSelector(t1, 1);
 			}    
 		});
-		
         player1Selector.setLayoutX(45);
         player1Selector.setLayoutY(200);
         
+	    //Setup selector for player2
         player2Selector.getItems().addAll(profilManager.getListPseudo());
         player2Selector.valueProperty().addListener(new ChangeListener<String>() {
 			@Override 
@@ -64,19 +66,13 @@ public class ParametresPlateauUi extends Parent {
 		});
         player2Selector.setLayoutX(45);
         player2Selector.setLayoutY(240);
-
-        this.getChildren().add(player1Selector);
-        this.getChildren().add(player2Selector);
         
+        this.getChildren().addAll(player1Selector, player2Selector);        
+        
+        //Setup all difficulty buton
         facile.setTranslateX(100);
         facile.setTranslateY(500);
-        
-        normal.setTranslateX(200);
-        normal.setTranslateY(500);
-        
-        difficile.setTranslateX(300);
-        difficile.setTranslateY(500);
-        
+        facile.getStyleClass().add("profil-button");
         facile.addEventHandler(MouseEvent.MOUSE_CLICKED,
     	        new EventHandler<MouseEvent>() {
     	        @Override
@@ -85,6 +81,9 @@ public class ParametresPlateauUi extends Parent {
     	        }
         });
         
+        normal.setTranslateX(200);
+        normal.setTranslateY(500);
+		normal.getStyleClass().add("selected-profil-button");
         normal.addEventHandler(MouseEvent.MOUSE_CLICKED,
     	        new EventHandler<MouseEvent>() {
     	        @Override
@@ -93,6 +92,9 @@ public class ParametresPlateauUi extends Parent {
     	        }
         });
         
+        difficile.setTranslateX(300);
+        difficile.setTranslateY(500);
+		difficile.getStyleClass().add("profil-button");
         difficile.addEventHandler(MouseEvent.MOUSE_CLICKED,
     	        new EventHandler<MouseEvent>() {
     	        @Override
@@ -101,12 +103,10 @@ public class ParametresPlateauUi extends Parent {
     	        }
         });
         
-        facile.getStyleClass().add("profil-button");
-		normal.getStyleClass().add("selected-profil-button");
-		difficile.getStyleClass().add("profil-button");
-		        
         this.getChildren().addAll(facile, normal, difficile);
 
+        
+        //Setup play button
         playButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
         		new EventHandler<MouseEvent>() {
     	        @Override
@@ -114,14 +114,21 @@ public class ParametresPlateauUi extends Parent {
     	        	setPlayView();
     	        }
         });
-
-        this.getChildren().add(playButton);
+        this.getChildren().add(playButton);       
 	}
 	
 	protected void setPlayView() {
-		Main main = new Main();
-		resetView();
-		main.setPlayView(main, parametrePlateau.getTempProfil1(), parametrePlateau.getTempProfil2());
+		if(parametrePlateau.checkParametres()){
+			Main main = new Main();
+			resetView();
+			main.setPlayView(main, parametrePlateau.getTempProfil1(), parametrePlateau.getTempProfil2());
+		}
+		else{
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("Error: no profils selected");
+			alert.showAndWait();
+		}
 	}
 	
 	private void resetView() {
