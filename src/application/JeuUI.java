@@ -117,4 +117,20 @@ public class JeuUI extends Parent {
 	public void incrementNbOfBilles() {
 		this.jeu.setNbBilles(this.jeu.getNbBilles() + 1);
 	}
+	
+	public void incrementNbBallzDetruit() {
+		this.jeu.incrementNbBallzDetruits();
+	}
+	
+	public int getNbBallzDetruits() {
+		return this.jeu.getNbBallzDetruits();
+	}
+	
+	public void resetNbBallzDetruits() {
+		this.jeu.setNbBallzDetruits(0);
+	}
+	
+	public boolean isThereAnyBallzOnPlate() {
+		return this.jeu.isThereAnyBallzOnPlate();
+	}
 }

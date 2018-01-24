@@ -21,12 +21,12 @@ public class Lanceur{
 	private static final double VITESSE = -400 ;
 	private static final double RAYON = 5 ;
 	private int nbJoueur;
-	private List<Bille> billesMultiplicator; 
+	private List<Bille> temporaryBilles; 
 	
 	
     public Lanceur(CoordonneesDouble pCoord) {
     	this.billes = new ArrayList<Bille>();
-    	this.billesMultiplicator = new ArrayList<Bille>();
+    	this.temporaryBilles = new ArrayList<Bille>();
 		this.coord = pCoord;
 	}
 
@@ -104,13 +104,14 @@ public class Lanceur{
 		newBille.setLance(false);
 		newBille.setAlreadyLance(false);
 		newBille.getVue().setFill(Color.GREEN);
-		this.billesMultiplicator.add(newBille);
+		this.temporaryBilles.add(newBille);
 	}
 	
-	public void checkTemporaryBilles() {
-		if (this.billesMultiplicator.size() > 0) {
-			this.billes.addAll(this.billesMultiplicator);
-			this.billesMultiplicator.clear();
-		}
+	public boolean checkTemporaryBilles() {
+		return this.temporaryBilles.size() > 0;
+	}
+
+	public List<Bille> getTemporaryBilles() {
+		return temporaryBilles;
 	}
 }
