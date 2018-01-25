@@ -16,10 +16,14 @@ import metier.Profil;
 public class CsvFileHelper {
 	
 	public static void writeToFile( List<Profil> profiles, String fileName){
-		File csvFile = getResource(fileName);
+		File csvFile = new File(fileName);
 		
 		if (!csvFile.exists()) {
-			throw new IllegalArgumentException("File doesn't exist");
+			try {
+				csvFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		else{
 			try {
@@ -50,15 +54,16 @@ public class CsvFileHelper {
 	}
 
 	public static List<String[]> readFile(String fileName) {
-		File file = getResource(fileName);
+		File file = new File(fileName);
 		
 		String separator = ",";
-		if (file == null) {
-			throw new IllegalArgumentException("Le fichier ne peut pas être null");
-		}
 
 		if (!file.exists()) {
-			throw new IllegalArgumentException("Le fichier " + file.getName() + " n'existe pas.");
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		List<String[]> result = new ArrayList<String[]>();

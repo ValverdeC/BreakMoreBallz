@@ -17,6 +17,7 @@ import com.almasb.fxgl.entity.component.ViewComponent;
 import com.almasb.fxgl.settings.GameSettings;
 
 import javafx.scene.Node;
+import javafx.scene.input.KeyCode;
 import metier.Difficulty;
 import metier.Profil;
 import shared.Constants;
@@ -49,6 +50,8 @@ public class Main extends GameApplication {
         settings.setCloseConfirmation(false);
         settings.setApplicationMode(ApplicationMode.RELEASE);
         
+        settings.setMenuKey(KeyCode.DELETE);
+        
         // Chargement du fichier de son
         try {
 			audioClip = AudioSystem.getClip();
@@ -64,7 +67,7 @@ public class Main extends GameApplication {
 			e.printStackTrace();
 		}
         // Lancement de la musique en mode boucle
-        //audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+        audioClip.loop(Clip.LOOP_CONTINUOUSLY);
         
         File gameDir = new File(Constants.DIRECTORY_PATH);
         

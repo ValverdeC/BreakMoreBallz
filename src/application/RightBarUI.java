@@ -1,8 +1,14 @@
 package application;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -10,6 +16,7 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import metier.Jeu;
 import metier.Profil;
 
 public class RightBarUI  extends Parent {
@@ -32,6 +39,8 @@ public class RightBarUI  extends Parent {
 	// Interstice dans la vbox, label vide
 	Label interstice = new Label("");
 	
+	Button back_button = new Button("Finir");
+	
 	// Arriere plan de la barre latérale
 	private Rectangle background = new Rectangle();
 	// Dimensions de l'arrière plan
@@ -43,7 +52,10 @@ public class RightBarUI  extends Parent {
 	// Variable profil pour stockage du score en fin de partie
 	private Profil profilJ;
 	
-	public RightBarUI(Profil profil, int numeroJoueur) {
+	private PlateauGUI plateau;
+	
+	public RightBarUI(Profil profil, int numeroJoueur, PlateauGUI plateau) {
+		this.plateau = plateau;
         // Ajout de la feuille de style css
         this.getStylesheets().add("application/application.css");
         
@@ -85,6 +97,17 @@ public class RightBarUI  extends Parent {
 		vbox.getChildren().add(scoreJ);
 		vbox.getChildren().add(nbBillesT);
 		vbox.getChildren().add(nbBillesJ);
+		vbox.getChildren().add(back_button);
+		
+		back_button.addEventHandler(MouseEvent.MOUSE_CLICKED,
+        	new EventHandler<MouseEvent>() {
+    	    	@Override
+    	        public void handle(MouseEvent e) {
+    	    		quitGame();
+    	        }
+        	}
+        );
+        back_button.getStyleClass().add("profil-button");
 
 		// Ajout du style css au conteneur vbox
 		vbox.getStyleClass().add("rbui-vbox");
@@ -125,5 +148,23 @@ public class RightBarUI  extends Parent {
 		this.score = 0;
 		scoreJ.setText(Integer.toString(score));
 		nbBillesJ.setText("0");
+	}
+	
+	public void quitGame() {
+		Alert alert = new Alert(AlertType.INFORMATION, "Retour au menu ?", ButtonType.YES, ButtonType.NO);
+		
+		this.plateau.stopAnimation();
+		
+		alert.setOnHidden(evt -> {
+			if (alert.getResult() == ButtonType.YES) {
+				this.plateau.resetView();
+    			this.plateau.app.setMenuView();
+    		} else {
+    			this.plateau.startAnimation(this.plateau.jeuCourant.getGrid(), this.plateau.jeuCourant.lanceur);
+    		}
+			this.plateau.updateHighScores();
+		});
+
+	    alert.show();
 	}
 }

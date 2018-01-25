@@ -28,6 +28,7 @@ import util.Difficultes;
 public class ParametresPlateauUi extends Parent {
 	ParametresPlateau parametrePlateau = new ParametresPlateau();
 	ProfilManager profilManager = new ProfilManager();
+	Button back_button = new Button("Retour");
 	
 	private LinkedHashMap<String, Profil> mapProfil = profilManager.getMapProfils();
 
@@ -67,6 +68,20 @@ public class ParametresPlateauUi extends Parent {
     	background.setStroke(Color.BLACK);
     	background.setStrokeWidth(2);
     	background.setStrokeType(StrokeType.INSIDE);
+    	
+    	back_button.setTranslateX(5);
+        back_button.setTranslateY(5);
+        
+        back_button.addEventHandler(MouseEvent.MOUSE_CLICKED,
+        	new EventHandler<MouseEvent>() {
+    	    	@Override
+    	        public void handle(MouseEvent e) {
+    	    		setMenuView();
+    	        }
+        	}
+        );
+        back_button.getStyleClass().add("profil-button");
+        this.getChildren().add(back_button);
     	
         this.getChildren().add(background);
 
@@ -262,5 +277,11 @@ public class ParametresPlateauUi extends Parent {
 		default:
 			return new NormalDiffculty();
 		}
+	}
+	
+	protected void setMenuView() {
+		Main main = new Main();
+		resetView();
+		main.setMenuView();
 	}
 }
