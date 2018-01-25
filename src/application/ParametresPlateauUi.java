@@ -9,14 +9,16 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import metier.Difficulty;
 import metier.EasyDiffculty;
+import javafx.scene.shape.StrokeType;
 import metier.HardDiffculty;
 import metier.NormalDiffculty;
 import metier.ParametresPlateau;
@@ -30,14 +32,20 @@ public class ParametresPlateauUi extends Parent {
 	
 	private LinkedHashMap<String, Profil> mapProfil = profilManager.getMapProfils();
 
-	final ComboBox<String> player1Selector = new ComboBox<String> ();
-	final ComboBox<String> player2Selector = new ComboBox<String> ();
+	ComboBox<String> player1Selector = new ComboBox<String> ();
+	ComboBox<String> player2Selector = new ComboBox<String> ();
+	Label labelPlayer1 = new Label("Profil player 1:");
+	Label labelPlayer2 = new Label("Profil player 2:");
+	Label labelTitre = new Label("Let's play!");
+
 	Button facile = new Button("FACILE");
 	Button normal = new Button("NORMAL");
 	Button difficile = new Button("DIFFICILE");
 	Button playButton = new Button("JOUER");
 	Rectangle fond_menu = new Rectangle();
 	ImageView iv1 = new ImageView();
+	Rectangle background = new Rectangle();
+
 
 	public ParametresPlateauUi() {
 		//Initialize style sheet
@@ -47,6 +55,27 @@ public class ParametresPlateauUi extends Parent {
 		Image image = new Image(getClass().getResourceAsStream("parametres_background.jpg"));
 	    iv1.setImage(image);
         this.getChildren().addAll(iv1, fond_menu);
+        
+        
+    	// Dimensions du cadre de jeu
+    	background.setWidth(400);
+    	background.setHeight(500);
+    	background.setLayoutX(50);
+    	background.setLayoutY(100);
+    	// Opacit� du cadre
+    	background.setStyle("-fx-fill: white; -fx-opacity: 0.5");
+    	// Bordures du cadre
+    	background.setStroke(Color.BLACK);
+    	background.setStrokeWidth(2);
+    	background.setStrokeType(StrokeType.INSIDE);
+    	
+        this.getChildren().add(background);
+
+        labelTitre.setLayoutX(140);
+        labelTitre.setLayoutY(130);
+        labelTitre.setStyle("-fx-font-size: 40px;");
+        
+        this.getChildren().add(labelTitre);
 
         
 	    //Setup selector for player1
@@ -57,8 +86,12 @@ public class ParametresPlateauUi extends Parent {
 				manageProfilSelector(t1, 1);
 			}    
 		});
-        player1Selector.setLayoutX(45);
-        player1Selector.setLayoutY(200);
+        player1Selector.setLayoutX(170);
+        player1Selector.setLayoutY(250);
+        
+        labelPlayer1.setLayoutX(170);
+        labelPlayer1.setLayoutY(230);
+        
         
 	    //Setup selector for player2
         player2Selector.getItems().addAll(profilManager.getListPseudo());
@@ -68,10 +101,14 @@ public class ParametresPlateauUi extends Parent {
 				manageProfilSelector(t1, 2);
 			}
 		});
-        player2Selector.setLayoutX(45);
-        player2Selector.setLayoutY(240);
+        player2Selector.setLayoutX(170);
+        player2Selector.setLayoutY(330);
         
-        this.getChildren().addAll(player1Selector, player2Selector);        
+        
+        labelPlayer2.setLayoutX(170);
+        labelPlayer2.setLayoutY(310);
+        
+        this.getChildren().addAll(player1Selector, player2Selector, labelPlayer1, labelPlayer2);        
         
         //Setup all difficulty buton
         facile.setTranslateX(100);
@@ -96,7 +133,7 @@ public class ParametresPlateauUi extends Parent {
     	        }
         });
         
-        difficile.setTranslateX(300);
+        difficile.setTranslateX(310);
         difficile.setTranslateY(500);
 		difficile.getStyleClass().add("profil-button");
         difficile.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -118,6 +155,12 @@ public class ParametresPlateauUi extends Parent {
     	        	setPlayView();
     	        }
         });
+        playButton.setLayoutX(120);
+        playButton.setLayoutY(630);
+        
+        playButton.getStyleClass().add("play-button");
+
+        
         this.getChildren().add(playButton);       
 	}
 	
@@ -130,7 +173,7 @@ public class ParametresPlateauUi extends Parent {
 		else{
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error Dialog");
-			alert.setHeaderText("Error: no profils selected");
+			alert.setHeaderText("Error: no profiles selected");
 			alert.showAndWait();
 		}
 	}

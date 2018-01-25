@@ -141,13 +141,6 @@ public class ProfileManagerGUI extends Parent {
         	displayForm(((Profil) newSelection));
         });
         
-//        backgroundSelector.getItems().addAll(
-//            "Default",
-//            "Space" 
-//        );
-//        backgroundSelector.setLayoutX(45);
-//        backgroundSelector.setLayoutY(520);
-//        
         launcherSelector.getItems().addAll(
         	"commander",
             "fighter",
@@ -169,14 +162,6 @@ public class ProfileManagerGUI extends Parent {
             }    
         });
         
-//        ivBackground.setImage(backgroundPreview);
-//        
-//        
-//        ivBackground.setLayoutX(270);
-//        ivBackground.setLayoutY(490);
-//        ivBackground.setFitWidth(100);
-//        ivBackground.setFitHeight(100);
-        
         ivLauncher.setLayoutX(270);
         ivLauncher.setLayoutY(620);
         ivLauncher.setFitWidth(100);
@@ -192,8 +177,6 @@ public class ProfileManagerGUI extends Parent {
 			firstEdit = false;
 		}
 		selectedProfil = profil;
-//		launcherPreview = new Image(getClass().getResourceAsStream("profiles_background.jpg"));
-//		backgroundSelector.getSelectionModel().select(profil.getBackground());
 		
 		launcherSelector.getSelectionModel().select(profil.getLauncher());
 		File filePreviewlauncher = new File("src/ressources/images/launcher/"+profil.getLauncher()+".png");
