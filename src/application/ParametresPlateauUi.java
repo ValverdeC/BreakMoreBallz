@@ -1,7 +1,6 @@
 package application;
 
 import java.util.LinkedHashMap;
-import java.util.Optional;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
