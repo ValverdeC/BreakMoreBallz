@@ -35,8 +35,8 @@ public class JeuUI extends Parent {
 	private Double dimY = (double) 400;
 	LanceurFX lanceur = new LanceurFX(dimX/2,dimY-50,dimX/2,dimY-50);
 	// Image du lanceur 
-	File fileImg = new File("ressources/images/launcher/leopard.png");
-	private Image img = new Image(fileImg.toURI().toString());
+	File fileImg;
+	private Image img;
 	ImageView iv1 = new ImageView();
 	
 	/** 
@@ -45,10 +45,6 @@ public class JeuUI extends Parent {
 	 * */    
 	public JeuUI(Profil profil, Difficulty difficulty) {
     	jeu = new Jeu(profil, 500, 800, this, difficulty);
-    	// Image du lanceur
-    	iv1.setImage(img);
-    	iv1.setX(dimX/2-35);
-    	iv1.setY(dimY-80);
     	// Dimensions du cadre de jeu
     	background.setWidth(400);
     	background.setHeight(400);
@@ -61,6 +57,14 @@ public class JeuUI extends Parent {
     	// Init de la grille de jeu
     	grid.setMinSize(400, 400);
     	grid.setMaxSize(400, 400);
+    	
+    	// On set l'image du lanceur
+    	fileImg = new File("ressources/images/launcher/"+ profil.getLauncher() +".png");
+    	img = new Image(fileImg.toURI().toString());
+    	iv1.setImage(img);
+    	iv1.setX(dimX/2-35);
+    	iv1.setY(dimY-80);
+    	
     	
     	initJeu();
     	

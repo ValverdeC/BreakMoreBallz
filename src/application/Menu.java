@@ -26,17 +26,18 @@ public class Menu extends Parent {
         // Ajout de la feuille de style css
         this.getStylesheets().add("application/application.css");
         
+        fond_menu.setWidth(500);
         // Bouton jouer
-        playButton.setTranslateX(170);
+        playButton.setTranslateX(195);
         playButton.setTranslateY(560);
         playButton.getStyleClass().add("menu-button");
         // Bouton profils
-        profileButton.setTranslateX(170);
+        profileButton.setTranslateX(195);
         profileButton.setTranslateY(610);
         profileButton.getStyleClass().add("menu-button");
         
         // Bouton quitter
-        exitButton.setTranslateX(170);
+        exitButton.setTranslateX(195);
         exitButton.setTranslateY(660);
         exitButton.getStyleClass().add("menu-button");
         

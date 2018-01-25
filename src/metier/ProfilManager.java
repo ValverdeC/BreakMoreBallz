@@ -91,6 +91,23 @@ public class ProfilManager {
 		saveToCsv();
 	}
 	
+	public void saveHighScore(int id, int highScore) {
+		List<Profil> toSaveProfiles = new LinkedList<Profil>();
+		for (Profil profil : profiles) {
+			if (profil.getId() != id) {
+				toSaveProfiles.add(profil);
+			}
+			else{
+				profil.setHighScore(highScore);
+				toSaveProfiles.add(profil);
+			}
+		}
+		
+		this.profiles = toSaveProfiles;
+		
+		saveToCsv();
+	}
+	
 	public List<String> getListPseudo() {
 		List<String> pseudoList = new LinkedList<String>();
 		

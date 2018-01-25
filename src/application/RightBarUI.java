@@ -40,8 +40,6 @@ public class RightBarUI  extends Parent {
 	
 	// Variable score pour incrément du score en temps réel
 	int score = 0;
-	// Variable score pour incrément du nombre de billes en temps réel
-	int nbBilles = 1;
 	// Variable profil pour stockage du score en fin de partie
 	private Profil profilJ;
 	
@@ -119,8 +117,13 @@ public class RightBarUI  extends Parent {
 		scoreJ.setText(Integer.toString(score));
 	}
 
-	public void incrementerNbBilles() {
-		this.nbBilles += 1;
-		nbBillesJ.setText(Integer.toString(nbBilles));
+	public void updateNbBilles(int newNbBilles) {
+		nbBillesJ.setText(Integer.toString(newNbBilles));
+	}
+	
+	public void resetInfos() {
+		this.score = 0;
+		scoreJ.setText(Integer.toString(score));
+		nbBillesJ.setText("0");
 	}
 }
