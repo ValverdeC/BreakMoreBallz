@@ -11,6 +11,7 @@ public class Plateau {
 	private Jeu jeuCourant;
 	private Jeu jeuNonCourant;
 	private ParametresPlateau parametres;
+	private Difficulty difficulty;
 	
 	// Constructeur
 	public Plateau(Jeu jeuJ1, Jeu jeuJ2) {
@@ -66,6 +67,14 @@ public class Plateau {
             jeuNonCourant = jeuJ2;
         }
     }
+
+	public Difficulty getDifficulty() {
+		return difficulty;
+	}
+
+	public void setDifficulty(Difficulty difficulty) {
+		this.difficulty = difficulty;
+	}
 	
 
 }
