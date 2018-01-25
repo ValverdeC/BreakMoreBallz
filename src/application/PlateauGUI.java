@@ -24,6 +24,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import metier.Ballz;
 import metier.Bille;
 import metier.BilleBonus;
@@ -456,11 +457,13 @@ public class PlateauGUI extends Parent {
     		starDestroyer.setTouched();
     		tmp.put(element.getCoordonnees(), new EmptyElement(element.getCoordonnees()));
     		bille.setAccrossBallz();
+    		bille.getVue().setFill(Color.BLACK);
     	} else if (element instanceof BouncingBall && !bille.isWasBouncing()) {
     		BouncingBall boundingBall = (BouncingBall) element;
     		boundingBall.setTouched();
     		bille.setBouncing();
     		bille.setWasBouncing();
+    		bille.getVue().setFill(Color.CHARTREUSE);
     	}
 		jeuCourant.getJeu().setElements(tmp);
 		jeuCourant.refreshView();
