@@ -44,7 +44,13 @@ public class ProfilManager {
 	
 	//METHODS
 	public Profil createProfil(String pseudo) {
-		int id = this.profiles.get(this.profiles.size()-1).getId()+1;
+		int id;
+		if(this.profiles.size() == 0){
+			id = 1;
+		}
+		else {
+			id = this.profiles.get(this.profiles.size()-1).getId()+1;
+		}
 		Profil tempProfil = new Profil(id, pseudo);
 		this.profiles.add(this.profiles.size(), tempProfil);
 		
