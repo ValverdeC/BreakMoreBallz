@@ -1,6 +1,5 @@
 package application;
 
-import java.io.File;
 import java.util.Map;
 
 import javafx.scene.Parent;
@@ -35,7 +34,6 @@ public class JeuUI extends Parent {
 	private Double dimY = (double) 400;
 	LanceurFX lanceur = new LanceurFX(dimX/2,dimY-50,dimX/2,dimY-50);
 	// Image du lanceur 
-	File fileImg;
 	private Image img;
 	ImageView iv1 = new ImageView();
 	
@@ -59,8 +57,7 @@ public class JeuUI extends Parent {
     	grid.setMaxSize(400, 400);
     	
     	// On set l'image du lanceur
-    	fileImg = new File("src/application/" + profil.getLauncher() +".png");
-    	img = new Image(fileImg.toURI().toString());
+    	img = new Image(getClass().getResourceAsStream(profil.getLauncher() + ".png"));
     	iv1.setImage(img);
     	iv1.setX(dimX/2-35);
     	iv1.setY(dimY-80);

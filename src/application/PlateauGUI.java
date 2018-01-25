@@ -111,8 +111,8 @@ public class PlateauGUI extends Parent {
 		jeuCourant = new JeuUI(profil1, difficulty);
 		jeuOppose = new JeuUI(profil2, difficulty);
 		// Barres d'informations latérales (une par joueur)
-		rb1 = new RightBarUI(profil1, 1);
-		rb2 = new RightBarUI(profil2, 2);
+		rb1 = new RightBarUI(profil1, 1, this);
+		rb2 = new RightBarUI(profil2, 2, this);
 		iv1.setImage(image);
 		this.getChildren().add(iv1);
 		this.setTranslateX(0);
@@ -206,7 +206,7 @@ public class PlateauGUI extends Parent {
 	/** 
 	 * Retire les cadres de jeu du plateau 
 	 */
-	private void resetView() {
+	public void resetView() {
 		this.getChildren().remove(this.grid);
 	}
 	
@@ -229,7 +229,7 @@ public class PlateauGUI extends Parent {
 	}
 	
 	//Gestion des animations (collision + dï¿½placement)
-    private void startAnimation(final GridPane field, LanceurFX lanceur) {
+    public void startAnimation(final GridPane field, LanceurFX lanceur) {
         final LongProperty lastUpdateTime = new SimpleLongProperty(0);
         timer = new AnimationTimer() {
             @Override
@@ -247,7 +247,7 @@ public class PlateauGUI extends Parent {
     }
 
 	//Gestion des animations (collision + dï¿½placement)
-    private void stopAnimation() {
+    public void stopAnimation() {
         this.timer.stop();
         this.tirTimer.stop();
     }
@@ -557,7 +557,7 @@ public class PlateauGUI extends Parent {
 	}
 	
 	/** Mise à jour des highScores */
-	private void updateHighScores() {
+	public void updateHighScores() {
 		int scoreJ1 = rb1.getScore();
 		int scoreJ2 = rb2.getScore();
 		int highScoreJ1 = jeuUn.getJeu().getProfil().getHighScore();
