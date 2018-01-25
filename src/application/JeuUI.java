@@ -59,7 +59,7 @@ public class JeuUI extends Parent {
     	grid.setMaxSize(400, 400);
     	
     	// On set l'image du lanceur
-    	fileImg = new File("ressources/images/launcher/"+ profil.getLauncher() +".png");
+    	fileImg = new File("src/ressources/images/launcher/"+ profil.getLauncher() +".png");
     	img = new Image(fileImg.toURI().toString());
     	iv1.setImage(img);
     	iv1.setX(dimX/2-35);
