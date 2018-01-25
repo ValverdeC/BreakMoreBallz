@@ -15,6 +15,7 @@ import metier.BilleBonus;
 import metier.BilleMultiplicator;
 import metier.BlackHole;
 import metier.BouncingBall;
+import metier.Difficulty;
 import metier.Elements;
 import metier.Jeu;
 import metier.Profil;
@@ -42,8 +43,8 @@ public class JeuUI extends Parent {
 	 * Constructeur qui initialise le terrain graphique
 	 * Ajout du lanceur au plateau
 	 * */    
-	public JeuUI(Profil profil) {
-    	jeu = new Jeu(profil, 500, 800, this);
+	public JeuUI(Profil profil, Difficulty difficulty) {
+    	jeu = new Jeu(profil, 500, 800, this, difficulty);
     	// Image du lanceur
     	iv1.setImage(img);
     	iv1.setX(dimX/2-35);
@@ -121,7 +122,7 @@ public class JeuUI extends Parent {
 	 * Recharge le jeu à son état initial (tour 1)
 	 * */
 	public void restartJeu() {
-		this.jeu = new Jeu(new Profil(1, "Toto"), 500, 800, this);
+		this.jeu = new Jeu(new Profil(1, "Toto"), 500, 800, this, this.jeu.getDifficulty());
 		this.refreshView();
 		this.initJeu();
 	}

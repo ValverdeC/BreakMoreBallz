@@ -27,10 +27,12 @@ public class Jeu {
 	private int nbBilles;
 	private JeuUI ui;
 	private static final List<Bonus> BONUS = Collections.unmodifiableList(Arrays.asList(Bonus.values()));
+	private Difficulty difficulty;
 	
 	// Constructeur
 	
-	public Jeu(Profil profil, double dimX, double dimY, JeuUI ui) {
+	public Jeu(Profil profil, double dimX, double dimY, JeuUI ui, Difficulty difficulty) {
+		this.difficulty = difficulty;
 		this.turn = 1;
 		this.ui = ui;
 		this.profil = profil;
@@ -93,7 +95,7 @@ public class Jeu {
 		this.initElementList(elements);
 		
 		// Init des nouvelles Ballz aléatoirement avec pourcentage de chance d'avoir 7 ballz et +
-		int nbOfBallz = this.service.randomGeneratorWithChance(1, 9, 50, 7);
+		int nbOfBallz = this.service.randomGeneratorWithChance(1, 9, this.difficulty.getBallzLimitChance(), this.difficulty.getBallzLimit());
 		for(int i = 0; i < nbOfBallz; i++) {
 			int x = this.service.randomGenerator(0, 9);
 			while(this.thereSomethingHere(elements, new Coordonnees(x, 1))) {
@@ -107,7 +109,7 @@ public class Jeu {
 		elements.put(new Coordonnees(randomIndex, 1), new BilleBonus(new Coordonnees(randomIndex, 1)));
 		
 		// On a une chance sur 3 d'avoir un bonus sur le plateau s'il y a une place libre
-		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(100)) {
+		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(this.difficulty.getBonus())) {
 			switch (this.getRandomBonus()) {
 				case HorizontalLaser:
 					randomIndex = this.getRandomIndex(elements);
@@ -131,7 +133,7 @@ public class Jeu {
 					break;
 			}
 		}
-		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(10)) {
+		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(this.difficulty.getMalus())) {
 			randomIndex = this.getRandomIndex(elements);
 			elements.put(new Coordonnees(randomIndex, 1), new BlackHole(new Coordonnees(randomIndex, 1)));
 		}
@@ -313,5 +315,11 @@ public class Jeu {
 	
 	private Bonus getRandomBonus() {
 		return BONUS.get(new Random().nextInt(BONUS.size()));
+	}
+	public Difficulty getDifficulty() {
+		return difficulty;
+	}
+	public void setDifficulty(Difficulty difficulty) {
+		this.difficulty = difficulty;
 	}
 }

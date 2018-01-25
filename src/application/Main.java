@@ -17,6 +17,7 @@ import com.almasb.fxgl.entity.component.ViewComponent;
 import com.almasb.fxgl.settings.GameSettings;
 
 import javafx.scene.Node;
+import metier.Difficulty;
 import metier.Profil;
 
 public class Main extends GameApplication {
@@ -85,8 +86,8 @@ public class Main extends GameApplication {
 		setView(param);
 	}
 	
-	protected void setPlayView(Main app, Profil profil1, Profil profil2) {
-		plateau = new PlateauGUI(app, profil1, profil2);
+	protected void setPlayView(Main app, Profil profil1, Profil profil2, Difficulty difficulty) {
+		plateau = new PlateauGUI(app, profil1, profil2, difficulty);
 		setView(plateau);
 	}
 	/** Permet de switcher l'affichage sur la vue choisie */
