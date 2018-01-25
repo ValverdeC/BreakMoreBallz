@@ -1,19 +1,15 @@
 package application;
 
-import java.io.File;
 import java.util.LinkedList;
-import java.util.List;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -21,9 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import metier.Profil;
 import metier.ProfilManager;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -34,8 +28,7 @@ public class ProfileManagerGUI extends Parent {
 	Button back_button = new Button("Retour");
 	ProfilManager manager = new ProfilManager();
 
-	File fileBackground = new File("src/application/profiles_background.jpg");
-    Image background = new Image(fileBackground.toURI().toString());
+    Image background = new Image(getClass().getResourceAsStream("profiles_background.jpg"));
 	
 	TextField add_input = new TextField ();
 	private TableView table = new TableView();
@@ -154,8 +147,7 @@ public class ProfileManagerGUI extends Parent {
         launcherSelector.valueProperty().addListener(new ChangeListener<String>() {
             @Override 
             public void changed(ObservableValue ov, String t, String t1) {                
-            	File filePreviewlauncher = new File("src/application/" + t1 + ".png");
-            	launcherPreview = new Image(filePreviewlauncher.toURI().toString());            	
+            	launcherPreview = new Image(getClass().getResourceAsStream(t1 + ".png"));            	
             	ivLauncher.setImage(launcherPreview);
 
             	manager.editProfil(selectedProfil.getId(), selectedProfil.getPseudo(), t1);
@@ -179,8 +171,7 @@ public class ProfileManagerGUI extends Parent {
 		selectedProfil = profil;
 		
 		launcherSelector.getSelectionModel().select(profil.getLauncher());
-		File filePreviewlauncher = new File("src/application/" + profil.getLauncher() + ".png");
-	    launcherPreview = new Image(filePreviewlauncher.toURI().toString());
+	    launcherPreview = new Image(getClass().getResourceAsStream(profil.getLauncher() + ".png"));
 	    ivLauncher.setImage(launcherPreview);
 	}
 	
