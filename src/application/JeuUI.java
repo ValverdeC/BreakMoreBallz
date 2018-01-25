@@ -14,6 +14,7 @@ import metier.Ballz;
 import metier.BilleBonus;
 import metier.BilleMultiplicator;
 import metier.BlackHole;
+import metier.BouncingBall;
 import metier.Elements;
 import metier.Jeu;
 import metier.Profil;
@@ -108,6 +109,8 @@ public class JeuUI extends Parent {
     			grid.add(new VerticalLaserUI(), elementUI.getX(), elementUI.getY());
     		} else if (elementUI instanceof StarDestroyer) {
     			grid.add(new StarDestroyerUI(), elementUI.getX(), elementUI.getY());
+    		} else if (elementUI instanceof BouncingBall) {
+    			grid.add(new BouncingBallUI(), elementUI.getX(), elementUI.getY());
     		} else {
     			grid.add(new EmptyElementUI(), elementUI.getX(), elementUI.getY());
     		}

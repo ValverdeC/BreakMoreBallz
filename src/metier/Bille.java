@@ -26,6 +26,8 @@ public class Bille  {
     private ArrayList<Coordonnees> billeMultiplicators = new ArrayList<Coordonnees>();
     private ArrayList<Coordonnees> horizontalLasers = new ArrayList<Coordonnees>();
     private boolean accrossBallz = false;
+    private boolean bouncing = false;
+    private boolean wasBouncing = false;
 
 
     private Circle vue;
@@ -193,5 +195,25 @@ public class Bille  {
 
 	public void setAccrossBallz() {
 		this.accrossBallz = true;
+	}
+
+	public boolean isBouncing() {
+		return bouncing;
+	}
+
+	public void setBouncing() {
+		this.bouncing = true;
+	}
+	
+	public void unsetBouncing() {
+		this.bouncing = false;
+	}
+
+	public boolean isWasBouncing() {
+		return wasBouncing;
+	}
+
+	public void setWasBouncing() {
+		this.wasBouncing = true;
 	}
 }

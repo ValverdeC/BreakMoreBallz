@@ -7,6 +7,7 @@ import util.Coordonnees;
  * */
 public class Ballz extends Elements{
 	private int life; // points de vie de la Ballz
+	private boolean malus = false;
 
 	public Ballz(Coordonnees coord, int life) {
 		super(coord);
@@ -28,5 +29,13 @@ public class Ballz extends Elements{
 	
 	public void decrementLife() {
 		this.life--;
+	}
+
+	public boolean isMalus() {
+		return malus;
+	}
+
+	public void setMalus() {
+		this.malus = true;
 	}
 }

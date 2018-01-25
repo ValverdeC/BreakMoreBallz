@@ -5,6 +5,7 @@ import util.Coordonnees;
 public abstract class Elements {
 	private Coordonnees coord;
 	private String name;
+	private boolean touched = false;
 	
 	public void setCoordonnees(int x, int y) {
 		this.coord = new Coordonnees(x,y);
@@ -38,6 +39,14 @@ public abstract class Elements {
 
 	public void setCoordonnees(Coordonnees newCoord) {
 		this.coord = newCoord;		
+	}
+
+	public boolean isTouched() {
+		return touched;
+	}
+
+	public void setTouched() {
+		this.touched = true;
 	}
 	
 }

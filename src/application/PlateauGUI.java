@@ -29,6 +29,7 @@ import metier.Bille;
 import metier.BilleBonus;
 import metier.BilleMultiplicator;
 import metier.BlackHole;
+import metier.BouncingBall;
 import metier.Elements;
 import metier.EmptyElement;
 import metier.HorizontalLaser;
@@ -310,7 +311,8 @@ public class PlateauGUI extends Parent {
 	            			element.getValue() instanceof BlackHole ||
 	            			element.getValue() instanceof HorizontalLaser ||
 	            			element.getValue() instanceof VerticalLaser ||
-	            			element.getValue() instanceof StarDestroyer
+	            			element.getValue() instanceof StarDestroyer ||
+	            			element.getValue() instanceof BouncingBall
 	            	) {
 		            	ballzX = element.getKey().getX()*40+20;
 		            	ballzY = element.getKey().getY()*40+20+(400*(jeuCourant.lanceur.getLanceur().getNbJoueur()-1));
@@ -339,9 +341,14 @@ public class PlateauGUI extends Parent {
 	            }
 	            
 	            // Si la bille touche le bas du plateau
-	            if (b.getY() + b.getRayon() >= (maxY-1) && yVel > 0) {
+	            if (b.getY() + b.getRayon() >= (maxY-1) && yVel > 0 && !b.isBouncing()) {
 	            	b.setLance(false);
 	                this.getChildren().remove(b.getVue());
+	            } else if (b.isBouncing()) {
+	            	if (b.getY() + b.getRayon() >= (maxY-1) && yVel > 0) {
+		            	b.unsetBouncing();
+		                b.setVitesseY(-yVel);
+	            	}
 	            }
 
                 if (!this.isBilleAlive() && !this.isTemporaryBilleAlive()) {
@@ -442,6 +449,11 @@ public class PlateauGUI extends Parent {
     		starDestroyer.setTouched();
     		tmp.put(element.getCoordonnees(), new EmptyElement(element.getCoordonnees()));
     		bille.setAccrossBallz();
+    	} else if (element instanceof BouncingBall && !bille.isWasBouncing()) {
+    		BouncingBall boundingBall = (BouncingBall) element;
+    		boundingBall.setTouched();
+    		bille.setBouncing();
+    		bille.setWasBouncing();
     	}
 		jeuCourant.getJeu().setElements(tmp);
 		jeuCourant.refreshView();
