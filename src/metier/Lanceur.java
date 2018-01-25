@@ -111,7 +111,7 @@ public class Lanceur{
 		newBille.addBilleMultiplicator(multiplicatorCoord);
 		newBille.setLance(false);
 		newBille.setAlreadyLance(false);
-		newBille.getVue().setFill(Color.GREEN);
+		newBille.getVue().setFill(Color.DEEPPINK);
 		this.temporaryBilles.add(newBille);
 	}
 	
