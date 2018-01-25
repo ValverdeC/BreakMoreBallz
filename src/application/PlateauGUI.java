@@ -36,19 +36,19 @@ import metier.EmptyElement;
 import metier.HorizontalLaser;
 import metier.Profil;
 import metier.StarDestroyer;
+import metier.ProfilManager;
 import metier.VerticalLaser;
 import util.Coordonnees;
 /** 
  * Classe permettant d'afficher le plateau de jeu, avec les cadres pour les 2 joueurs
  */
 public class PlateauGUI extends Parent {
-	// Elements test right bar
-	RightBarUI rb1 = new RightBarUI(new Profil(1, "Toto"), 1);
-	RightBarUI rb2 = new RightBarUI(new Profil(1, "Max"), 2);
 	JeuUI jeuUn;
 	JeuUI jeuDeux;
 	JeuUI jeuCourant;
 	JeuUI jeuOppose;
+	RightBarUI rb1;
+	RightBarUI rb2;
 	AnimationTimer timer;
 	ImageView iv1 = new ImageView();
 	
@@ -109,6 +109,9 @@ public class PlateauGUI extends Parent {
 		jeuDeux = new JeuUI(profil2, difficulty);
 		jeuCourant = new JeuUI(profil1, difficulty);
 		jeuOppose = new JeuUI(profil2, difficulty);
+		// Barres d'informations latérales (une par joueur)
+		rb1 = new RightBarUI(profil1, 1);
+		rb2 = new RightBarUI(profil2, 2);
 		iv1.setImage(image);
 		this.getChildren().add(iv1);
 		this.setTranslateX(0);
@@ -186,10 +189,13 @@ public class PlateauGUI extends Parent {
 				if (alert.getResult() == ButtonType.YES) {
 	    		   this.jeuUn.restartJeu();
 	    		   this.jeuDeux.restartJeu();
+	    		   this.rb1.resetInfos();
+	    		   this.rb2.resetInfos();
 	    		} else {
 	    			resetView();
 	    			this.app.setMenuView();
 	    		}
+				this.updateHighScores();
 			});
 
 		    alert.show();
@@ -381,7 +387,7 @@ public class PlateauGUI extends Parent {
     	} else if (element instanceof BilleBonus) {
 			tmp.put(element.getCoordonnees(), new EmptyElement(element.getCoordonnees()));
 			this.jeuCourant.incrementNbOfBilles();
-			this.incrementerNbBilles(jeuCourant.lanceur.getLanceur().getNbJoueur());
+			this.updateNbBilles(jeuCourant.lanceur.getLanceur().getNbJoueur());
     	} else if (element instanceof BlackHole) {
     		BlackHole blackHole = (BlackHole) element;
     		blackHole.setTouched();
@@ -503,11 +509,12 @@ public class PlateauGUI extends Parent {
         
         if (!this.jeuCourant.isThereAnyBallzOnPlate()) {
         	this.jeuCourant.incrementNbOfBilles();
+        	this.updateNbBilles(jeuCourant.lanceur.getLanceur().getNbJoueur());
         }
         
         this.jeuOppose.getJeu().addMalusBallz(this.jeuCourant.getNbBallzDetruits() > 4 ? 4 : this.jeuCourant.getNbBallzDetruits());
         this.jeuCourant.resetNbBallzDetruits();
-
+        
 		this.nextTurn();
 		
 		if (jeuCourant == jeuUn) {
@@ -538,11 +545,29 @@ public class PlateauGUI extends Parent {
 	}
 	
 	/** Incremente le score du joueur courant */
-	private void incrementerNbBilles(int numJoueur) {
+	private void updateNbBilles(int numJoueur) {
 		if(numJoueur == 1) {
-			rb1.incrementerNbBilles();
+			rb1.updateNbBilles(getNbOfBilles());
 		}else {
-			rb2.incrementerNbBilles();
+			rb2.updateNbBilles(getNbOfBilles());
 		}
-	} 
+	}
+	
+	/** Mise à jour des highScores */
+	private void updateHighScores() {
+		int scoreJ1 = rb1.getScore();
+		int scoreJ2 = rb2.getScore();
+		int highScoreJ1 = jeuUn.getJeu().getProfil().getHighScore();
+		int highScoreJ2 = jeuDeux.getJeu().getProfil().getHighScore();
+		int idJ1 = jeuUn.getJeu().getProfil().getId();
+		int idJ2 = jeuDeux.getJeu().getProfil().getId();
+		ProfilManager pManager = new ProfilManager();
+		
+		if(scoreJ1 > highScoreJ1) {
+			pManager.saveHighScore(idJ1, scoreJ1);
+		}
+		if(scoreJ2 > highScoreJ2) {
+			pManager.saveHighScore(idJ2, scoreJ2);
+		}
+	}
 }

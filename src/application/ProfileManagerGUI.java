@@ -65,12 +65,12 @@ public class ProfileManagerGUI extends Parent {
         back_button.setTranslateX(5);
         back_button.setTranslateY(5);
         
-        add_input.setLayoutX(45);
+        add_input.setLayoutX(70);
         add_input.setLayoutY(50);
         add_input.setPrefWidth(300);
         this.getChildren().add(add_input);
                 
-        add_button.setLayoutX(362);
+        add_button.setLayoutX(387);
         add_button.setLayoutY(50);
         add_button.setText("Add");
         add_button.getStyleClass().add("profil-button");
@@ -134,7 +134,7 @@ public class ProfileManagerGUI extends Parent {
              
         vbox.setSpacing(5);
         vbox.getChildren().addAll(table);
-        vbox.setLayoutX(45);
+        vbox.setLayoutX(70);
         vbox.setLayoutY(100);
         
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -156,7 +156,7 @@ public class ProfileManagerGUI extends Parent {
             "spaceship",
             "millenium"
         );
-        launcherSelector.setLayoutX(45);
+        launcherSelector.setLayoutX(70);
         launcherSelector.setLayoutY(650);
         launcherSelector.valueProperty().addListener(new ChangeListener<String>() {
             @Override 
