@@ -1,5 +1,7 @@
 package metier;
 
+import util.Difficultes;
+
 public class ParametresPlateau {
 	public ParametresPlateau() {
 		super();

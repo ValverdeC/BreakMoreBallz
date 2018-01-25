@@ -52,57 +52,19 @@ public class Jeu {
 		for (Entry<Coordonnees, Elements> entry : elements.entrySet()) {
 			Elements ballz = entry.getValue();
 			
-		    if (ballz.getName().equals(ElementsList.Ballz.name())) {
+		    if (ballz.getName().equals(ElementsList.Ballz.name()) || ballz.getName().equals(ElementsList.BilleBonus.name())) {
 		    	Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
 		    	ballz.setCoordonnees(newCoord);
 		    	newElements.put(newCoord, ballz);
-		    } else if (ballz.getName().equals(ElementsList.BilleBonus.name())) {
-		    	Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
-		    	ballz.setCoordonnees(newCoord);
-		    	newElements.put(newCoord, ballz);
-		    } else if (ballz.getName().equals(ElementsList.BlackHole.name())) {
-    			BlackHole blackHole = (BlackHole) ballz;
-    			if (!blackHole.isTouched()) {
-    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
-    		    	ballz.setCoordonnees(newCoord);
-    		    	newElements.put(newCoord, ballz);
-    			} else {
-    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
-    		    	newElements.put(newCoord, new EmptyElement(newCoord));
-    			}
-		    } else if (ballz.getName().equals(ElementsList.HorizontalLaser.name())) {
-    			HorizontalLaser horizontalLaser = (HorizontalLaser) ballz;
-    			if (!horizontalLaser.isTouched()) {
-    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
-    		    	ballz.setCoordonnees(newCoord);
-    		    	newElements.put(newCoord, ballz);
-    			} else {
-    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
-    		    	newElements.put(newCoord, new EmptyElement(newCoord));
-    			}
-		    } else if (ballz.getName().equals(ElementsList.BilleMultiplicator.name())) {
-    			BilleMultiplicator billeMultiplicator = (BilleMultiplicator) ballz;
-    			if (!billeMultiplicator.isTouched()) {
-    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
-    		    	ballz.setCoordonnees(newCoord);
-    		    	newElements.put(newCoord, ballz);
-    			} else {
-    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
-    		    	newElements.put(newCoord, new EmptyElement(newCoord));
-    			}
-		    } else if (ballz.getName().equals(ElementsList.VerticalLaser.name())) {
-    			VerticalLaser verticalLaser = (VerticalLaser) ballz;
-    			if (!verticalLaser.isTouched()) {
-    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
-    		    	ballz.setCoordonnees(newCoord);
-    		    	newElements.put(newCoord, ballz);
-    			} else {
-    				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
-    		    	newElements.put(newCoord, new EmptyElement(newCoord));
-    			}
-		    } else if (ballz.getName().equals(ElementsList.StarDestroyer.name())) {
-    			StarDestroyer starDestroyer = (StarDestroyer) ballz;
-    			if (!starDestroyer.isTouched()) {
+		    } else if (
+		    	ballz.getName().equals(ElementsList.BlackHole.name()) ||
+		    	ballz.getName().equals(ElementsList.HorizontalLaser.name()) ||
+		    	ballz.getName().equals(ElementsList.BilleMultiplicator.name()) ||
+		    	ballz.getName().equals(ElementsList.VerticalLaser.name()) ||
+		    	ballz.getName().equals(ElementsList.StarDestroyer.name()) ||
+		    	ballz.getName().equals(ElementsList.BouncingBall.name())
+		    ) {
+    			if (!ballz.isTouched()) {
     				Coordonnees newCoord = new Coordonnees(ballz.getX(), ballz.getY() + 1);
     		    	ballz.setCoordonnees(newCoord);
     		    	newElements.put(newCoord, ballz);
@@ -147,22 +109,26 @@ public class Jeu {
 		// On a une chance sur 3 d'avoir un bonus sur le plateau s'il y a une place libre
 		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(100)) {
 			switch (this.getRandomBonus()) {
-			case HorizontalLaser:
-				randomIndex = this.getRandomIndex(elements);
-				elements.put(new Coordonnees(randomIndex, 1), new HorizontalLaser(new Coordonnees(randomIndex, 1)));
-				break;
-			case BilleMultiplicator:
-				randomIndex = this.getRandomIndex(elements);
-				elements.put(new Coordonnees(randomIndex, 1), new BilleMultiplicator(new Coordonnees(randomIndex, 1)));
-				break;
-			case VerticalLaser:
-				randomIndex = this.getRandomIndex(elements);
-				elements.put(new Coordonnees(randomIndex, 1), new VerticalLaser(new Coordonnees(randomIndex, 1)));
-				break;
-			case StarDestroyer:
-				randomIndex = this.getRandomIndex(elements);
-				elements.put(new Coordonnees(randomIndex, 1), new StarDestroyer(new Coordonnees(randomIndex, 1)));
-				break;
+				case HorizontalLaser:
+					randomIndex = this.getRandomIndex(elements);
+					elements.put(new Coordonnees(randomIndex, 1), new HorizontalLaser(new Coordonnees(randomIndex, 1)));
+					break;
+				case BilleMultiplicator:
+					randomIndex = this.getRandomIndex(elements);
+					elements.put(new Coordonnees(randomIndex, 1), new BilleMultiplicator(new Coordonnees(randomIndex, 1)));
+					break;
+				case VerticalLaser:
+					randomIndex = this.getRandomIndex(elements);
+					elements.put(new Coordonnees(randomIndex, 1), new VerticalLaser(new Coordonnees(randomIndex, 1)));
+					break;
+				case StarDestroyer:
+					randomIndex = this.getRandomIndex(elements);
+					elements.put(new Coordonnees(randomIndex, 1), new StarDestroyer(new Coordonnees(randomIndex, 1)));
+					break;
+				case BouncingBall:
+					randomIndex = this.getRandomIndex(elements);
+					elements.put(new Coordonnees(randomIndex, 1), new BouncingBall(new Coordonnees(randomIndex, 1)));
+					break;
 			}
 		}
 		if (this.isThereFreePlace(elements) && this.service.trueOrFalseRandom(10)) {
@@ -324,8 +290,11 @@ public class Jeu {
 			}
 			if (element instanceof Ballz) {
 				((Ballz) element).setLife(((Ballz) element).getLife() + incrementLife);
+				((Ballz) element).setMalus();
 			} else {
-				this.elements.put(element.getCoordonnees(), new Ballz(element.getCoordonnees(), incrementLife));
+				Ballz ballz = new Ballz(element.getCoordonnees(), incrementLife);
+				ballz.setMalus();
+				this.elements.put(element.getCoordonnees(), ballz);
 			}
 		}
 		this.refreshView();

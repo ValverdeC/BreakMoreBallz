@@ -1,4 +1,4 @@
-package metier;
+package util;
 
 public enum Difficultes {
 	Facile,

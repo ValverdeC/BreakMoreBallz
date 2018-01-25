@@ -1,5 +1,5 @@
 package util;
 
 public enum Bonus {
-	HorizontalLaser, BilleMultiplicator, VerticalLaser, StarDestroyer
+	HorizontalLaser, BilleMultiplicator, VerticalLaser, StarDestroyer, BouncingBall
 }

@@ -2,7 +2,6 @@ package application;
 	
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -12,13 +11,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
-import com.almasb.fxgl.audio.Sound;
 import com.almasb.fxgl.ecs.Entity;
 import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.component.ViewComponent;
 import com.almasb.fxgl.settings.GameSettings;
 
-	
 import javafx.scene.Node;
 import metier.Profil;
 

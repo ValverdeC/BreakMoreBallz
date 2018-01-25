@@ -1,38 +1,20 @@
 package application;
 
-import java.io.File;
-import java.util.Hashtable;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import metier.Difficultes;
 import metier.ParametresPlateau;
 import metier.Profil;
 import metier.ProfilManager;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.Slider;
+import util.Difficultes;
 
 public class ParametresPlateauUi extends Parent {
 	ParametresPlateau parametrePlateau = new ParametresPlateau();

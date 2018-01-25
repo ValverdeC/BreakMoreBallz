@@ -1,7 +1,5 @@
 package application;
 
-import java.util.concurrent.TimeUnit;
-
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.Group;
@@ -9,9 +7,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeType;
+import metier.Bille;
 import metier.Lanceur;
 import util.CoordonneesDouble;
-import metier.Bille;
 
 /**
  * Classe permettant d'afficher le lanceur sur le plateau

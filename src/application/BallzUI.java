@@ -27,10 +27,16 @@ public class BallzUI extends Parent {
         
 		this.jeu = jeu;
 		ball = (Ballz) elementUI;
+		LinearGradient lg1;
 		
 		// Apparence de la ballz
-		Stop[] stops = new Stop[] { new Stop(0, Color.LIGHTPINK), new Stop(1, Color.BLUEVIOLET)};
-        	LinearGradient lg1 = new LinearGradient(0, 1, 0, 0, true, CycleMethod.NO_CYCLE, stops);
+		if (ball.isMalus()) {
+			Stop[] stops = new Stop[] { new Stop(0, Color.RED), new Stop(1, Color.GREEN)};
+			lg1 = new LinearGradient(0, 1, 0, 0, true, CycleMethod.NO_CYCLE, stops);
+		} else {
+			Stop[] stops = new Stop[] { new Stop(0, Color.LIGHTPINK), new Stop(1, Color.BLUEVIOLET)};
+			lg1 = new LinearGradient(0, 1, 0, 0, true, CycleMethod.NO_CYCLE, stops);
+		}
 		ballz.setWidth(38);
 		ballz.setHeight(38);
 		ballz.setArcHeight(20);
