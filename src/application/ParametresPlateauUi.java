@@ -15,6 +15,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import metier.Difficulty;
+import metier.EasyDiffculty;
+import metier.HardDiffculty;
+import metier.NormalDiffculty;
 import metier.ParametresPlateau;
 import metier.Profil;
 import metier.ProfilManager;
@@ -121,7 +125,7 @@ public class ParametresPlateauUi extends Parent {
 		if(parametrePlateau.checkParametres()){
 			Main main = new Main();
 			resetView();
-			main.setPlayView(main, parametrePlateau.getTempProfil1(), parametrePlateau.getTempProfil2());
+			main.setPlayView(main, parametrePlateau.getTempProfil1(), parametrePlateau.getTempProfil2(), this.getDifficultyObject());
 		}
 		else{
 			Alert alert = new Alert(AlertType.ERROR);
@@ -199,6 +203,22 @@ public class ParametresPlateauUi extends Parent {
 				player1Selector.getItems().remove(pseudo);
 				parametrePlateau.setTempProfil2(mapProfil.get(pseudo));
 			}
+		}
+	}
+	
+	private Difficulty getDifficultyObject() {
+		switch (this.parametrePlateau.getDifficulte()) {
+		case Facile:
+			return new EasyDiffculty();
+			
+		case Normal:
+			return new NormalDiffculty();
+			
+		case Difficile:
+			return new HardDiffculty();
+			
+		default:
+			return new NormalDiffculty();
 		}
 	}
 }

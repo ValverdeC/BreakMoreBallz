@@ -30,6 +30,7 @@ import metier.BilleBonus;
 import metier.BilleMultiplicator;
 import metier.BlackHole;
 import metier.BouncingBall;
+import metier.Difficulty;
 import metier.Elements;
 import metier.EmptyElement;
 import metier.HorizontalLaser;
@@ -102,12 +103,12 @@ public class PlateauGUI extends Parent {
 		
 	Main app;
 	
-	public PlateauGUI(Main main, Profil profil1, Profil profil2) {
+	public PlateauGUI(Main main, Profil profil1, Profil profil2, Difficulty difficulty) {
 		Image image = new Image(getClass().getResourceAsStream("game_background.jpg")); // Image de fond
-		jeuUn = new JeuUI(profil1);
-		jeuDeux = new JeuUI(profil2);
-		jeuCourant = new JeuUI(profil1);
-		jeuOppose = new JeuUI(profil2);
+		jeuUn = new JeuUI(profil1, difficulty);
+		jeuDeux = new JeuUI(profil2, difficulty);
+		jeuCourant = new JeuUI(profil1, difficulty);
+		jeuOppose = new JeuUI(profil2, difficulty);
 		iv1.setImage(image);
 		this.getChildren().add(iv1);
 		this.setTranslateX(0);

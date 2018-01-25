@@ -3,8 +3,18 @@ package metier;
 import util.Difficultes;
 
 public class ParametresPlateau {
+	private double dimensionX;
+	private double dimensionY;
+	private String imageBackground;
+	private String music;
+	private Difficultes difficulte;
+	private ProfilManager profilManager;
+	private Profil tempProfil1;
+	private Profil tempProfil2;
+	
 	public ParametresPlateau() {
 		super();
+		this.difficulte = Difficultes.Normal;
 	}
 	
 	public double getDimensionX() {
@@ -60,14 +70,6 @@ public class ParametresPlateau {
 		this.profilManager = profilManager;
 	}
 
-	private double dimensionX;
-	private double dimensionY;
-	private String imageBackground;
-	private String music;
-	private Difficultes difficulte;
-	private ProfilManager profilManager;
-	private Profil tempProfil1;
-	private Profil tempProfil2;
 	
 	//Check if all fields are correctly initialized
 	public boolean checkParametres(){
