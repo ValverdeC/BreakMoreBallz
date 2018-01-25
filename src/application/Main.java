@@ -19,6 +19,7 @@ import com.almasb.fxgl.settings.GameSettings;
 import javafx.scene.Node;
 import metier.Difficulty;
 import metier.Profil;
+import shared.Constants;
 
 public class Main extends GameApplication {
 	
@@ -64,6 +65,26 @@ public class Main extends GameApplication {
 		}
         // Lancement de la musique en mode boucle
         //audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+        
+        File gameDir = new File(Constants.DIRECTORY_PATH);
+        
+        if (gameDir.exists()) {
+        	System.out.println(gameDir + " already exists");
+        } else if (gameDir.mkdirs()) {
+        	System.out.println(gameDir + " was created");
+        } else {
+        	System.out.println(gameDir + " was not created");
+        }
+        
+        File profiles = new File(Constants.CSV_PATH);
+        if(!profiles.exists() && !profiles.isDirectory()) { 
+            try {
+            	profiles.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
+
         
 	}
 	

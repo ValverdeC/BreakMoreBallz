@@ -34,7 +34,7 @@ public class ProfileManagerGUI extends Parent {
 	Button back_button = new Button("Retour");
 	ProfilManager manager = new ProfilManager();
 
-	File fileBackground = new File("ressources/images/profiles_background.jpg");
+	File fileBackground = new File("src/ressources/images/profiles_background.jpg");
     Image background = new Image(fileBackground.toURI().toString());
 	
 	TextField add_input = new TextField ();
@@ -161,7 +161,7 @@ public class ProfileManagerGUI extends Parent {
         launcherSelector.valueProperty().addListener(new ChangeListener<String>() {
             @Override 
             public void changed(ObservableValue ov, String t, String t1) {                
-            	File filePreviewlauncher = new File("ressources/images/launcher/"+t1+".png");
+            	File filePreviewlauncher = new File("src/ressources/images/launcher/" + t1 + ".png");
             	launcherPreview = new Image(filePreviewlauncher.toURI().toString());            	
             	ivLauncher.setImage(launcherPreview);
 
@@ -196,7 +196,7 @@ public class ProfileManagerGUI extends Parent {
 //		backgroundSelector.getSelectionModel().select(profil.getBackground());
 		
 		launcherSelector.getSelectionModel().select(profil.getLauncher());
-		File filePreviewlauncher = new File("ressources/images/launcher/"+profil.getLauncher()+".png");
+		File filePreviewlauncher = new File("src/ressources/images/launcher/"+profil.getLauncher()+".png");
 	    launcherPreview = new Image(filePreviewlauncher.toURI().toString());
 	    ivLauncher.setImage(launcherPreview);
 	}

@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Scanner;
+
+import shared.Constants;
+
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -15,7 +18,7 @@ import util.CsvFileHelper;
 
 public class ProfilManager {
 	private List<Profil> profiles;
-	private static String fileName = "src/metier/profils.csv";
+	private static String fileName = Constants.CSV_PATH;
 	
 	//GETTER AND SETTERS
 	public String getFileName() {
