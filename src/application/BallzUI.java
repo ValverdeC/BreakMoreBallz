@@ -31,7 +31,7 @@ public class BallzUI extends Parent {
 		
 		// Apparence de la ballz
 		if (ball.isMalus()) {
-			Stop[] stops = new Stop[] { new Stop(0, Color.RED), new Stop(1, Color.GREEN)};
+			Stop[] stops = new Stop[] { new Stop(0, Color.LIGHTSTEELBLUE), new Stop(1, Color.DARKBLUE)};
 			lg1 = new LinearGradient(0, 1, 0, 0, true, CycleMethod.NO_CYCLE, stops);
 		} else {
 			Stop[] stops = new Stop[] { new Stop(0, Color.LIGHTPINK), new Stop(1, Color.BLUEVIOLET)};
