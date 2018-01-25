@@ -6,7 +6,6 @@ public class Profil {
 	private String pseudo;
 	private int id;
 	private int highScore;
-	private String background;
 	private String launcher;
 	
 	//Create a new profile
@@ -14,8 +13,7 @@ public class Profil {
 		this.id = id;
 		this.pseudo = pseudo;
 		this.highScore = 0;
-		this.background = "default";
-		this.launcher = "default";
+		this.launcher = "commander";
 	}
 	
 	public Profil(int id, String pseudo, int highScore, String launcher) {
@@ -36,14 +34,6 @@ public class Profil {
 
 	public int getHighScore() {
 		return highScore;
-	}
-
-	public String getBackground() {
-		return background;
-	}
-
-	public void setBackground(String background) {
-		this.background = background;
 	}
 
 	public void setHighScore(int highScore) {
