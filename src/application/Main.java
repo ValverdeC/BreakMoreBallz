@@ -38,14 +38,14 @@ public class Main extends GameApplication {
 	@Override
 	protected void initSettings(GameSettings settings) {
 		settings.setTitle("BreakMoreBallz");
-        settings.setVersion("beta-0.2");
+        settings.setVersion("1.0.0");
         settings.setWidth(500);
         settings.setHeight(800);
         settings.setIntroEnabled(false);
         settings.setMenuEnabled(false);
         settings.setProfilingEnabled(false);
         settings.setCloseConfirmation(false);
-        settings.setApplicationMode(ApplicationMode.DEVELOPER);
+        settings.setApplicationMode(ApplicationMode.RELEASE);
         
         // Chargement du fichier de son
         try {
